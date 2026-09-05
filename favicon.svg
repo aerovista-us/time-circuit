@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071427"/>
+      <stop offset="1" stop-color="#0f1f3a"/>
+    </linearGradient>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#37beff"/>
+      <stop offset="1" stop-color="#ff964a"/>
+    </linearGradient>
+    <filter id="g" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1.2" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="url(#bg)" stroke="#5bc9ff55"/>
+  <circle cx="32" cy="32" r="19" fill="none" stroke="url(#ring)" stroke-width="4.5" filter="url(#g)"/>
+  <path d="M32 15 L41 32 L23 32 Z" fill="none" stroke="#8fd9ff" stroke-width="2.8" stroke-linejoin="round"/>
+  <circle cx="32" cy="26" r="2.6" fill="#ffd39f"/>
+  <text x="32" y="50" text-anchor="middle" font-size="12" font-family="Segoe UI, Arial, sans-serif" font-weight="700" fill="#dff4ff">88</text>
+</svg>
