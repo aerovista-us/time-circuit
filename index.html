@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Kids Will Love It — Time-Circuit Drop</title>
+  <title>Time-Circuit Drops — EchoVerse</title>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
   <style>
     :root{
@@ -398,7 +398,7 @@
       <section class="card">
         <h2>PLAYER</h2>
         <audio id="audio" preload="metadata">
-          <source id="audioSource" src="./newsound.mp3" type="audio/mpeg" />
+          <source id="audioSource" src="./kids-will-love-it.mp3" type="audio/mpeg" />
         </audio>
 
         <div class="controls">
@@ -432,11 +432,19 @@
           <span id="trackCount">1 / 1</span>
         </div>
         <div id="playlist" class="playlist"></div>
-        <div class="playlist-note">Add tracks in the `playlist` array inside the script block. UI and controls are already wired for multi-track use.</div>
+        <div class="playlist-note">Three Time-Circuit cuts loaded. BPM/key on the new tracks are provisional — refine via the audio analysis toolkit when you want exact remix metadata.</div>
       </section>
     </div>
 
     <div class="footer">Tip: add more files and metadata to the playlist array to convert this into a multi-track release page.</div>
+    <div class="footer">
+      Analyzer tools:
+      <a href="http://127.0.0.1:8765" target="_blank" rel="noopener" style="color:#9fdcff">Web UI</a>
+      •
+      <a href="./docs/audio-analysis-toolkit.md" target="_blank" rel="noopener" style="color:#9fdcff">Toolkit Docs</a>
+      •
+      <a href="./docs/audio-analysis-web-ui.md" target="_blank" rel="noopener" style="color:#9fdcff">Web UI Docs</a>
+    </div>
   </div>
 
   <script>
@@ -449,6 +457,24 @@
         bpm: "90.25 halftime",
         key: "G-centered",
         description: "Clean guitar hero intro -> quote hit -> halftime drop with dubstep and metal drizzle."
+      },
+      {
+        title: "Flux Swamp (1955)",
+        subtitle: "Analog Swamp Intro",
+        src: "./FLUX_SWAMP_(1955).mp3",
+        art: "./kids.will.love.it.png",
+        bpm: "~90 groove",
+        key: "Swamp-centered",
+        description: "Tape-hiss swamp night open: the classic 'new sound' line, fingerpicked guitar, and a short instrumental fade into the circuit."
+      },
+      {
+        title: "Momento × LowFreq × New Sound",
+        subtitle: "SwampTime Flux Mashup",
+        src: "./momentoxLowFreqxNEW_SOUND.mp3",
+        art: "./kids.will.love.it.png",
+        bpm: "multi-act / variable",
+        key: "Flux mashup",
+        description: "McFly radio intro into 1985 nostalgia bounce, 1885 swamp-western break, time-fracture breakdown, then Future Fizzle Dizzle final drop."
       }
     ];
 

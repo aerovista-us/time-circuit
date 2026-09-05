@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AeroVista | EchoVerse Audio Analyzer</title>
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <style>
+    :root{
+      --bg0:#050910; --bg1:#0b1324; --line:rgba(99,187,255,.28);
+      --txt:#eaf6ff; --muted:#96b4cc; --ok:#3ee0a0; --warn:#ffc470;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;color:var(--txt);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+      background:
+        radial-gradient(900px 640px at 18% 15%, rgba(31,156,255,.20), transparent 60%),
+        radial-gradient(1100px 760px at 88% 18%, rgba(255,129,44,.24), transparent 60%),
+        linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 52%, #060a12 100%);
+      min-height:100vh;
+    }
+    .wrap{max-width:1120px;margin:0 auto;padding:14px 12px 24px;display:grid;gap:10px}
+    .card{
+      border-radius:14px;background:linear-gradient(180deg, rgba(12,25,46,.84), rgba(8,16,30,.80));
+      border:1px solid var(--line);padding:10px 12px;box-shadow:0 10px 24px rgba(0,0,0,.28);
+    }
+    .hero h1{margin:4px 0 4px;font-size:21px;line-height:1.1}
+    .branding{margin:0;font-size:11px;letter-spacing:.8px;text-transform:uppercase;color:#9fd2f7}
+    .sub{margin:0;color:var(--muted);line-height:1.3;font-size:13px}
+    .doclinks{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+    .doclinks a{
+      font-size:11px;color:#d9efff;text-decoration:none;padding:5px 9px;border-radius:999px;
+      border:1px solid var(--line);background:rgba(47,184,255,.08)
+    }
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media (max-width:960px){.grid{grid-template-columns:1fr}}
+    .grid > .card{min-width:0}
+    label{display:block;font-size:11px;color:#bad6eb;margin-bottom:4px}
+    input[type="file"],select,input[type="text"]{
+      width:100%;padding:8px 9px;border-radius:8px;border:1px solid rgba(126,209,255,.33);
+      background:rgba(6,18,34,.72);color:var(--txt)
+    }
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    @media (max-width:960px){.row{grid-template-columns:1fr}}
+    .check{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);margin:6px 0}
+    button{
+      border:1px solid rgba(126,209,255,.38);background:linear-gradient(180deg, rgba(47,184,255,.20), rgba(47,184,255,.08));
+      color:var(--txt);padding:8px 10px;border-radius:9px;cursor:pointer;font-weight:700;font-size:12px;
+    }
+    button:hover{border-color:rgba(255,177,112,.65)}
+    .status{font-size:12px;color:var(--muted);margin-top:7px}
+    .ok{color:var(--ok)} .warn{color:var(--warn)}
+    .kpi{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:8px}
+    @media (max-width:900px){.kpi{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    .pill{border:1px solid var(--line);border-radius:10px;padding:8px;background:rgba(47,184,255,.08)}
+    .pill b{display:block;font-size:10px;color:#9bc7e8;margin-bottom:4px}
+    .pill span{font-size:13px}
+    pre{
+      margin:0;max-height:260px;overflow:auto;border-radius:10px;border:1px solid rgba(126,209,255,.25);
+      background:rgba(4,12,24,.82);padding:10px;color:#dff2ff;font-size:12px;line-height:1.35
+    }
+    #lyricsText{
+      max-width:860px;
+      white-space:pre-wrap;
+      overflow-wrap:anywhere;
+      word-break:break-word;
+    }
+    #rawJson{
+      max-width:100%;
+      white-space:pre-wrap;
+      overflow-wrap:anywhere;
+      word-break:break-word;
+    }
+    ul{margin:6px 0 0 18px;color:#dceeff}
+    .dropzone{
+      border:1px dashed rgba(126,209,255,.45);border-radius:10px;padding:14px;text-align:center;
+      color:#b9d6ee;background:rgba(47,184,255,.06);font-size:12px;
+    }
+    .dropzone.drag{border-color:rgba(255,177,112,.7);background:rgba(255,141,58,.12)}
+    .actions{display:flex;flex-wrap:wrap;gap:6px}
+    table{width:100%;border-collapse:collapse;font-size:12px}
+    th,td{
+      border-bottom:1px solid rgba(126,209,255,.14);padding:6px 4px;text-align:left;vertical-align:top;
+      overflow-wrap:anywhere;word-break:break-word;
+    }
+    th{color:#a9cae3;font-weight:600;font-size:11px}
+    .section-row td{font-size:11px;color:#a9cae3;background:rgba(47,184,255,.08);font-weight:700}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    .small{font-size:11px;color:var(--muted);overflow-wrap:anywhere;word-break:break-word}
+    .queue-wrap{max-height:320px;overflow:auto}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="card hero">
+      <p class="branding">AeroVista | EchoVerse</p>
+      <h1>Batch Audio Analysis Console</h1>
+      <p class="sub">Multi-file drag/drop queue with pause, stop-after-current, kill hung jobs, and auto JSON export.</p>
+      <div class="doclinks">
+        {% for doc in doc_links %}
+          <a href="/docs/{{ doc.path }}" target="_blank" rel="noopener">{{ doc.name }}</a>
+        {% endfor %}
+      </div>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h2 style="margin:2px 0 8px;font-size:14px">Batch Input</h2>
+        <div id="dropzone" class="dropzone">Drag and drop audio files here (or use picker)</div>
+        <form id="queueForm" style="margin-top:8px">
+          <label for="audio_files">Audio files</label>
+          <input id="audio_files" name="audio_files" type="file" accept=".mp3,.wav,.m4a,.flac,.ogg,.aac" multiple />
+
+          <div class="row" style="margin-top:8px">
+            <div>
+              <label for="output_dir">Export folder path</label>
+              <input id="output_dir" name="output_dir" type="text" value="{{ default_output_dir }}" placeholder="D:\path\to\exports or /home/user/exports" />
+            </div>
+            <div>
+              <label for="max_runtime_sec">Max runtime per job (sec, 0=off)</label>
+              <input id="max_runtime_sec" name="max_runtime_sec" type="text" value="180" />
+            </div>
+          </div>
+
+          <div class="check" style="margin-top:8px">
+            <input id="with_whisper" name="with_whisper" type="checkbox" />
+            <label for="with_whisper" style="margin:0">Enable Whisper lyric transcription</label>
+          </div>
+
+          <div class="row">
+            <div>
+              <label for="whisper_model">Whisper model</label>
+              <select id="whisper_model" name="whisper_model">
+                <option value="tiny">tiny</option>
+                <option value="base" selected>base</option>
+                <option value="small">small</option>
+                <option value="medium">medium</option>
+                <option value="large">large</option>
+              </select>
+            </div>
+            <div>
+              <label for="whisper_task">Whisper task</label>
+              <select id="whisper_task" name="whisper_task">
+                <option value="transcribe" selected>transcribe</option>
+                <option value="translate">translate</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top:8px">
+            <div>
+              <label for="profile">Analysis profile</label>
+              <select id="profile" name="profile">
+                <option value="fast">fast</option>
+                <option value="balanced" selected>balanced</option>
+                <option value="deep">deep</option>
+                <option value="hybrid">hybrid (auto-refine)</option>
+              </select>
+            </div>
+            <div>
+              <label for="whisper_language">Whisper language (optional)</label>
+              <input id="whisper_language" name="whisper_language" type="text" placeholder="en" />
+            </div>
+          </div>
+
+          <div class="actions" style="margin-top:8px">
+            <button type="submit">Add Files To Queue</button>
+            <button type="button" id="btnPause">Pause Queue</button>
+            <button type="button" id="btnResume">Resume Queue</button>
+            <button type="button" id="btnStopAfter">Stop After Current</button>
+            <button type="button" id="btnKillCurrent">Kill Current</button>
+            <button type="button" id="btnClearCompleted">Clear Completed</button>
+            <button type="button" id="copyJsonBtn">Copy Latest JSON</button>
+          </div>
+        </form>
+        <div class="small">Click add files to queue to start processing track/s.</div>
+        <p class="status" id="status">Ready.</p>
+        <div class="small" id="queueMeta"></div>
+      </section>
+
+      <section class="card">
+      <h2 style="margin:2px 0 8px;font-size:14px">Queue</h2>
+      <div class="queue-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Job</th>
+              <th>Status</th>
+              <th>Profile</th>
+              <th>Export</th>
+              <th>Preview</th>
+            </tr>
+          </thead>
+          <tbody id="queueCompletedBody"></tbody>
+          <tbody id="queueRunningBody"></tbody>
+          <tbody id="queueQueuedBody"></tbody>
+        </table>
+      </div>
+    </section>
+    </div>
+
+    <section class="card">
+      <h2 style="margin:2px 0 8px;font-size:14px">Latest Result Summary</h2>
+      <div class="kpi">
+        <div class="pill"><b>Tempo</b><span id="kTempo">-</span></div>
+        <div class="pill"><b>Key</b><span id="kKey">-</span></div>
+        <div class="pill"><b>Sub Ratio</b><span id="kSub">-</span></div>
+        <div class="pill"><b>Loudness (LUFS)</b><span id="kLufs">-</span></div>
+        <div class="pill"><b>Crest Factor</b><span id="kCrest">-</span></div>
+        <div class="pill"><b>Stereo Corr</b><span id="kCorr">-</span></div>
+        <div class="pill"><b>Reliability</b><span id="kRel">-</span></div>
+        <div class="pill"><b>Runtime</b><span id="kRun">-</span></div>
+      </div>
+      <h3 style="margin:10px 0 4px;font-size:12px;color:#b9d5ec">Recommendations</h3>
+      <ul id="recommendations"></ul>
+    </section>
+
+    <section class="card">
+      <h2 style="margin:2px 0 8px;font-size:14px">Lyrics (Whisper)</h2>
+      <pre id="lyricsText">Enable Whisper and run analysis to populate lyrics/transcript.</pre>
+    </section>
+
+    <section class="card">
+      <h2 style="margin:2px 0 8px;font-size:14px">Raw JSON Output</h2>
+      <pre id="rawJson">{}</pre>
+    </section>
+  </div>
+
+  <script>
+    const form = document.getElementById("queueForm");
+    const fileInput = document.getElementById("audio_files");
+    const dropzone = document.getElementById("dropzone");
+    const statusEl = document.getElementById("status");
+    const queueMeta = document.getElementById("queueMeta");
+    const queueCompletedBody = document.getElementById("queueCompletedBody");
+    const queueRunningBody = document.getElementById("queueRunningBody");
+    const queueQueuedBody = document.getElementById("queueQueuedBody");
+    const rawJson = document.getElementById("rawJson");
+    const lyricsText = document.getElementById("lyricsText");
+    const recommendations = document.getElementById("recommendations");
+    const copyJsonBtn = document.getElementById("copyJsonBtn");
+    const btnPause = document.getElementById("btnPause");
+    const btnResume = document.getElementById("btnResume");
+    const btnStopAfter = document.getElementById("btnStopAfter");
+    const btnKillCurrent = document.getElementById("btnKillCurrent");
+    const btnClearCompleted = document.getElementById("btnClearCompleted");
+    let latest = null;
+
+    const set = (id, v) => document.getElementById(id).textContent = v ?? "-";
+
+    function render(data){
+      latest = data;
+      rawJson.textContent = JSON.stringify(data, null, 2);
+      set("kTempo", data.tempo_bpm_estimate ? `${data.tempo_bpm_estimate} BPM` : "-");
+      set("kKey", data.key_estimate?.key || "-");
+      set("kSub", data.bands?.sub_20_60_ratio ?? "-");
+      set("kLufs", data.loudness?.lufs_integrated ?? "-");
+      set("kCrest", data.dynamics?.crest_factor ?? "-");
+      set("kCorr", data.stereo_image?.l_r_correlation ?? "-");
+      set("kRel", data.quality?.overall_reliability ?? "-");
+      set("kRun", data.analysis_runtime_sec ? `${data.analysis_runtime_sec}s` : "-");
+
+      recommendations.innerHTML = "";
+      (data.remix_recommendations || []).forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        recommendations.appendChild(li);
+      });
+
+      const lyr = data.lyrics_transcription;
+      if (!lyr) {
+        lyricsText.textContent = "Whisper not requested for this run.";
+      } else if (lyr.status === "ok") {
+        const seg = (lyr.segments || []).slice(0, 24).map(s => `[${s.start.toFixed(2)}-${s.end.toFixed(2)}] ${s.text}`).join("\n");
+        lyricsText.textContent = `${lyr.text || ""}\n\n--- SEGMENTS ---\n${seg}`;
+      } else {
+        lyricsText.textContent = `Whisper status: ${lyr.status}\n${lyr.error || ""}`;
+      }
+    }
+
+    async function loadResult(jobId){
+      const res = await fetch(`/api/queue/result/${jobId}`);
+      const data = await res.json();
+      if(!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+      render(data);
+      statusEl.textContent = `Loaded result ${jobId.slice(0,8)}.`;
+      statusEl.className = "status ok";
+    }
+
+    function addSectionRows(targetBody, title, rows, allowView){
+      targetBody.innerHTML = "";
+      const header = document.createElement("tr");
+      header.className = "section-row";
+      header.innerHTML = `<td colspan="5">${title} (${rows.length})</td>`;
+      targetBody.appendChild(header);
+      if(!rows.length){
+        const empty = document.createElement("tr");
+        empty.innerHTML = `<td colspan="5" class="small">No items</td>`;
+        targetBody.appendChild(empty);
+        return;
+      }
+      rows.forEach(j => {
+        const tr = document.createElement("tr");
+        const p = j.result_preview || {};
+        const exportHtml = j.export_path
+          ? allowView
+            ? `<a href="/api/queue/exported/${j.id}" class="small">download</a> <button data-view="${j.id}" type="button">view</button>`
+            : `<a href="/api/queue/exported/${j.id}" class="small">download</a>`
+          : `<span class="small">-</span>`;
+        tr.innerHTML = `
+          <td><div class="mono">${j.id.slice(0,8)}</div><div class="small">${j.filename}</div></td>
+          <td><span class="mono">${j.status}</span>${j.error ? `<div class="small">${j.error}</div>` : ""}</td>
+          <td>${j.options?.profile || "-"}</td>
+          <td>${exportHtml}</td>
+          <td class="small">${p.tempo_bpm_estimate || "-"} bpm • ${p.key || "-"}</td>
+        `;
+        targetBody.appendChild(tr);
+      });
+      targetBody.querySelectorAll("button[data-view]").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          const id = btn.getAttribute("data-view");
+          try{
+            await loadResult(id);
+          }catch(err){
+            statusEl.textContent = `Load result failed: ${err.message}`;
+            statusEl.className = "status warn";
+          }
+        });
+      });
+    }
+
+    function queueToRows(queue){
+      const jobs = (queue.jobs || []).slice().reverse();
+      const completed = jobs.filter(j => j.status === "completed");
+      const running = jobs.filter(j => j.status === "running");
+      const queued = jobs.filter(j => j.status === "queued");
+
+      addSectionRows(queueCompletedBody, "Completed", completed, true);
+      addSectionRows(queueRunningBody, "Running", running, false);
+      addSectionRows(queueQueuedBody, "Queued", queued, false);
+
+      const done = completed.length;
+      queueMeta.textContent = `Queued: ${queued.length} | Running: ${running.length} | Completed: ${done} | Paused: ${queue.paused} | Stop-after-current: ${queue.stop_after_current} | Output: ${queue.output_dir || "-"}`;
+
+      if(!latest && completed.length && completed[0].id){
+        loadResult(completed[0].id).catch(() => {});
+      }
+    }
+
+    async function refreshQueue(){
+      try {
+        const res = await fetch("/api/queue/status");
+        const q = await res.json();
+        queueToRows(q);
+      } catch {}
+    }
+
+    async function queueAction(action){
+      try{
+        const res = await fetch("/api/queue/control", {
+          method: "POST",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify({action})
+        });
+        const data = await res.json();
+        if(!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+        queueToRows(data);
+        statusEl.textContent = `Queue action applied: ${action}`;
+        statusEl.className = "status ok";
+      }catch(err){
+        statusEl.textContent = `Queue action failed: ${err.message}`;
+        statusEl.className = "status warn";
+      }
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!fileInput.files || !fileInput.files.length){
+        statusEl.textContent = "Select one or more files first.";
+        statusEl.className = "status warn";
+        return;
+      }
+      const fd = new FormData();
+      Array.from(fileInput.files).forEach(f => fd.append("audio_files", f));
+      fd.append("output_dir", document.getElementById("output_dir").value || "");
+      fd.append("max_runtime_sec", document.getElementById("max_runtime_sec").value || "0");
+      fd.append("with_whisper", document.getElementById("with_whisper").checked ? "true" : "false");
+      fd.append("whisper_model", document.getElementById("whisper_model").value);
+      fd.append("whisper_task", document.getElementById("whisper_task").value);
+      fd.append("whisper_language", document.getElementById("whisper_language").value);
+      fd.append("profile", document.getElementById("profile").value);
+
+      try {
+        const res = await fetch("/api/queue/enqueue", {method: "POST", body: fd});
+        const data = await res.json();
+        if(!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+        statusEl.textContent = `Added ${data.added.length} file(s) to queue.`;
+        statusEl.className = "status ok";
+        queueToRows(data.queue);
+      } catch(err){
+        statusEl.textContent = `Enqueue failed: ${err.message}`;
+        statusEl.className = "status warn";
+      }
+    });
+
+    btnPause.addEventListener("click", () => queueAction("pause"));
+    btnResume.addEventListener("click", () => queueAction("resume"));
+    btnStopAfter.addEventListener("click", () => queueAction("stop_after_current"));
+    btnKillCurrent.addEventListener("click", () => queueAction("kill_current"));
+    btnClearCompleted.addEventListener("click", () => queueAction("clear_completed"));
+
+    ["dragenter","dragover"].forEach(evt => {
+      dropzone.addEventListener(evt, (e) => {
+        e.preventDefault();
+        dropzone.classList.add("drag");
+      });
+    });
+    ["dragleave","drop"].forEach(evt => {
+      dropzone.addEventListener(evt, (e) => {
+        e.preventDefault();
+        dropzone.classList.remove("drag");
+      });
+    });
+    dropzone.addEventListener("drop", (e) => {
+      const files = e.dataTransfer?.files;
+      if(!files?.length) return;
+      fileInput.files = files;
+      statusEl.textContent = `${files.length} file(s) loaded. Click "Add Files To Queue".`;
+      statusEl.className = "status";
+    });
+
+    copyJsonBtn.addEventListener("click", async () => {
+      if (!latest) return;
+      try {
+        await navigator.clipboard.writeText(JSON.stringify(latest, null, 2));
+        statusEl.textContent = "Latest JSON copied to clipboard.";
+        statusEl.className = "status ok";
+      } catch {
+        statusEl.textContent = "Copy failed. Select text manually from output.";
+        statusEl.className = "status warn";
+      }
+    });
+
+    setInterval(refreshQueue, 1500);
+    refreshQueue();
+  </script>
+</body>
+</html>

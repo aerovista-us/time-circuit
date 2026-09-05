@@ -1,0 +1,15 @@
+services:
+  audio-analyzer-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile.audio-analyzer-ui
+    container_name: aerovista-echoverse-audio-analyzer
+    ports:
+      - "8765:8765"
+    environment:
+      AUDIO_UI_HOST: "0.0.0.0"
+      AUDIO_UI_PORT: "8765"
+      AUDIO_UI_DEBUG: "false"
+    volumes:
+      - ./docs:/app/docs
+    restart: unless-stopped

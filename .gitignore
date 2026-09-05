@@ -1,0 +1,9 @@
+.cursor/
+__pycache__/
+*.pyc
+.venv-audio/
+*.TMP
+*~*
+.DS_Store
+Thumbs.db
+newsound.mp3
