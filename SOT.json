@@ -27,27 +27,29 @@
       "frontend": ["HTML5", "CSS", "vanilla JavaScript", "HTMLAudioElement"],
       "backend": [],
       "database": [],
-      "infra": ["static hosting"],
+      "infra": ["static hosting", "GitHub Pages"],
       "analytics": [],
       "ai": []
     },
     "runtime": {
       "local_ports": [],
-      "service_urls": [],
-      "health_endpoint": "",
+      "service_urls": ["https://time-circuit.aerovista.us"],
+      "health_endpoint": "/",
       "entry_command": "serve repository root as static files",
       "build_command": "none",
       "start_command": "static hosting"
     },
     "deployment": {
-      "primary_host": "",
-      "deploy_path": "",
-      "public_url": "",
+      "primary_host": "GitHub Pages",
+      "deploy_path": "./",
+      "public_url": "https://time-circuit.aerovista.us",
       "internal_url": "",
+      "custom_domain": "time-circuit.aerovista.us",
+      "https_enforced": true,
       "containerized": false,
       "compose_file": "",
-      "reverse_proxy": "",
-      "networking_notes": "Do not claim a public deployment until a concrete target is recorded."
+      "reverse_proxy": "GitHub Pages edge",
+      "networking_notes": "Custom domain is declared by the repository-root CNAME and GitHub Pages Enforce HTTPS is enabled. Certificate or DNS propagation can temporarily affect edge reachability without changing the canonical production origin."
     },
     "data_model": {
       "core_db_dependency": false,
@@ -114,7 +116,7 @@
     "feeds": [],
     "consumes": ["Catalog Console time-circuit destination manifest", "NXCore Commerce canonical checkout handoff"],
     "shares_with": ["EchoVerse"],
-    "related_domains": [],
+    "related_domains": ["time-circuit.aerovista.us"],
     "tailscale_hosts": [],
     "cloudflare_tunnels": []
   },
@@ -130,7 +132,7 @@
     "owner_person": "glyph",
     "commercial_status": "market-facing",
     "scorecard": {"security": 3, "reliability": 2, "data_safety": 2, "documentation": 3, "repeatability": 2, "owner_clarity": 3},
-    "decision_notes": "Time Circuit is an EchoStory-class media-rich experience under EchoVerse. Security review 2026-08-04 scanned the current tree and full git history for hardcoded secrets and unsafe code patterns and found no issue; live-deployment status was also checked through GitHub at that time. Portfolio lane was corrected from promote to keep after that review. 2026-09-05: Future's Past is the only merchandise collection allowed on Time Circuit; the browser now consumes a destination-scoped canonical manifest rather than the broad Apparel catalog, while TC-02 and TC-03 remain visibly pending until their real masters are added."
+    "decision_notes": "Time Circuit is an EchoStory-class media-rich experience under EchoVerse. Security review 2026-08-04 scanned the current tree and full git history for hardcoded secrets and unsafe code patterns and found no issue; live-deployment status was also checked through GitHub at that time. Portfolio lane was corrected from promote to keep after that review. 2026-09-05: Future's Past is the only merchandise collection allowed on Time Circuit; the browser consumes a destination-scoped canonical manifest rather than the broad Apparel catalog, while TC-02 and TC-03 remain visibly pending until their real masters are added. The production custom domain is time-circuit.aerovista.us and GitHub Pages Enforce HTTPS is enabled."
   },
   "ops": {
     "service_name": "time-circuit-static",
@@ -161,6 +163,7 @@
     "mini.shop: time_circuit-main",
     "copied_from: \\\\100.115.9.61\\Collab\\SOT\\aerovista_sot_root_pack",
     "copied_on: 2026-03-20",
+    "public_url: https://time-circuit.aerovista.us",
     "Future's Past hoodies only.",
     "Do not add Square/provider IDs to browser-facing store.json.",
     "NXCore Commerce remains transaction authority."
