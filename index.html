@@ -2,115 +2,177 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#070b12">
-  <title>The Time Circuit — Future's Past Audio Archive</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#05070b">
+  <meta name="description" content="The Time Circuit — Future's Past audio archive and hoodie capsule from EchoVerse Audio and AeroVista.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://time-circuit.aerovista.us/">
+  <meta property="og:title" content="The Time Circuit — EchoVerse Audio">
+  <meta property="og:description" content="88 BPM transmissions from 1985 to 3026, with the Future's Past hoodie capsule.">
+  <title>The Time Circuit — EchoVerse Audio | An AeroVista Production</title>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg">
-  <style>
-    :root{--bg:#05070b;--panel:#0a1019;--panel2:#0d1623;--line:rgba(126,209,255,.2);--text:#edf6ff;--muted:#8ea8bd;--cyan:#5ac8ff;--orange:#ff9958;--pink:#ff5c98;--green:#74e6ad;--radius:20px}
-    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:radial-gradient(1000px 700px at 14% -10%,rgba(42,165,255,.18),transparent 58%),radial-gradient(900px 700px at 90% 10%,rgba(255,126,57,.13),transparent 60%),linear-gradient(180deg,#030508,#07101a 52%,#04070c);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-    body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,255,255,.025) 4px)}
-    a{color:inherit}.wrap{width:min(1180px,calc(100% - 28px));margin:auto;padding:18px 0 52px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 2px 18px}.brand{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:#bce6ff}.nav{display:flex;gap:7px;flex-wrap:wrap}.nav a{text-decoration:none;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:7px 10px;background:rgba(255,255,255,.025)}
-    .panel{position:relative;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(180deg,rgba(13,26,43,.88),rgba(6,13,23,.92));box-shadow:0 24px 70px rgba(0,0,0,.3);overflow:hidden}.panel:before{content:"";position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--orange),transparent);opacity:.6}
-    .intro{padding:30px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(260px,.8fr);gap:30px;align-items:end}.eyebrow,.kicker{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#9edaff}.intro h1{font-size:clamp(42px,8vw,90px);line-height:.87;letter-spacing:-.055em;margin:8px 0 18px;text-transform:uppercase}.intro h1 span{display:block;color:transparent;-webkit-text-stroke:1px rgba(236,246,255,.64)}.intro p{max-width:650px;margin:0;color:#a8bdcc;line-height:1.7}.circuit-readout{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.readout{border:1px solid var(--line);background:#050b13;border-radius:12px;padding:12px}.readout b{display:block;font-size:22px;color:#fff3e8}.readout span{display:block;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:4px}
-    .section{margin-top:14px;padding:20px}.section-head{display:flex;justify-content:space-between;gap:16px;align-items:end;margin-bottom:15px}.section-head h2{margin:5px 0 0;font-size:clamp(24px,4vw,38px);letter-spacing:-.04em}.section-head p{margin:0;color:var(--muted);max-width:570px;line-height:1.55;font-size:13px}.status{font:10px ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.08em;color:var(--green);text-transform:uppercase}
-    .player-grid{display:grid;grid-template-columns:340px minmax(0,1fr);gap:16px}.art{background:#050910;border:1px solid var(--line);border-radius:16px;padding:8px}.art img{width:100%;aspect-ratio:1/1;display:block;object-fit:cover;border-radius:12px;background:#09111c}.player{display:flex;flex-direction:column;min-width:0}.player h3{font-size:clamp(26px,5vw,54px);line-height:.95;letter-spacing:-.045em;margin:8px 0}.player .desc{color:#a7bdce;line-height:1.6;max-width:760px}.chips{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}.chip{border:1px solid var(--line);border-radius:999px;padding:6px 9px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#c5dfef;background:rgba(90,200,255,.06)}.controls{margin-top:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}.controls button,.track button,.merch-action{border:1px solid rgba(126,209,255,.28);background:rgba(70,177,236,.1);color:var(--text);border-radius:11px;padding:10px 13px;font-weight:750;cursor:pointer;text-decoration:none}.controls button:hover,.track button:hover,.merch-action:not(:disabled):hover{border-color:rgba(255,153,88,.72);background:rgba(255,153,88,.12)}button:disabled{cursor:not-allowed;opacity:.44}.seek{display:flex;gap:8px;align-items:center;flex:1;min-width:240px;color:var(--muted);font-size:11px}.seek input{width:100%;accent-color:var(--orange)}
-    .tracks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.track{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.025)}.track.active{border-color:rgba(255,153,88,.6);box-shadow:inset 0 0 28px rgba(255,126,57,.07)}.track.pending{opacity:.58}.track img{width:64px;height:64px;object-fit:cover;border-radius:10px;background:#09111c}.track h3{margin:0 0 4px;font-size:14px}.track p{margin:0;color:var(--muted);font-size:11px;line-height:1.4}.num{color:var(--orange);font:10px ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.12em}.archive-label{grid-column:1/-1;margin-top:5px;padding-top:12px;border-top:1px solid var(--line);font-size:10px;letter-spacing:.2em;color:#7892a6;text-transform:uppercase}
-    .merch-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}.merch-card{border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.025);overflow:hidden}.merch-image{aspect-ratio:1/1;background:radial-gradient(circle at 50% 35%,rgba(92,203,255,.1),transparent 62%),#070c14;display:grid;place-items:center}.merch-image img{width:100%;height:100%;object-fit:contain}.merch-copy{padding:13px}.merch-kicker{font-size:9px;letter-spacing:.13em;color:#8fbedb;text-transform:uppercase}.merch-copy h3{margin:5px 0 7px;font-size:17px}.merch-copy p{margin:0 0 12px;color:var(--muted);font-size:11px;line-height:1.5}.merch-action{display:inline-block;width:100%;text-align:center;font-size:11px}.merch-live{border-color:rgba(116,230,173,.38)}
-    .store-rule{margin-top:12px;padding:12px;border:1px dashed rgba(255,153,88,.34);border-radius:12px;color:#c7b7ab;background:rgba(255,153,88,.055);font-size:11px;line-height:1.6}.footer{margin-top:18px;text-align:center;color:#6f899d;font-size:10px;letter-spacing:.08em}.footer a{color:#8fccec}.pulse{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 16px var(--green);margin-right:6px}
-    @media(max-width:900px){.intro,.player-grid{grid-template-columns:1fr}.player-grid .art{max-width:520px}.tracks{grid-template-columns:1fr}.merch-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.intro{padding:22px}.section-head{align-items:start;flex-direction:column}}
-    @media(max-width:580px){.wrap{width:min(100% - 18px,1180px)}.topbar{align-items:flex-start;flex-direction:column}.merch-grid{grid-template-columns:1fr}.section{padding:14px}.intro{padding:18px}.track{grid-template-columns:54px minmax(0,1fr)}.track img{width:54px;height:54px}.track button{grid-column:1/-1;width:100%}.circuit-readout{grid-template-columns:1fr 1fr}}
-  </style>
+  <link rel="stylesheet" href="./time-circuit.css">
 </head>
 <body>
-  <main class="wrap">
-    <header class="topbar">
-      <div class="brand">AeroVista // EchoVerse // The Time Circuit</div>
-      <nav class="nav"><a href="#archive">Audio Archive</a><a href="#futures-past">Future's Past</a><a href="./docs/audio-analysis-toolkit.md">Analyzer</a></nav>
-    </header>
+  <div class="ambient" aria-hidden="true">
+    <div class="ambient-art" id="ambientArt"></div>
+    <div class="ambient-vignette"></div>
+  </div>
 
-    <section class="panel intro">
-      <div>
-        <div class="eyebrow">Audio Archive // 1985 ↔ 3026</div>
-        <h1>The Time<br><span>Circuit</span></h1>
-        <p>North Idaho SwampHop recovered from the wrong century. The numbered circuit runs at 88 BPM: 1985 artifacts, 3026 signal design, and just enough 8-bit debris to make the timeline suspicious.</p>
-      </div>
-      <div class="circuit-readout">
-        <div class="readout"><b>88</b><span>BPM // numbered archive</span></div>
-        <div class="readout"><b>1985</b><span>reference year</span></div>
-        <div class="readout"><b>3026</b><span>signal origin</span></div>
-        <div class="readout"><b id="archiveOnline">02/04</b><span>numbered masters online</span></div>
-      </div>
-    </section>
+  <header class="topbar">
+    <button class="brand brand-button" type="button" data-view-target="listen" aria-label="Open Time Circuit player">
+      <span class="apex" aria-hidden="true"></span>
+      <span class="brand-copy">
+        <strong>THE TIME CIRCUIT</strong>
+        <small>ECHOVERSE AUDIO / AEROVISTA</small>
+      </span>
+    </button>
+    <div class="topbar-actions">
+      <button class="icon-btn share-btn" id="shareButton" type="button" aria-label="Share Time Circuit">Share</button>
+      <button class="icon-btn bag-btn" id="bagButton" type="button" aria-label="Open store bag">
+        <span>Bag</span><b id="bagCount">0</b>
+      </button>
+    </div>
+  </header>
 
-    <section class="panel section" id="archive">
-      <div class="section-head">
-        <div><div class="kicker">Current transmission</div><h2>Audio Archive</h2></div>
-        <div class="status"><span class="pulse"></span><span id="playerStatus">Circuit armed</span></div>
-      </div>
-      <div class="player-grid">
-        <div class="art"><img id="cover" src="./images/marty.png" alt="Eighty-Eight Rebel artwork"></div>
-        <div class="player">
-          <div class="num" id="trackNumber">TC-01 // FUTURE'S PAST</div>
-          <h3 id="title">Eighty-Eight Rebel</h3>
-          <div class="desc" id="description">The first numbered Time Circuit transmission: 88 BPM with one foot in 1985 and the other somewhere past 3026.</div>
-          <div class="chips"><span class="chip" id="bpm">88 BPM</span><span class="chip">North Idaho SwampHop</span><span class="chip" id="lane">Numbered archive</span></div>
-          <audio id="audio" preload="metadata"></audio>
-          <div class="controls">
-            <button id="prev" type="button">Prev</button><button id="play" type="button">Play</button><button id="next" type="button">Next</button>
-            <div class="seek"><span id="current">0:00</span><input id="seek" type="range" min="0" max="1000" value="0" aria-label="Seek"><span id="duration">0:00</span></div>
+  <nav class="section-nav" aria-label="Time Circuit sections">
+    <button type="button" data-view="listen" class="active">Listen</button>
+    <button type="button" data-view="archive">Archive</button>
+    <button type="button" data-view="store">Store</button>
+  </nav>
+
+  <main>
+    <section class="view active" id="view-listen" data-view-panel="listen">
+      <div class="player-shell">
+        <section class="now-panel" aria-label="Now playing">
+          <div class="eyebrow"><span id="trackNumber">TC-01</span> / FUTURE'S PAST / <span id="trackBpm">88 BPM</span></div>
+          <div class="art-stage" id="artStage">
+            <img id="heroArt" src="./images/marty.png" alt="Eighty-Eight Rebel artwork" draggable="false">
+            <canvas id="visualizer" aria-hidden="true"></canvas>
+            <div class="art-sheen"></div>
+            <span class="signal-badge" id="signalBadge">1985 ↔ 3026</span>
           </div>
+
+          <div class="now-copy">
+            <div>
+              <p class="track-kicker" id="trackSubtitle">Future's Past // numbered archive</p>
+              <h1 id="trackTitle">Eighty-Eight Rebel</h1>
+              <p class="track-feel" id="trackDescription">The first numbered Time Circuit transmission: 88 BPM with one foot in 1985 and the other somewhere past 3026.</p>
+            </div>
+          </div>
+
+          <div class="transport-card" id="transportCard" data-playback-state="ready">
+            <audio id="audio" preload="metadata"></audio>
+            <div class="playback-status" role="status" aria-live="polite">
+              <span class="status-light" aria-hidden="true"></span>
+              <span id="playbackStatus">CIRCUIT ARMED</span>
+              <span class="playback-format">MASTER MP3</span>
+            </div>
+            <div class="time-row">
+              <span id="currentTime">0:00</span>
+              <input id="seek" type="range" min="0" max="1000" value="0" aria-label="Seek">
+              <span id="duration">0:00</span>
+            </div>
+            <div class="transport">
+              <button class="transport-small" id="shuffleButton" type="button" aria-label="Shuffle" aria-pressed="false">⇄</button>
+              <button class="transport-small" id="prevButton" type="button" aria-label="Previous track">‹</button>
+              <button class="play" id="playButton" type="button" aria-label="Play"><span id="playIcon">▶</span></button>
+              <button class="transport-small" id="nextButton" type="button" aria-label="Next track">›</button>
+              <button class="transport-small" id="repeatButton" type="button" aria-label="Repeat mode" data-mode="all">↻</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="queue-panel" aria-label="Future's Past numbered track list">
+          <div class="queue-head">
+            <div>
+              <p>FUTURE'S PAST / 88 BPM</p>
+              <h2>Numbered Circuit</h2>
+            </div>
+            <span id="numberedCount">02 / 04 ONLINE</span>
+          </div>
+          <div class="track-list" id="trackList"></div>
+          <button class="archive-jump" type="button" data-view-target="archive">Open recovered archive cuts ↗</button>
+          <p class="player-note">Missing numbered masters stay visible and fail closed. The player never substitutes an archive cut for TC-02 or TC-03.</p>
+        </section>
+      </div>
+    </section>
+
+    <section class="view" id="view-archive" data-view-panel="archive">
+      <div class="archive-hero">
+        <p class="eyebrow">RECOVERED SIGNAL / WRONG CENTURY</p>
+        <h1>Archive Cuts.</h1>
+        <p>Older Time Circuit experiments, source renders, and side-channel transmissions live here without changing the TC-01 through TC-04 numbered sequence.</p>
+        <a class="analyzer-link" href="./docs/audio-analysis-toolkit.md">Open analyzer notes ↗</a>
+      </div>
+      <div class="archive-grid" id="archiveGrid"></div>
+      <section class="circuit-ledger">
+        <div><strong>88</strong><span>BPM / numbered sequence</span></div>
+        <div><strong>1985</strong><span>reference year</span></div>
+        <div><strong>3026</strong><span>signal origin</span></div>
+        <div><strong>02/04</strong><span>numbered masters online</span></div>
+      </section>
+    </section>
+
+    <section class="view" id="view-store" data-view-panel="store">
+      <div class="store-hero">
+        <div>
+          <p class="eyebrow">THE TIME CIRCUIT / FUTURE'S PAST</p>
+          <h1>Wear the timeline.</h1>
+          <p>Six approved Future's Past designs. Time Circuit accepts only canonical hoodie records assigned to this destination; no generic Apparel fallback and no provider IDs in the browser.</p>
         </div>
+        <span class="capsule-status" id="futurePastStoreStatus">Loading Future's Past capsule…</span>
       </div>
 
-      <div class="tracks" id="trackList" style="margin-top:16px"></div>
-    </section>
-
-    <section class="panel section" id="futures-past">
-      <div class="section-head">
-        <div><div class="kicker">Wearable artifacts // 1985 ↔ 3026</div><h2>Future's Past Hoodies</h2></div>
-        <p id="futurePastStoreStatus">Loading Future's Past capsule…</p>
+      <div class="store-catalog">
+        <section class="store-collection">
+          <div class="collection-head">
+            <div>
+              <p class="eyebrow">FUTURE'S PAST HOODIES</p>
+              <h2>Choose your timeline.</h2>
+              <p>The Northline store pattern, rebuilt for the Time Circuit capsule: large art, direct variant selection, Add to Bag, and a slide-over cart.</p>
+            </div>
+            <span id="futurePastCount">06 DESIGNS</span>
+          </div>
+          <div id="futurePastStore" class="store-grid store-grid--hoodies"></div>
+        </section>
       </div>
-      <div id="futurePastStore" class="merch-grid"></div>
-      <div class="store-rule"><strong>Catalog-safe by design.</strong> This shelf never substitutes generic AeroVista Apparel. Until matching Future's Past hoodie records exist in the commerce catalog, the six approved design previews remain visible but purchase controls stay locked. Prices, sizes, SKUs, and Square variation IDs are never invented here.</div>
-    </section>
 
-    <div class="footer">THE TIME CIRCUIT // FUTURE'S PAST // AEROVISTA / ECHOVERSE · <a href="./docs/FUTURES_PAST_STORE.md">store contract</a></div>
+      <div class="store-rule"><strong>Catalog-safe by design.</strong> Preview cards remain visible until matching Future's Past hoodie records arrive from Catalog Control. Canonical <code>avp_*</code> and <code>avv_*</code> identity may enter the browser; Square/provider identity may not. Bagging can happen locally, but checkout stays gated until the NXCore Commerce handoff is deployed and verified.</div>
+    </section>
   </main>
 
-  <script>
-    const tracks = [
-      { number:'TC-01', title:'Eighty-Eight Rebel', subtitle:"Future's Past // numbered archive", src:'./01 — EIGHTY-EIGHT REBEL.mp3', art:'./images/marty.png', bpm:'88 BPM', lane:'Numbered archive', playable:true, description:'The first numbered Time Circuit transmission: 88 BPM with one foot in 1985 and the other somewhere past 3026.' },
-      { number:'TC-02', title:'Full Cab Bruiser', subtitle:'Future\'s Past // master slot', art:'./images/biff.png', bpm:'88 BPM', lane:'Master pending', playable:false, description:'The bruiser slot is wired and waiting for its numbered audio master.' },
-      { number:'TC-03', title:'Flux Professor', subtitle:'Future\'s Past // master slot', art:'./images/flux.png', bpm:'88 BPM', lane:'Master pending', playable:false, description:'The Professor slot is wired and waiting for its numbered audio master.' },
-      { number:'TC-04', title:'Paradox Queen', subtitle:"Future's Past // numbered archive", src:'./04 — PARADOX QUEEN.mp3', art:'./images/chick.png', bpm:'88 BPM', lane:'Numbered archive', playable:true, description:'Same girl. Different timeline. The fourth numbered transmission closes the current Future\'s Past circuit at 88 BPM.' },
-      { separator:true, title:'Archive cuts' },
-      { number:'ARC-01', title:'Kids Will Love It', subtitle:'Original Time-Circuit drop', src:'./kids-will-love-it.mp3', art:'./kids.will.love.it.png', bpm:'90.25 halftime', lane:'Archive cut', playable:true, description:'The original cinematic quote-slam and halftime SwampHop drop that opened this page.' },
-      { number:'ARC-02', title:'Flux Swamp (1955)', subtitle:'Analog swamp intro', src:'./FLUX_SWAMP_(1955).mp3', art:'./images/doc.png', bpm:'~90 groove', lane:'Archive cut', playable:true, description:'Tape hiss, swamp night, clean guitar and the older time-travel experiment.' },
-      { number:'ARC-03', title:'Momento × LowFreq × New Sound', subtitle:'SwampTime Flux mashup', src:'./momentoxLowFreqxNEW_SOUND.mp3', art:'./images/www.png', bpm:'variable', lane:'Archive cut', playable:true, description:'Multi-era mashup: nostalgia bounce, swamp-western break and a future-facing final drop.' }
-    ];
+  <footer>
+    <div>
+      <strong>EchoVerse Audio</strong>
+      <span>1985 artifacts / 3026 signal design.</span>
+    </div>
+    <div class="foot-production">
+      <span class="apex tiny" aria-hidden="true"></span>
+      <span>An AeroVista Production</span>
+    </div>
+  </footer>
 
-    const playableIndexes = tracks.map((t,i)=>t.playable?i:null).filter(i=>i!==null);
-    let index = playableIndexes[0];
-    const audio=document.getElementById('audio'),cover=document.getElementById('cover'),title=document.getElementById('title'),description=document.getElementById('description'),trackNumber=document.getElementById('trackNumber'),bpm=document.getElementById('bpm'),lane=document.getElementById('lane'),play=document.getElementById('play'),seek=document.getElementById('seek'),current=document.getElementById('current'),duration=document.getElementById('duration'),status=document.getElementById('playerStatus'),list=document.getElementById('trackList');
-    const fmt=s=>{if(!Number.isFinite(s))return'0:00';s=Math.floor(s);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+  <aside class="drawer" id="cartDrawer" aria-hidden="true">
+    <div class="drawer-scrim" id="cartScrim"></div>
+    <div class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="bagTitle">
+      <div class="drawer-head">
+        <div><p class="eyebrow">TIME CIRCUIT STORE</p><h2 id="bagTitle">Your bag</h2></div>
+        <button class="icon-btn" id="cartClose" type="button" aria-label="Close bag">×</button>
+      </div>
+      <div id="cartItems" class="cart-items"></div>
+      <div class="cart-empty" id="cartEmpty">Nothing here yet.</div>
+      <div class="cart-summary" id="cartSummary" hidden>
+        <div><span>Estimated subtotal</span><strong id="cartSubtotal">—</strong></div>
+        <button class="checkout" id="checkoutButton" type="button" disabled>Checkout handoff pending</button>
+        <p id="checkoutStatus">NXCore Commerce remains the price and checkout authority.</p>
+      </div>
+    </div>
+  </aside>
 
-    function renderList(){
-      list.innerHTML='';
-      tracks.forEach((track,i)=>{
-        if(track.separator){const div=document.createElement('div');div.className='archive-label';div.textContent=track.title;list.appendChild(div);return}
-        const card=document.createElement('article');card.className='track'+(i===index?' active':'')+(track.playable?'':' pending');
-        card.innerHTML=`<img src="${track.art}" alt="${track.title} artwork"><div><div class="num">${track.number} // ${track.bpm}</div><h3>${track.title}</h3><p>${track.subtitle}${track.playable?'':' · audio master not in repo yet'}</p></div><button type="button" ${track.playable?'':'disabled'}>${track.playable?(i===index&&!audio.paused?'Pause':'Play'):'Pending'}</button>`;
-        const button=card.querySelector('button');if(track.playable)button.addEventListener('click',()=>{if(i===index&&!audio.paused)audio.pause();else load(i,true)});list.appendChild(card);
-      });
-    }
-    function load(i,autoplay=false){const track=tracks[i];if(!track?.playable)return;index=i;audio.pause();audio.src=track.src;audio.load();cover.src=track.art;cover.alt=track.title+' artwork';title.textContent=track.title;description.textContent=track.description;trackNumber.textContent=track.number+' // FUTURE\'S PAST';bpm.textContent=track.bpm;lane.textContent=track.lane;seek.value=0;current.textContent='0:00';duration.textContent='0:00';status.textContent='Circuit armed';renderList();if(autoplay)audio.play().catch(()=>status.textContent='Tap Play to start audio')}
-    function move(step){const p=playableIndexes.indexOf(index);load(playableIndexes[(p+step+playableIndexes.length)%playableIndexes.length],!audio.paused)}
-    play.addEventListener('click',()=>audio.paused?audio.play():audio.pause());document.getElementById('prev').addEventListener('click',()=>move(-1));document.getElementById('next').addEventListener('click',()=>move(1));
-    audio.addEventListener('play',()=>{play.textContent='Pause';status.textContent='Flux engaged';renderList()});audio.addEventListener('pause',()=>{play.textContent='Play';if(!audio.ended)status.textContent='Circuit armed';renderList()});audio.addEventListener('ended',()=>move(1));
-    audio.addEventListener('loadedmetadata',()=>duration.textContent=fmt(audio.duration));audio.addEventListener('timeupdate',()=>{current.textContent=fmt(audio.currentTime);if(audio.duration)seek.value=(audio.currentTime/audio.duration)*1000});seek.addEventListener('input',()=>{if(audio.duration)audio.currentTime=(seek.value/1000)*audio.duration});audio.addEventListener('error',()=>status.textContent='Audio source unavailable');
-    load(index,false);
-  </script>
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="./time-circuit.js"></script>
   <script src="./future-past-store.js"></script>
 </body>
 </html>
