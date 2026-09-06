@@ -50,13 +50,18 @@
     return [];
   }
 
+  function numericPrice(value){
+    if(value===null||value===undefined||String(value).trim()==='')return null;
+    const amount=Number(value);return Number.isFinite(amount)?amount:null;
+  }
+
   function money(value,currency=state.currency){
-    const amount=Number(value);if(!Number.isFinite(amount)) return null;
+    const amount=numericPrice(value);if(amount===null) return null;
     try{return new Intl.NumberFormat('en-US',{style:'currency',currency:currency||'USD'}).format(amount);}catch{return `$${amount.toFixed(2)}`;}
   }
 
   function productPrice(product){
-    const prices=[product.price,...(product.variants||[]).map(variant=>variant.price)].map(Number).filter(Number.isFinite);
+    const prices=[product.price,...(product.variants||[]).map(variant=>variant.price)].map(numericPrice).filter(value=>value!==null);
     if(!prices.length) return 'Verified at checkout';
     const min=Math.min(...prices),max=Math.max(...prices);const label=money(min);
     return min===max?label:`${label}+`;
@@ -97,7 +102,7 @@
         <div class="product-info">
           <div class="product-top"><div><p class="eyebrow">FUTURE'S PAST / CANONICAL</p><h2>${escapeHtml(productTitle(product))}</h2></div><p class="price">${escapeHtml(productPrice(product))}</p></div>
           <p>${escapeHtml(productDescription(product))}</p>
-          <label class="variant-picker"><span>Variant</span><select data-variant-select aria-label="Choose ${escapeHtml(productTitle(product))} variant">${variants.map((variant,variantIndex)=>`<option value="${variantIndex}">${escapeHtml(variantLabel(variant))}${Number.isFinite(Number(variant.price))?` — ${escapeHtml(money(variant.price)||'')}`:''}</option>`).join('')}</select></label>
+          <label class="variant-picker"><span>Variant</span><select data-variant-select aria-label="Choose ${escapeHtml(productTitle(product))} variant">${variants.map((variant,variantIndex)=>`<option value="${variantIndex}">${escapeHtml(variantLabel(variant))}${numericPrice(variant.price)!==null?` — ${escapeHtml(money(variant.price)||'')}`:''}</option>`).join('')}</select></label>
           <button class="product-action" type="button" data-add-to-bag>Add to Bag</button>
         </div>
       </article>`;
@@ -130,7 +135,10 @@
     if(!productIdPattern.test(productId)||!variantIdPattern.test(variantId))return;
     const existing=state.cart.find(line=>line.productId===productId&&line.variantId===variantId);
     if(existing)existing.quantity+=1;
-    else state.cart.push({productId,variantId,title:productTitle(product),variantLabel:variantLabel(variant),image:productImage(product),price:Number.isFinite(Number(variant.price))?Number(variant.price):(Number.isFinite(Number(product.price))?Number(product.price):null),quantity:1});
+    else {
+      const variantPrice=numericPrice(variant.price),fallbackPrice=numericPrice(product.price);
+      state.cart.push({productId,variantId,title:productTitle(product),variantLabel:variantLabel(variant),image:productImage(product),price:variantPrice??fallbackPrice,quantity:1});
+    }
     saveCart();openCart();
   }
 
@@ -147,8 +155,8 @@
     items.querySelectorAll('[data-remove-cart]').forEach(button=>button.addEventListener('click',()=>removeCartLine(Number(button.dataset.removeCart))));
     const hasItems=state.cart.length>0;empty.hidden=hasItems;summary.hidden=!hasItems;
     if(!hasItems){subtotal.textContent='—';return;}
-    const allPriced=state.cart.every(line=>Number.isFinite(Number(line.price)));
-    subtotal.textContent=allPriced?money(state.cart.reduce((sum,line)=>sum+Number(line.price)*Number(line.quantity||1),0)):'Verified at checkout';
+    const allPriced=state.cart.every(line=>numericPrice(line.price)!==null);
+    subtotal.textContent=allPriced?money(state.cart.reduce((sum,line)=>sum+numericPrice(line.price)*Number(line.quantity||1),0)):'Verified at checkout';
   }
 
   function openCart(){const drawer=$('cartDrawer');if(drawer){drawer.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}}
