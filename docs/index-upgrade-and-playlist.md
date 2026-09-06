@@ -1,86 +1,94 @@
-# Index Upgrade and Playlist Prep
+# Time Circuit Release / Playlist / Store
 
-This document tracks the `index.html` upgrade for the Time Circuit release page.
+This document tracks the public `index.html` experience for Time Circuit.
 
-## What changed
+## Current experience
 
-- Added cover artwork integration using `./kids.will.love.it.png`.
-- Updated the visual theme to match the artwork direction:
-  - Electric blue accents
-  - Ember/orange highlights
-  - Dark cinematic background gradients
-- Reworked layout into a cleaner release-page structure:
-  - Hero area with artwork and track identity
-  - Player controls panel
-  - Dedicated playlist panel
-  - Visualizer panel
-- Preserved and restyled the time-circuit visualizer.
-- Kept robust audio fallback behavior when WebAudio analyzer setup is unavailable.
+The page is now one integrated EchoVerse release surface with:
 
-## Audio pathing
+- seven repository audio cuts wired into one player;
+- per-track artwork using the newly uploaded Time Circuit image set;
+- a six-image Timeline Artifacts gallery;
+- 88 BPM project metadata across the release;
+- Web Audio visualization with native-audio fallback;
+- auto-next, previous/next, seek, and sample playback;
+- a fail-closed Future's Past hoodie store surface.
 
-Track sources use robust relative paths from the project root:
+## Wired tracks
 
-- `./kids-will-love-it.mp3` — original Time-Circuit drop (~4:32)
-- `./FLUX_SWAMP_(1955).mp3` — Flux Swamp (1955) intro cut (~1:11)
-- `./momentoxLowFreqxNEW_SOUND.mp3` — Momento × LowFreq × New Sound mashup (~4:59)
-- `./kids.will.love.it.png` — shared cover art (all playlist entries)
-- `./kids.gonnaLoveit.mp3` — short sample clip for the quote button (not in playlist)
+| # | Title | Cut | File | Artwork |
+|---|---|---|---|---|
+| 01 | Eighty-Eight Rebel | Master | `01 — EIGHTY-EIGHT REBEL.mp3` | `images/marty.png` |
+| 02 | Eighty-Eight Rebel | Alternate Cut A | `01 — EIGHTY-EIGHT REBEL (1).mp3` | `images/doc.png` |
+| 03 | Eighty-Eight Rebel | Alternate Cut B | `01 — EIGHTY-EIGHT REBEL (2).mp3` | `images/biff.png` |
+| 04 | Paradox Queen | Track 04 | `04 — PARADOX QUEEN.mp3` | `images/chick.png` |
+| 05 | Kids Will Love It | Time-Circuit Drop | `kids-will-love-it.mp3` | `kids.will.love.it.png` |
+| 06 | Flux Swamp | 1955 | `FLUX_SWAMP_(1955).mp3` | `images/flux.png` |
+| 07 | Momento × LowFreq × New Sound | Flux Mashup | `momentoxLowFreqxNEW_SOUND.mp3` | `images/www.png` |
 
-**Not wired:** `newsound.mp3` is a 2-byte placeholder/empty file and is intentionally omitted.
+`kids.gonnaLoveit.mp3` remains a short sample-trigger asset and is not counted as a playlist track.
 
-## Multi-track playlist
+## Artwork
 
-The page uses a `playlist` array in the script block and supports:
+The Timeline Artifacts gallery uses:
 
-- Track list rendering
-- Active track highlight
-- Prev/Next controls
-- Click-to-load track behavior
-- Auto-advance on track end
-- Shared metadata binding (title, description, BPM, key, art)
+- `images/marty.png`
+- `images/doc.png`
+- `images/biff.png`
+- `images/chick.png`
+- `images/flux.png`
+- `images/www.png`
 
-### Current playlist (2026-09-05)
+Selecting an artifact moves the player to its paired timeline cut.
 
-| # | Title | File | Notes |
-|---|-------|------|-------|
-| 1 | Kids Will Love It (Time-Circuit Drop) | `kids-will-love-it.mp3` | Analyzed BPM/key: 90.25 halftime / G-centered |
-| 2 | Flux Swamp (1955) | `FLUX_SWAMP_(1955).mp3` | Suno tag title; provisional BPM/key |
-| 3 | Momento × LowFreq × New Sound | `momentoxLowFreqxNEW_SOUND.mp3` | Multi-act mashup; provisional BPM/key |
+## Future's Past store boundary
 
-### Add more tracks
+`store.json` is the Time Circuit destination manifest.
 
-Add objects to the `playlist` array using this shape:
+The browser accepts a product only when both conditions are true:
 
-```js
+1. the product identity/collection contains **Future's Past** (straight or curly apostrophe is normalized);
+2. its category/type/name identifies it as a **hoodie**.
+
+Everything else is rejected before rendering.
+
+The manifest uses canonical AeroVista product/variant IDs only (`avp_*`, `avv_*`). Square provider IDs must not be added to this browser-facing file.
+
+Checkout is fail-closed. A product button is enabled only when:
+
+- the product has a canonical `avp_*` ID;
+- the selected variant has a canonical `avv_*` ID;
+- `store.json.checkout.endpoint` is explicitly configured.
+
+The checkout body is canonical identity only:
+
+```json
 {
-  title: "Track Name",
-  subtitle: "Genre/Style",
-  src: "./track-file.mp3",
-  art: "./cover-image.png",
-  bpm: "90 halftime",
-  key: "G minor",
-  description: "Short release description."
+  "destinationId": "time-circuit",
+  "items": [
+    {
+      "productId": "avp_...",
+      "variantId": "avv_...",
+      "quantity": 1
+    }
+  ]
 }
 ```
 
-After saving, the playlist UI and transport controls update automatically.
+NXCore Commerce remains responsible for resolving provider/payment data server-side.
 
-## Recommended next upgrades
+## Current catalog state
 
-- Run `tools/audio_analysis_suite.py` on Flux Swamp + Momento and replace provisional BPM/key.
-- Add per-track artwork once dedicated covers exist (currently all share `kids.will.love.it.png`).
-- Add per-track duration labels after metadata loads.
-- Add shuffle/repeat modes.
-- Remove or replace empty `newsound.mp3`.
-- Soften page chrome that still hard-codes the Kids Will Love It quote as the only sample line.
+The current Time Circuit manifest intentionally contains no substitute products. Until the exact Future's Past hoodies are accepted into canonical catalog authority and distributed to `time-circuit`, the store displays a capsule-pending state.
 
-## Analyzer integration
+Do not work around this by inserting another hoodie collection or by placing Square variation IDs in `store.json`.
 
-An advanced remix-prep analyzer is available in `tools/audio_analysis_suite.py`.
+## Next commerce action
 
-Use it to generate per-track production metadata (tempo, key estimate, low-end profile, groove stats, stereo image, and section boundaries), then copy key fields into playlist metadata and remix prompts.
+After the Future's Past hoodie products exist in canonical authority:
 
-See `docs/audio-analysis-toolkit.md` for install and run instructions.
-
-Browser-first workflow is also available via `tools/audio_analysis_web.py`. See `docs/audio-analysis-web-ui.md`.
+1. add `time-circuit` as a Catalog Control destination if it is not already registered;
+2. assign only the Future's Past hoodie canonical product IDs;
+3. generate the destination manifest;
+4. publish/copy that reviewed manifest to this repo's `store.json` through the deliberate publication path;
+5. configure the canonical Commerce checkout endpoint only after its contract is live and verified.
