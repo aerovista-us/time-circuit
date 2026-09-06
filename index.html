@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#05070b">
+  <meta name="theme-color" content="#050910">
   <meta name="description" content="The Time Circuit — Future's Past audio archive and hoodie capsule from EchoVerse Audio and AeroVista.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://time-circuit.aerovista.us/">
@@ -14,24 +14,14 @@
   <link rel="stylesheet" href="./time-circuit.css">
 </head>
 <body>
-  <div class="ambient" aria-hidden="true">
-    <div class="ambient-art" id="ambientArt"></div>
-    <div class="ambient-vignette"></div>
-  </div>
-
   <header class="topbar">
     <button class="brand brand-button" type="button" data-view-target="listen" aria-label="Open Time Circuit player">
-      <span class="apex" aria-hidden="true"></span>
-      <span class="brand-copy">
-        <strong>THE TIME CIRCUIT</strong>
-        <small>ECHOVERSE AUDIO / AEROVISTA</small>
-      </span>
+      <span class="brand-mark" aria-hidden="true">88</span>
+      <span class="brand-copy"><strong>THE TIME CIRCUIT</strong><small>ECHOVERSE AUDIO / AEROVISTA</small></span>
     </button>
     <div class="topbar-actions">
-      <button class="icon-btn share-btn" id="shareButton" type="button" aria-label="Share Time Circuit">Share</button>
-      <button class="icon-btn bag-btn" id="bagButton" type="button" aria-label="Open store bag">
-        <span>Bag</span><b id="bagCount">0</b>
-      </button>
+      <button class="icon-btn" id="shareButton" type="button">Share</button>
+      <button class="icon-btn bag-btn" id="bagButton" type="button"><span>Bag</span><b id="bagCount">0</b></button>
     </div>
   </header>
 
@@ -43,135 +33,120 @@
 
   <main>
     <section class="view active" id="view-listen" data-view-panel="listen">
-      <div class="player-shell">
-        <section class="now-panel" aria-label="Now playing">
-          <div class="eyebrow"><span id="trackNumber">TC-01</span> / FUTURE'S PAST / <span id="trackBpm">88 BPM</span></div>
-          <div class="art-stage" id="artStage">
-            <img id="heroArt" src="./images/marty.png" alt="Eighty-Eight Rebel artwork" draggable="false">
-            <canvas id="visualizer" aria-hidden="true"></canvas>
-            <div class="art-sheen"></div>
-            <span class="signal-badge" id="signalBadge">1985 ↔ 3026</span>
-          </div>
-
-          <div class="now-copy">
+      <div class="listen-wrap">
+        <section class="tc-card listen-title-card">
+          <div class="title-row">
             <div>
-              <p class="track-kicker" id="trackSubtitle">Future's Past // numbered archive</p>
-              <h1 id="trackTitle">Eighty-Eight Rebel</h1>
-              <p class="track-feel" id="trackDescription">The first numbered Time Circuit transmission: 88 BPM with one foot in 1985 and the other somewhere past 3026.</p>
+              <p class="branding">AeroVista | EchoVerse Audio Presents:</p>
+              <h1 id="trackTitle">EIGHTY-EIGHT REBEL</h1>
+              <p class="subtitle" id="trackDescription">The first numbered Time Circuit transmission: 88 BPM with one foot in 1985 and the other somewhere past 3026.</p>
+            </div>
+            <div class="badge"><span id="badgeBpm">88 BPM</span> • <span id="badgeLane">TC-01</span></div>
+          </div>
+          <div class="pillrow">
+            <div class="pill">Time-circuit themed visualizer</div>
+            <div class="pill">Playlist-ready player</div>
+            <div class="pill">Cover-art driven signal</div>
+            <div class="pill">Auto-next on track end</div>
+          </div>
+          <div class="quote signal-note">
+            <em>Signal note:</em> 1985 artifacts. 3026 signal design. All numbered masters run at 88 BPM.
+          </div>
+        </section>
+
+        <section class="listen-hero">
+          <div class="cover">
+            <img id="coverImg" src="./images/marty.png" alt="Eighty-Eight Rebel artwork">
+          </div>
+          <div class="tc-card visualizer-card">
+            <h2>VISUALIZER</h2>
+            <div class="viz" id="viz">
+              <div class="time-circuits">
+                TIME CIRCUITS<br>
+                DEST: <b id="dest">88</b> MPH<br>
+                FLUX: <b id="flux">ARMED</b>
+              </div>
+              <svg viewBox="0 0 1000 420" preserveAspectRatio="none" aria-label="Audio visualizer">
+                <defs>
+                  <linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="rgba(55,180,255,.55)"></stop><stop offset="1" stop-color="rgba(255,141,58,.46)"></stop></linearGradient>
+                  <filter id="softGlow"><feGaussianBlur stdDeviation="2.5" result="b"></feGaussianBlur><feMerge><feMergeNode in="b"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter>
+                </defs>
+                <rect x="0" y="0" width="1000" height="420" fill="rgba(0,0,0,.28)"></rect>
+                <g opacity=".30">
+                  <path d="M0 340 H1000" stroke="rgba(126,209,255,.25)"></path><path d="M0 260 H1000" stroke="rgba(126,209,255,.18)"></path><path d="M0 180 H1000" stroke="rgba(126,209,255,.15)"></path><path d="M0 100 H1000" stroke="rgba(255,177,112,.16)"></path>
+                  <path d="M120 0 V420" stroke="rgba(126,209,255,.12)"></path><path d="M260 0 V420" stroke="rgba(126,209,255,.10)"></path><path d="M420 0 V420" stroke="rgba(126,209,255,.10)"></path><path d="M600 0 V420" stroke="rgba(126,209,255,.10)"></path><path d="M760 0 V420" stroke="rgba(126,209,255,.10)"></path><path d="M900 0 V420" stroke="rgba(255,177,112,.12)"></path>
+                </g>
+                <g transform="translate(500 180)" filter="url(#softGlow)">
+                  <path id="tri" d="M0 -120 L105 85 L-105 85 Z" fill="none" stroke="url(#g1)" stroke-width="4" opacity=".9"></path>
+                  <circle id="core" cx="0" cy="-20" r="12" fill="rgba(255,185,120,.78)" opacity=".8"></circle>
+                  <path id="bolt" d="M0 -110 L20 -60 L-5 -60 L25 10 L-10 10 L10 85" fill="none" stroke="rgba(98,192,255,.84)" stroke-width="3" opacity=".7"></path>
+                </g>
+                <path id="wave" d="M0 300 C120 300 200 300 320 300 S520 300 640 300 S840 300 1000 300" fill="none" stroke="rgba(137,218,255,.88)" stroke-width="3" filter="url(#softGlow)" opacity=".9"></path>
+                <g id="bars" transform="translate(40 380)"></g>
+                <path id="speed" d="M-40 330 Q500 250 1040 330" fill="none" stroke="rgba(255,157,84,.18)" stroke-width="10" opacity=".35"></path>
+              </svg>
             </div>
           </div>
+        </section>
 
-          <div class="transport-card" id="transportCard" data-playback-state="ready">
+        <div class="listen-grid">
+          <section class="tc-card">
+            <h2>PLAYER</h2>
             <audio id="audio" preload="metadata"></audio>
-            <div class="playback-status" role="status" aria-live="polite">
-              <span class="status-light" aria-hidden="true"></span>
-              <span id="playbackStatus">CIRCUIT ARMED</span>
-              <span class="playback-format">MASTER MP3</span>
+            <div class="controls">
+              <button id="btnPrev" type="button">Prev</button>
+              <button id="btnPlay" type="button">Play</button>
+              <button id="btnNext" type="button">Next</button>
+              <button id="btnRestart" type="button">Restart</button>
+              <div class="range"><span id="tCur">0:00</span><input id="seek" type="range" min="0" max="1000" value="0" aria-label="Seek position"><span id="tDur">0:00</span></div>
+              <div class="range small"><span>Vol</span><input id="vol" type="range" min="0" max="1" step="0.01" value="0.9" aria-label="Volume"></div>
             </div>
-            <div class="time-row">
-              <span id="currentTime">0:00</span>
-              <input id="seek" type="range" min="0" max="1000" value="0" aria-label="Seek">
-              <span id="duration">0:00</span>
-            </div>
-            <div class="transport">
-              <button class="transport-small" id="shuffleButton" type="button" aria-label="Shuffle" aria-pressed="false">⇄</button>
-              <button class="transport-small" id="prevButton" type="button" aria-label="Previous track">‹</button>
-              <button class="play" id="playButton" type="button" aria-label="Play"><span id="playIcon">▶</span></button>
-              <button class="transport-small" id="nextButton" type="button" aria-label="Next track">›</button>
-              <button class="transport-small" id="repeatButton" type="button" aria-label="Repeat mode" data-mode="all">↻</button>
-            </div>
-          </div>
-        </section>
+            <div class="meta"><div>Mode: <span id="mode">IDLE</span></div><div>Status: <span id="hook">ARMING...</span></div></div>
+          </section>
 
-        <section class="queue-panel" aria-label="Future's Past numbered track list">
-          <div class="queue-head">
-            <div>
-              <p>FUTURE'S PAST / 88 BPM</p>
-              <h2>Numbered Circuit</h2>
-            </div>
-            <span id="numberedCount">02 / 04 ONLINE</span>
-          </div>
-          <div class="track-list" id="trackList"></div>
-          <button class="archive-jump" type="button" data-view-target="archive">Open recovered archive cuts ↗</button>
-          <p class="player-note">Missing numbered masters stay visible and fail closed. The player never substitutes an archive cut for TC-02 or TC-03.</p>
-        </section>
+          <section class="tc-card">
+            <h2>NUMBERED CIRCUIT</h2>
+            <div class="playlist-head"><span id="nowPlayingLabel">Now playing: TC-01</span><span id="trackCount">1 / 4</span></div>
+            <div id="playlist" class="playlist"></div>
+            <div class="playlist-note">TC-02 and TC-03 stay visible as pending until their real masters exist. Archive cuts never stand in for missing numbered tracks.</div>
+          </section>
+        </div>
+
+        <div class="listen-footer">Analyzer: <a href="./docs/audio-analysis-toolkit.md">Toolkit Docs</a> · <button type="button" class="inline-link" data-view-target="archive">Recovered archive cuts</button></div>
       </div>
     </section>
 
     <section class="view" id="view-archive" data-view-panel="archive">
-      <div class="archive-hero">
-        <p class="eyebrow">RECOVERED SIGNAL / WRONG CENTURY</p>
-        <h1>Archive Cuts.</h1>
-        <p>Older Time Circuit experiments, source renders, and side-channel transmissions live here without changing the TC-01 through TC-04 numbered sequence.</p>
-        <a class="analyzer-link" href="./docs/audio-analysis-toolkit.md">Open analyzer notes ↗</a>
-      </div>
+      <div class="archive-hero"><p class="eyebrow">RECOVERED SIGNAL / WRONG CENTURY</p><h1>Archive Cuts.</h1><p>Older Time Circuit experiments, source renders, and side-channel transmissions remain separate from the numbered Future's Past sequence.</p></div>
       <div class="archive-grid" id="archiveGrid"></div>
-      <section class="circuit-ledger">
-        <div><strong>88</strong><span>BPM / numbered sequence</span></div>
-        <div><strong>1985</strong><span>reference year</span></div>
-        <div><strong>3026</strong><span>signal origin</span></div>
-        <div><strong>02/04</strong><span>numbered masters online</span></div>
-      </section>
     </section>
 
     <section class="view" id="view-store" data-view-panel="store">
       <div class="store-hero">
-        <div>
-          <p class="eyebrow">THE TIME CIRCUIT / FUTURE'S PAST</p>
-          <h1>Wear the timeline.</h1>
-          <p>Six approved Future's Past designs. Time Circuit accepts only canonical hoodie records assigned to this destination; no generic Apparel fallback and no provider IDs in the browser.</p>
-        </div>
+        <div><p class="eyebrow">THE TIME CIRCUIT / FUTURE'S PAST</p><h1>Wear the timeline.</h1><p>Six approved Future's Past designs. Time Circuit accepts only canonical hoodie records assigned to this destination; no generic Apparel fallback and no provider IDs in the browser.</p></div>
         <span class="capsule-status" id="futurePastStoreStatus">Loading Future's Past capsule…</span>
       </div>
-
       <div class="store-catalog">
         <section class="store-collection">
-          <div class="collection-head">
-            <div>
-              <p class="eyebrow">FUTURE'S PAST HOODIES</p>
-              <h2>Choose your timeline.</h2>
-              <p>The Northline store pattern, rebuilt for the Time Circuit capsule: large art, direct variant selection, Add to Bag, and a slide-over cart.</p>
-            </div>
-            <span id="futurePastCount">06 DESIGNS</span>
-          </div>
+          <div class="collection-head"><div><p class="eyebrow">FUTURE'S PAST HOODIES</p><h2>Choose your timeline.</h2><p>Northline's store layout pattern, applied only here: large product art, direct variant selection, Add to Bag, and a slide-over cart.</p></div><span id="futurePastCount">06 DESIGNS</span></div>
           <div id="futurePastStore" class="store-grid store-grid--hoodies"></div>
         </section>
       </div>
-
       <div class="store-rule"><strong>Catalog-safe by design.</strong> Preview cards remain visible until matching Future's Past hoodie records arrive from Catalog Control. Canonical <code>avp_*</code> and <code>avv_*</code> identity may enter the browser; Square/provider identity may not. Bagging can happen locally, but checkout stays gated until the NXCore Commerce handoff is deployed and verified.</div>
     </section>
   </main>
 
-  <footer>
-    <div>
-      <strong>EchoVerse Audio</strong>
-      <span>1985 artifacts / 3026 signal design.</span>
-    </div>
-    <div class="foot-production">
-      <span class="apex tiny" aria-hidden="true"></span>
-      <span>An AeroVista Production</span>
-    </div>
-  </footer>
+  <footer><strong>THE TIME CIRCUIT</strong><span>EchoVerse Audio · An AeroVista Production</span></footer>
 
   <aside class="drawer" id="cartDrawer" aria-hidden="true">
     <div class="drawer-scrim" id="cartScrim"></div>
     <div class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="bagTitle">
-      <div class="drawer-head">
-        <div><p class="eyebrow">TIME CIRCUIT STORE</p><h2 id="bagTitle">Your bag</h2></div>
-        <button class="icon-btn" id="cartClose" type="button" aria-label="Close bag">×</button>
-      </div>
-      <div id="cartItems" class="cart-items"></div>
-      <div class="cart-empty" id="cartEmpty">Nothing here yet.</div>
-      <div class="cart-summary" id="cartSummary" hidden>
-        <div><span>Estimated subtotal</span><strong id="cartSubtotal">—</strong></div>
-        <button class="checkout" id="checkoutButton" type="button" disabled>Checkout handoff pending</button>
-        <p id="checkoutStatus">NXCore Commerce remains the price and checkout authority.</p>
-      </div>
+      <div class="drawer-head"><div><p class="eyebrow">TIME CIRCUIT STORE</p><h2 id="bagTitle">Your bag</h2></div><button class="icon-btn" id="cartClose" type="button" aria-label="Close bag">×</button></div>
+      <div id="cartItems" class="cart-items"></div><div class="cart-empty" id="cartEmpty">Nothing here yet.</div>
+      <div class="cart-summary" id="cartSummary" hidden><div><span>Estimated subtotal</span><strong id="cartSubtotal">—</strong></div><button class="checkout" id="checkoutButton" type="button" disabled>Checkout handoff pending</button><p id="checkoutStatus">NXCore Commerce remains the price and checkout authority.</p></div>
     </div>
   </aside>
-
   <div class="toast" id="toast" hidden></div>
-
   <script src="./time-circuit.js"></script>
   <script src="./future-past-store.js"></script>
 </body>
