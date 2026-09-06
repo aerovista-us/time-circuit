@@ -98,7 +98,10 @@
     {"id": "store_manifest", "path": "store.json", "type": "json", "role": "time-circuit catalog destination manifest", "required": true, "owner": "project-owner", "status": "active"},
     {"id": "release_docs", "path": "docs/index-upgrade-and-playlist.md", "type": "md", "role": "audio archive wiring contract", "required": true, "owner": "project-owner", "status": "active"},
     {"id": "store_contract", "path": "docs/FUTURES_PAST_STORE.md", "type": "md", "role": "store boundary contract", "required": true, "owner": "project-owner", "status": "active"},
-    {"id": "sot_self", "path": "SOT.json", "type": "json", "role": "source of truth manifest", "required": true, "owner": "project-owner", "status": "active"}
+    {"id": "sot_self", "path": "SOT.json", "type": "json", "role": "source of truth manifest", "required": true, "owner": "project-owner", "status": "active"},
+    {"id": "sot_readme", "path": "SOT_README.md", "type": "md", "role": "SOT usage guide", "required": false, "owner": "project-owner", "status": "active"},
+    {"id": "sot_template_guide", "path": "SOT_AEROVISTA_TEMPLATE_GUIDE.md", "type": "md", "role": "SOT field guide", "required": false, "owner": "project-owner", "status": "active"},
+    {"id": "sot_example_notes", "path": "SOT_EXAMPLE_NOTES.md", "type": "md", "role": "SOT example notes", "required": false, "owner": "project-owner", "status": "active"}
   ],
   "canon_folders": [
     {"id": "root", "path": "./", "role": "release masters and static app"},
@@ -127,7 +130,7 @@
     "owner_person": "glyph",
     "commercial_status": "market-facing",
     "scorecard": {"security": 3, "reliability": 2, "data_safety": 2, "documentation": 3, "repeatability": 2, "owner_clarity": 3},
-    "decision_notes": "Future's Past is the only merchandise collection allowed on Time Circuit. The browser consumes a destination-scoped canonical manifest rather than the broad Apparel catalog. TC-02 and TC-03 remain visibly pending until their real masters are added."
+    "decision_notes": "Time Circuit is an EchoStory-class media-rich experience under EchoVerse. Security review 2026-08-04 scanned the current tree and full git history for hardcoded secrets and unsafe code patterns and found no issue; live-deployment status was also checked through GitHub at that time. Portfolio lane was corrected from promote to keep after that review. 2026-09-05: Future's Past is the only merchandise collection allowed on Time Circuit; the browser now consumes a destination-scoped canonical manifest rather than the broad Apparel catalog, while TC-02 and TC-03 remain visibly pending until their real masters are added."
   },
   "ops": {
     "service_name": "time-circuit-static",
@@ -147,7 +150,7 @@
   "duplicates": [],
   "checks": {
     "required_paths_exist": ["index.html", "future-past-store.js", "store.json", "docs/index-upgrade-and-playlist.md", "docs/FUTURES_PAST_STORE.md", "SOT.json"],
-    "marker": {"enabled": true, "marker_key": "SOT:", "accepted_ext": [".md", ".html", ".json", ".txt", ".yml", ".yaml", ".js"]},
+    "marker": {"enabled": true, "marker_key": "SOT:", "accepted_ext": [".md", ".html", ".json", ".txt", ".yml", ".yaml", ".ts", ".tsx", ".js", ".jsx"]},
     "hash_canon_files": true,
     "warn_on_duplicate_ids": true,
     "warn_on_missing_required": true,
@@ -155,6 +158,9 @@
   },
   "notes": [
     "tag: #mini.shop",
+    "mini.shop: time_circuit-main",
+    "copied_from: \\\\100.115.9.61\\Collab\\SOT\\aerovista_sot_root_pack",
+    "copied_on: 2026-03-20",
     "Future's Past hoodies only.",
     "Do not add Square/provider IDs to browser-facing store.json.",
     "NXCore Commerce remains transaction authority."
