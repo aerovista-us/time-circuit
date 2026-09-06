@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "destinationId": "time-circuit",
+  "title": "Future's Past Hoodies",
+  "catalogVersion": null,
+  "generatedAt": null,
+  "currency": "USD",
+  "policy": {
+    "collectionMustMatch": "Future's Past",
+    "productTypeMustContain": "hoodie",
+    "canonicalProductIdsOnly": true,
+    "canonicalVariantIdsOnly": true,
+    "denyNonMatchingProducts": true
+  },
+  "products": []
+}
