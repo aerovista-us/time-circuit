@@ -1,86 +1,67 @@
-# Index Upgrade and Playlist Prep
+# Time Circuit Audio Archive
 
-This document tracks the `index.html` upgrade for the Time Circuit release page.
+This document tracks the current `index.html` release experience.
 
-## What changed
+## Release structure
 
-- Added cover artwork integration using `./kids.will.love.it.png`.
-- Updated the visual theme to match the artwork direction:
-  - Electric blue accents
-  - Ember/orange highlights
-  - Dark cinematic background gradients
-- Reworked layout into a cleaner release-page structure:
-  - Hero area with artwork and track identity
-  - Player controls panel
-  - Dedicated playlist panel
-  - Visualizer panel
-- Preserved and restyled the time-circuit visualizer.
-- Kept robust audio fallback behavior when WebAudio analyzer setup is unavailable.
+Time Circuit now separates the numbered **Future's Past** sequence from older archive cuts.
 
-## Audio pathing
+### Numbered Future's Past sequence
 
-Track sources use robust relative paths from the project root:
+| Slot | Title | Audio state | Artwork | Tempo |
+|---|---|---|---|---|
+| TC-01 | Eighty-Eight Rebel | `01 — EIGHTY-EIGHT REBEL.mp3` wired | `images/marty.png` | 88 BPM |
+| TC-02 | Full Cab Bruiser | master pending | `images/biff.png` | 88 BPM target |
+| TC-03 | Flux Professor | master pending | `images/flux.png` | 88 BPM target |
+| TC-04 | Paradox Queen | `04 — PARADOX QUEEN.mp3` wired | `images/chick.png` | 88 BPM |
 
-- `./kids-will-love-it.mp3` — original Time-Circuit drop (~4:32)
-- `./FLUX_SWAMP_(1955).mp3` — Flux Swamp (1955) intro cut (~1:11)
-- `./momentoxLowFreqxNEW_SOUND.mp3` — Momento × LowFreq × New Sound mashup (~4:59)
-- `./kids.will.love.it.png` — shared cover art (all playlist entries)
-- `./kids.gonnaLoveit.mp3` — short sample clip for the quote button (not in playlist)
+The additional `01 — EIGHTY-EIGHT REBEL (1).mp3` and `(2).mp3` files are alternate renders of TC-01, not separate numbered songs. They remain source/archive assets until one is deliberately promoted.
 
-**Not wired:** `newsound.mp3` is a 2-byte placeholder/empty file and is intentionally omitted.
+### Archive cuts
 
-## Multi-track playlist
+The player also preserves the older Time Circuit experiments as a separate archive lane:
 
-The page uses a `playlist` array in the script block and supports:
+- `kids-will-love-it.mp3` — Kids Will Love It
+- `FLUX_SWAMP_(1955).mp3` — Flux Swamp (1955)
+- `momentoxLowFreqxNEW_SOUND.mp3` — Momento × LowFreq × New Sound
 
-- Track list rendering
-- Active track highlight
-- Prev/Next controls
-- Click-to-load track behavior
-- Auto-advance on track end
-- Shared metadata binding (title, description, BPM, key, art)
+`kids.gonnaLoveit.mp3` remains the short sample asset and is not a numbered release track.
 
-### Current playlist (2026-09-05)
+## Artwork
 
-| # | Title | File | Notes |
-|---|-------|------|-------|
-| 1 | Kids Will Love It (Time-Circuit Drop) | `kids-will-love-it.mp3` | Analyzed BPM/key: 90.25 halftime / G-centered |
-| 2 | Flux Swamp (1955) | `FLUX_SWAMP_(1955).mp3` | Suno tag title; provisional BPM/key |
-| 3 | Momento × LowFreq × New Sound | `momentoxLowFreqxNEW_SOUND.mp3` | Multi-act mashup; provisional BPM/key |
+The six Future's Past design/timeline assets are all wired into the experience or store preview:
 
-### Add more tracks
+- `images/marty.png` — Eighty-Eight Rebel / TC-01
+- `images/biff.png` — Full Cab Bruiser / TC-02
+- `images/flux.png` — Flux Professor / TC-03
+- `images/chick.png` — Paradox Queen / TC-04
+- `images/doc.png` — Circuit Professor / archive visual
+- `images/www.png` — Where We're Going / archive visual
 
-Add objects to the `playlist` array using this shape:
+## Store
 
-```js
-{
-  title: "Track Name",
-  subtitle: "Genre/Style",
-  src: "./track-file.mp3",
-  art: "./cover-image.png",
-  bpm: "90 halftime",
-  key: "G minor",
-  description: "Short release description."
-}
-```
+The Future's Past hoodie shelf is intentionally separate from the broader AeroVista Apparel catalog.
 
-After saving, the playlist UI and transport controls update automatically.
+- `future-past-store.js` renders the shelf and enforces the boundary.
+- `store.json` is the browser-facing `time-circuit` destination manifest.
+- only Future's Past hoodies with canonical `avp_*` / `avv_*` identity may render as catalog products;
+- provider/Square IDs are rejected from the browser manifest;
+- when no canonical hoodie records exist, the six design previews remain visible and commerce stays locked;
+- NXCore Commerce remains checkout authority.
 
-## Recommended next upgrades
+See `docs/FUTURES_PAST_STORE.md` for the complete store contract.
 
-- Run `tools/audio_analysis_suite.py` on Flux Swamp + Momento and replace provisional BPM/key.
-- Add per-track artwork once dedicated covers exist (currently all share `kids.will.love.it.png`).
-- Add per-track duration labels after metadata loads.
-- Add shuffle/repeat modes.
-- Remove or replace empty `newsound.mp3`.
-- Soften page chrome that still hard-codes the Kids Will Love It quote as the only sample line.
+## Player behavior
 
-## Analyzer integration
+The static page supports:
 
-An advanced remix-prep analyzer is available in `tools/audio_analysis_suite.py`.
+- play/pause;
+- previous/next across playable masters;
+- seek/duration display;
+- active-track state;
+- pending numbered slots that are visible but not faked as playable masters;
+- automatic advance to the next available playable track.
 
-Use it to generate per-track production metadata (tempo, key estimate, low-end profile, groove stats, stereo image, and section boundaries), then copy key fields into playlist metadata and remix prompts.
+## Next content action
 
-See `docs/audio-analysis-toolkit.md` for install and run instructions.
-
-Browser-first workflow is also available via `tools/audio_analysis_web.py`. See `docs/audio-analysis-web-ui.md`.
+When TC-02 and TC-03 masters are finalized, add the exact numbered MP3 files and switch their existing slots from pending to playable. Do not renumber the archive to make missing masters appear complete.
