@@ -4,13 +4,13 @@ This document tracks the current Time Circuit release experience.
 
 ## Experience shell
 
-The public site uses a three-view EchoStory shell inspired by Northline while preserving Time Circuit's own visual language and content model:
+The public site exposes three views, but only the **Store** view borrows layout/interaction ideas from Northline:
 
-- **Listen** — active MP3 player plus the TC-01 through TC-04 numbered queue;
-- **Archive** — recovered cuts and TC-01 alternate source renders, kept outside the numbered sequence;
+- **Listen** — the native Time Circuit player: cover art beside the large SVG/WebAudio visualizer, TIME CIRCUITS DEST/FLUX readout, classic transport, and the TC-01 through TC-04 numbered playlist;
+- **Archive** — recovered cuts and TC-01 alternate source renders, kept outside the numbered sequence and presented in Time Circuit's own style;
 - **Store** — the Future's Past hoodie-only capsule using the Northline-style product-card, variant, Bag, and cart-drawer interaction pattern.
 
-`index.html` owns the page structure, `time-circuit.css` owns presentation, `time-circuit.js` owns audio/navigation behavior, and `future-past-store.js` owns the store boundary and cart presentation.
+`index.html` owns the page structure, `time-circuit.css` owns presentation, `time-circuit.js` owns the Time Circuit player/visualizer/navigation behavior, and `future-past-store.js` owns the store boundary and cart presentation.
 
 ## Numbered Future's Past sequence
 
@@ -33,7 +33,7 @@ The player preserves the older Time Circuit experiments as a separate archive la
 
 `kids.gonnaLoveit.mp3` remains the short sample asset and is not a numbered release track.
 
-The existing analyzer documentation remains linked from the Archive view at `docs/audio-analysis-toolkit.md`.
+The analyzer documentation remains linked from the Listen surface at `docs/audio-analysis-toolkit.md`.
 
 ## Artwork
 
@@ -58,19 +58,23 @@ The Future's Past hoodie surface is intentionally separate from the broader Aero
 - when canonical products exist, users can choose a canonical variant and build a local cart;
 - checkout remains disabled until the verified canonical NXCore Commerce handoff is deployed.
 
+Northline is a Store-tab UX reference only. Its Listen/player presentation is not copied into Time Circuit.
+
 See `docs/FUTURES_PAST_STORE.md` for the complete store contract.
 
 ## Player behavior
 
-The static player supports:
+The native Time Circuit player supports:
 
 - play/pause;
-- previous/next across actual playable masters;
-- shuffle and repeat modes;
+- previous/next across actual playable numbered masters;
+- restart;
 - seek/duration display;
-- active-track state and Media Session metadata;
-- lightweight Web Audio visualization when supported;
-- pending numbered slots that are visible but not faked as playable masters;
+- volume control;
+- Media Session metadata;
+- the original Time Circuit SVG visualizer geometry with real WebAudio time-domain waveform and frequency bars;
+- dynamic DEST/FLUX readout driven by playback/analyzer state;
+- pending numbered slots that remain visible but are never faked as playable masters;
 - separate playback of archive cuts and alternate renders.
 
 ## Next content action
