@@ -27,7 +27,21 @@ The repository contains six Future's Past design assets under `images/` and rend
 
 Those files are presentation assets only. They are **not** product identity, price, SKU, Square item id, or Square variation id.
 
-Until corresponding canonical catalog products exist, the shelf remains preview-only and purchase controls stay disabled.
+Until corresponding canonical catalog products exist, the cards remain preview-only and their variant/action controls stay disabled.
+
+## Store interaction model
+
+Time Circuit intentionally follows the Northline EchoStory store pattern while retaining its own visual language and catalog scope:
+
+- a dedicated **Store** tab beside Listen and Archive;
+- a capsule hero and grouped product grid;
+- large product art cards with title and display price;
+- direct canonical variant selection;
+- **Add to Bag** on catalog-backed products;
+- a persistent Bag count in the top bar;
+- a slide-over cart drawer with line removal and an estimated subtotal.
+
+The local bag is presentation state only. It may persist canonical `productId`, `variantId`, quantity, and safe display fields in browser storage. It does not become catalog, pricing, inventory, or provider authority.
 
 ## Destination manifest
 
@@ -39,7 +53,7 @@ It is intended to be produced from Catalog Console / Catalog Control for destina
 time-circuit
 ```
 
-The page no longer downloads the full AeroVista Apparel catalog and filters it client-side. That broader catalog contains unrelated products and provider-level identity that does not belong in this experience.
+The page does not download the full AeroVista Apparel catalog and filter it client-side. That broader catalog contains unrelated products and provider-level identity that does not belong in this experience.
 
 The browser rejects a manifest when:
 
@@ -50,9 +64,11 @@ The browser rejects a manifest when:
 
 ## Commerce boundary
 
-Time Circuit does not resolve Square or Printful identity in the browser. NXCore Commerce remains authoritative for provider resolution, price/quote validation, and checkout.
+Time Circuit does not resolve Square or Printful identity in the browser. NXCore Commerce remains authoritative for provider resolution, current price/quote validation, inventory-sensitive decisions, and checkout.
 
-A later checkout handoff should submit only canonical identity, for example:
+Any price shown before checkout is presentation data from the destination manifest. The cart labels its subtotal as estimated, and checkout must revalidate the order through Commerce.
+
+A later checkout handoff should submit canonical identity only, for example:
 
 ```json
 {
@@ -67,7 +83,7 @@ A later checkout handoff should submit only canonical identity, for example:
 }
 ```
 
-Until that canonical Commerce endpoint is deployed and verified for the Time Circuit origin, purchase controls remain disabled.
+Until that canonical Commerce endpoint is deployed and verified for the Time Circuit origin, the cart may be built locally but the **Checkout** control remains disabled.
 
 ## Audio / art contract
 
