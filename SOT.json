@@ -1,33 +1,33 @@
 {
   "sot_version": "2.0-aerovista",
   "project": {
-    "name": "time_circuit-main (mini.shop)",
-    "slug": "time-circuit-main",
+    "name": "Time Circuit",
+    "slug": "time-circuit",
     "brand": "AeroVista",
-    "division": "Nexus TechWorks",
+    "division": "EchoVerse",
     "owner": "AeroVista LLC",
     "status": "active",
     "lifecycle": "production",
-    "type": "app",
-    "category": "mini-shop",
+    "type": "echostory-experience",
+    "category": "music-store-experience",
     "root": "./",
-    "primary_language": "typescript",
+    "primary_language": "javascript",
     "repo_visibility": "private",
     "created": "2026-03-18",
-    "updated": "2026-03-29",
+    "updated": "2026-09-05",
     "timezone": "America/Los_Angeles"
   },
   "purpose": {
-    "summary": "Mini shop root for time_circuit-main. Includes an AeroVista SOT pack scaffold for scanning and documentation auditing.",
-    "source_of_truth_policy": "Only files listed here and stored in approved canon locations are treated as master files.",
-    "business_role": "Mini shop content bundle: time_circuit-main."
+    "summary": "EchoVerse Time Circuit release experience: numbered Future's Past audio, archive cuts, timeline artwork, and a Future's Past hoodie-only merchandise shelf.",
+    "source_of_truth_policy": "index.html owns the release experience. future-past-store.js owns store rendering policy. store.json is the browser-facing time-circuit destination manifest and may contain canonical avp_* / avv_* identity only. Square/provider IDs remain server-side and NXCore Commerce remains checkout authority.",
+    "business_role": "Music-led EchoStory experience with a tightly scoped merchandise capsule."
   },
   "technical_profile": {
     "stack": {
-      "frontend": [],
+      "frontend": ["HTML5", "CSS", "vanilla JavaScript", "HTMLAudioElement"],
       "backend": [],
       "database": [],
-      "infra": [],
+      "infra": ["static hosting"],
       "analytics": [],
       "ai": []
     },
@@ -35,9 +35,9 @@
       "local_ports": [],
       "service_urls": [],
       "health_endpoint": "",
-      "entry_command": "",
-      "build_command": "",
-      "start_command": ""
+      "entry_command": "serve repository root as static files",
+      "build_command": "none",
+      "start_command": "static hosting"
     },
     "deployment": {
       "primary_host": "",
@@ -47,7 +47,7 @@
       "containerized": false,
       "compose_file": "",
       "reverse_proxy": "",
-      "networking_notes": ""
+      "networking_notes": "Do not claim a public deployment until a concrete target is recorded."
     },
     "data_model": {
       "core_db_dependency": false,
@@ -56,81 +56,61 @@
       "shared_storage": []
     }
   },
+  "release": {
+    "numbered_sequence_bpm": 88,
+    "numbered_slots": {
+      "TC-01": {"title": "Eighty-Eight Rebel", "status": "wired", "audio": "01 — EIGHTY-EIGHT REBEL.mp3", "art": "images/marty.png"},
+      "TC-02": {"title": "Full Cab Bruiser", "status": "master-pending", "art": "images/biff.png"},
+      "TC-03": {"title": "Flux Professor", "status": "master-pending", "art": "images/flux.png"},
+      "TC-04": {"title": "Paradox Queen", "status": "wired", "audio": "04 — PARADOX QUEEN.mp3", "art": "images/chick.png"}
+    },
+    "alternate_tc01_renders": ["01 — EIGHTY-EIGHT REBEL (1).mp3", "01 — EIGHTY-EIGHT REBEL (2).mp3"],
+    "archive_audio": ["kids-will-love-it.mp3", "FLUX_SWAMP_(1955).mp3", "momentoxLowFreqxNEW_SOUND.mp3"],
+    "sample_audio": "kids.gonnaLoveit.mp3"
+  },
+  "catalog_store": {
+    "destination_id": "time-circuit",
+    "renderer": "future-past-store.js",
+    "manifest": "store.json",
+    "allowed_collection": "Future's Past",
+    "allowed_product_type": "hoodie",
+    "deny_non_matching_products": true,
+    "browser_identity": "canonical avp_* / avv_* only",
+    "provider_ids_in_browser": false,
+    "checkout_authority": "NXCore Commerce",
+    "checkout_state": "gated until canonical Commerce handoff is explicitly deployed and verified"
+  },
   "canon": {
     "canon_root": "./",
-    "allowed_master_locations": [
-      "./"
-    ],
-    "forbidden_master_locations": [
-      "./archive",
-      "./intake",
-      "./tmp",
-      "./build",
-      "./dist",
-      "./coverage",
-      "./node_modules"
-    ]
+    "allowed_master_locations": ["./"],
+    "forbidden_master_locations": ["./archive", "./intake", "./tmp", "./build", "./dist", "./coverage", "./node_modules"]
   },
   "entrypoints": [
-    {
-      "id": "sot_self",
-      "label": "SOT scaffold root",
-      "path": "SOT.json",
-      "required": true,
-      "notes": "Mini shop SOT scaffold."
-    }
+    {"id": "release_page", "label": "Time Circuit release", "path": "index.html", "required": true, "notes": "Numbered sequence, archive player, and hoodie shelf."},
+    {"id": "store_renderer", "label": "Future's Past store renderer", "path": "future-past-store.js", "required": true, "notes": "Fails closed to Future's Past hoodies and canonical identity."},
+    {"id": "store_manifest", "label": "Time Circuit destination manifest", "path": "store.json", "required": true, "notes": "Catalog Control output boundary; canonical IDs only."},
+    {"id": "store_contract", "label": "Future's Past store contract", "path": "docs/FUTURES_PAST_STORE.md", "required": true, "notes": "Store scope and Commerce boundary."},
+    {"id": "sot_self", "label": "Project source of truth", "path": "SOT.json", "required": true, "notes": "Canonical project/runtime record."}
   ],
   "canon_files": [
-    {
-      "id": "sot_self",
-      "path": "SOT.json",
-      "type": "json",
-      "role": "source of truth manifest",
-      "required": true,
-      "owner": "project-owner",
-      "status": "active"
-    },
-    {
-      "id": "sot_readme",
-      "path": "SOT_README.md",
-      "type": "md",
-      "role": "mini shop root SOT usage",
-      "required": true,
-      "owner": "project-owner",
-      "status": "active"
-    },
-    {
-      "id": "sot_template_guide",
-      "path": "SOT_AEROVISTA_TEMPLATE_GUIDE.md",
-      "type": "md",
-      "role": "field guide and recommended layout",
-      "required": false,
-      "owner": "project-owner",
-      "status": "active"
-    },
-    {
-      "id": "sot_example_notes",
-      "path": "SOT_EXAMPLE_NOTES.md",
-      "type": "md",
-      "role": "example SOT usage notes",
-      "required": false,
-      "owner": "project-owner",
-      "status": "active"
-    }
+    {"id": "release_page", "path": "index.html", "type": "html", "role": "release experience", "required": true, "owner": "project-owner", "status": "active"},
+    {"id": "store_renderer", "path": "future-past-store.js", "type": "js", "role": "Future's Past store policy and rendering", "required": true, "owner": "project-owner", "status": "active"},
+    {"id": "store_manifest", "path": "store.json", "type": "json", "role": "time-circuit catalog destination manifest", "required": true, "owner": "project-owner", "status": "active"},
+    {"id": "release_docs", "path": "docs/index-upgrade-and-playlist.md", "type": "md", "role": "audio archive wiring contract", "required": true, "owner": "project-owner", "status": "active"},
+    {"id": "store_contract", "path": "docs/FUTURES_PAST_STORE.md", "type": "md", "role": "store boundary contract", "required": true, "owner": "project-owner", "status": "active"},
+    {"id": "sot_self", "path": "SOT.json", "type": "json", "role": "source of truth manifest", "required": true, "owner": "project-owner", "status": "active"}
   ],
   "canon_folders": [
-    {
-      "id": "root",
-      "path": "./",
-      "role": "mini shop scaffold root (masters live in the folder root)"
-    }
+    {"id": "root", "path": "./", "role": "release masters and static app"},
+    {"id": "images", "path": "images/", "role": "Time Circuit and Future's Past artwork"},
+    {"id": "docs", "path": "docs/", "role": "release and store contracts"}
   ],
   "systems": {
-    "linked_projects": [],
+    "linked_projects": ["aerovista-us/aerovista-catalog-console"],
     "depends_on": [],
     "feeds": [],
-    "consumes": [],
-    "shares_with": [],
+    "consumes": ["Catalog Console time-circuit destination manifest", "NXCore Commerce canonical checkout handoff"],
+    "shares_with": ["EchoVerse"],
     "related_domains": [],
     "tailscale_hosts": [],
     "cloudflare_tunnels": []
@@ -146,74 +126,28 @@
     "owner_team": "EchoVerse / Experiences",
     "owner_person": "glyph",
     "commercial_status": "market-facing",
-    "scorecard": {
-      "security": 2,
-      "reliability": 2,
-      "data_safety": 1,
-      "documentation": 2,
-      "repeatability": 1,
-      "owner_clarity": 2
-    },
-    "decision_notes": "time_circuit-main (mini.shop) is an EchoStory-class media-rich interactive or emerging experience and should be grouped under EchoVerse in the founder portfolio. | Security review 2026-08-04: scanned current tree + full git history (all commits) for hardcoded secrets (filename and content patterns) and unsafe code patterns (eval/Function, external CDN scripts). Clean. Confirmed via GitHub API whether project has a live public deployment. security score corrected from unreviewed bootstrap default. | Lane updated promote->keep 2026-08-04: individual review after security-score correction; suggested-lane model and scorecard support keep, not promote."
+    "scorecard": {"security": 3, "reliability": 2, "data_safety": 2, "documentation": 3, "repeatability": 2, "owner_clarity": 3},
+    "decision_notes": "Future's Past is the only merchandise collection allowed on Time Circuit. The browser consumes a destination-scoped canonical manifest rather than the broad Apparel catalog. TC-02 and TC-03 remain visibly pending until their real masters are added."
   },
   "ops": {
-    "service_name": "project-service-name",
-    "health_check_paths": [
-      "/health"
-    ],
+    "service_name": "time-circuit-static",
+    "health_check_paths": ["/"],
     "backup_targets": [],
     "log_locations": [],
     "secrets_locations": [],
-    "monitoring": {
-      "enabled": false,
-      "providers": []
-    }
+    "monitoring": {"enabled": false, "providers": []}
   },
   "governance": {
-    "review_cycle": "when major changes ship",
+    "review_cycle": "when audio masters, artwork, catalog scope, checkout, or deployment changes",
     "update_rule": "Update this file whenever a canonical file moves, is replaced, changes purpose, or deploy behavior changes.",
     "promotion_rule": "Files are promoted into canon only after review.",
     "archive_rule": "Old versions move to archive and are never treated as master files.",
-    "owner_roles": [
-      "project-owner",
-      "ops-owner",
-      "tech-owner"
-    ]
+    "owner_roles": ["project-owner", "ops-owner", "tech-owner"]
   },
-  "duplicates": [
-    {
-      "pattern": "README",
-      "known_locations": [
-        "README.md",
-        "docs/README.md"
-      ],
-      "winner": "README.md",
-      "note": "Keep one main README only."
-    }
-  ],
+  "duplicates": [],
   "checks": {
-    "required_paths_exist": [
-      "SOT.json",
-      "SOT_README.md",
-      "SOT_AEROVISTA_TEMPLATE_GUIDE.md",
-      "SOT_EXAMPLE_NOTES.md"
-    ],
-    "marker": {
-      "enabled": true,
-      "marker_key": "SOT:",
-      "accepted_ext": [
-        ".md",
-        ".html",
-        ".json",
-        ".txt",
-        ".yml",
-        ".yaml",
-        ".ts",
-        ".tsx",
-        ".js",
-        ".jsx"
-      ]
-    },
+    "required_paths_exist": ["index.html", "future-past-store.js", "store.json", "docs/index-upgrade-and-playlist.md", "docs/FUTURES_PAST_STORE.md", "SOT.json"],
+    "marker": {"enabled": true, "marker_key": "SOT:", "accepted_ext": [".md", ".html", ".json", ".txt", ".yml", ".yaml", ".js"]},
     "hash_canon_files": true,
     "warn_on_duplicate_ids": true,
     "warn_on_missing_required": true,
@@ -221,12 +155,8 @@
   },
   "notes": [
     "tag: #mini.shop",
-    "mini.shop: time_circuit-main",
-    "copied_from: \\\\100.115.9.61\\Collab\\SOT\\aerovista_sot_root_pack",
-    "copied_on: 2026-03-20",
-    "Copy this file to the root of each tracked AeroVista project.",
-    "Update project metadata first.",
-    "List true master docs, configs, and schemas in canon_files.",
-    "Use docs/docs_index.md where a project has a structured docs set."
+    "Future's Past hoodies only.",
+    "Do not add Square/provider IDs to browser-facing store.json.",
+    "NXCore Commerce remains transaction authority."
   ]
 }
