@@ -31,7 +31,7 @@ Until corresponding canonical catalog products exist, the cards remain preview-o
 
 ## Store interaction model
 
-Time Circuit intentionally follows the Northline EchoStory store pattern while retaining its own visual language and catalog scope:
+Time Circuit intentionally follows the Northline **Store-tab** pattern while retaining its own visual language and catalog scope. This reference stops at the Store view; the Listen player/visualizer and Archive presentation remain Time Circuit-native.
 
 - a dedicated **Store** tab beside Listen and Archive;
 - a capsule hero and grouped product grid;
