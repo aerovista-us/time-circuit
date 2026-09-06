@@ -1,18 +1,20 @@
 (() => {
   const CATALOG_URL = 'https://apparel.aerovista.us/square_products_latest.json';
-  const APPAREL_URL = 'https://apparel.aerovista.us/';
 
   const previewDesigns = [
-    { id: 'rebel', name: "Eighty-Eight Rebel", image: './images/marty.png', note: 'Future\'s Past hoodie design // TC-01' },
-    { id: 'bruiser', name: 'Full Cab Bruiser', image: './images/biff.png', note: 'Future\'s Past hoodie design // TC-02' },
-    { id: 'professor', name: 'Flux Professor', image: './images/flux.png', note: 'Future\'s Past hoodie design // TC-03' },
-    { id: 'queen', name: 'Paradox Queen', image: './images/chick.png', note: 'Future\'s Past hoodie design // TC-04' },
-    { id: 'doc', name: 'Circuit Professor', image: './images/doc.png', note: 'Future\'s Past hoodie design // archive variant' },
-    { id: 'roads', name: "Where We're Going", image: './images/www.png', note: 'Future\'s Past hoodie design // archive variant' }
+    { id: 'rebel', name: 'Eighty-Eight Rebel', image: './images/marty.png', note: "Future's Past hoodie design // TC-01" },
+    { id: 'bruiser', name: 'Full Cab Bruiser', image: './images/biff.png', note: "Future's Past hoodie design // TC-02" },
+    { id: 'professor', name: 'Flux Professor', image: './images/flux.png', note: "Future's Past hoodie design // TC-03" },
+    { id: 'queen', name: 'Paradox Queen', image: './images/chick.png', note: "Future's Past hoodie design // TC-04" },
+    { id: 'doc', name: 'Circuit Professor', image: './images/doc.png', note: "Future's Past hoodie design // archive variant" },
+    { id: 'roads', name: "Where We're Going", image: './images/www.png', note: "Future's Past hoodie design // archive variant" }
   ];
 
   const normalize = value => String(value ?? '').trim().toLowerCase();
   const values = value => Array.isArray(value) ? value.map(normalize) : [normalize(value)];
+  const escapeHtml = value => String(value ?? '').replace(/[&<>'"]/g, char => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+  }[char]));
   const futurePastTokens = ["future's past", 'futures past', 'future past', 'futures-past', 'future-past'];
 
   function isFuturePastHoodie(product) {
@@ -38,7 +40,7 @@
   function priceLabel(product) {
     const prices = [product.price, ...(product.variants || []).map(v => v.price)]
       .map(Number).filter(Number.isFinite);
-    if (!prices.length) return 'Price at checkout';
+    if (!prices.length) return 'Price verified at checkout';
     const min = Math.min(...prices);
     return `$${min.toFixed(2)}${new Set(prices).size > 1 ? '+' : ''}`;
   }
@@ -46,11 +48,11 @@
   function renderPreview(root) {
     root.innerHTML = previewDesigns.map(item => `
       <article class="merch-card merch-preview">
-        <div class="merch-image"><img src="${item.image}" alt="${item.name} Future's Past design" loading="lazy"></div>
+        <div class="merch-image"><img src="${item.image}" alt="${escapeHtml(item.name)} Future's Past design" loading="lazy"></div>
         <div class="merch-copy">
           <div class="merch-kicker">FUTURE'S PAST // DESIGN PREVIEW</div>
-          <h3>${item.name}</h3>
-          <p>${item.note}</p>
+          <h3>${escapeHtml(item.name)}</h3>
+          <p>${escapeHtml(item.note)}</p>
           <button class="merch-action" type="button" disabled>Catalog activation pending</button>
         </div>
       </article>`).join('');
@@ -58,15 +60,18 @@
 
   function renderLive(root, products) {
     root.innerHTML = products.map(product => {
-      const image = product.image || product.images?.[0] || './images/flux.png';
+      const rawImage = product.image || product.images?.[0] || './images/flux.png';
+      const image = escapeHtml(rawImage);
+      const name = escapeHtml(product.name || "Future's Past Hoodie");
+      const variants = Array.isArray(product.variants) ? product.variants.length : 0;
       return `
         <article class="merch-card merch-live">
-          <div class="merch-image"><img src="${image}" alt="${product.name || 'Future\'s Past hoodie'}" loading="lazy"></div>
+          <div class="merch-image"><img src="${image}" alt="${name}" loading="lazy"></div>
           <div class="merch-copy">
             <div class="merch-kicker">FUTURE'S PAST // VERIFIED CATALOG</div>
-            <h3>${product.name || 'Future\'s Past Hoodie'}</h3>
-            <p>${priceLabel(product)} · ${product.variants?.length || 0} variant${product.variants?.length === 1 ? '' : 's'}</p>
-            <a class="merch-action" href="${APPAREL_URL}" target="_blank" rel="noopener">Open AeroVista Apparel</a>
+            <h3>${name}</h3>
+            <p>${escapeHtml(priceLabel(product))} · ${variants} variant${variants === 1 ? '' : 's'}</p>
+            <button class="merch-action" type="button" disabled>Verified checkout handoff pending</button>
           </div>
         </article>`;
     }).join('');
@@ -90,9 +95,9 @@
         return;
       }
       renderLive(root, products);
-      status.textContent = `${products.length} verified Future's Past hoodie${products.length === 1 ? '' : 's'} synced`;
+      status.textContent = `${products.length} verified Future's Past hoodie${products.length === 1 ? '' : 's'} synced · checkout handoff still gated`;
     } catch (error) {
-      console.info('Future\'s Past catalog sync unavailable; preview-only safety mode.', error);
+      console.info("Future's Past catalog sync unavailable; preview-only safety mode.", error);
       status.textContent = "Future's Past preview-only · commerce catalog unavailable from this origin";
     }
   }
