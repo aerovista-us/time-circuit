@@ -18,13 +18,13 @@
     "timezone": "America/Los_Angeles"
   },
   "purpose": {
-    "summary": "EchoVerse Time Circuit release experience: numbered Future's Past audio, archive cuts, timeline artwork, and a Future's Past hoodie-only merchandise shelf.",
-    "source_of_truth_policy": "index.html owns the release experience. future-past-store.js owns store rendering policy. store.json is the browser-facing time-circuit destination manifest and may contain canonical avp_* / avv_* identity only. Square/provider IDs remain server-side and NXCore Commerce remains checkout authority.",
+    "summary": "EchoVerse Time Circuit release experience: numbered Future's Past audio, archive cuts, timeline artwork, and a Future's Past hoodie-only merchandise store.",
+    "source_of_truth_policy": "index.html owns the experience structure; time-circuit.css owns presentation; time-circuit.js owns audio and view behavior; future-past-store.js owns store rendering and bag policy. store.json is the browser-facing time-circuit destination manifest and may contain canonical avp_* / avv_* identity only. Square/provider IDs remain server-side and NXCore Commerce remains checkout authority.",
     "business_role": "Music-led EchoStory experience with a tightly scoped merchandise capsule."
   },
   "technical_profile": {
     "stack": {
-      "frontend": ["HTML5", "CSS", "vanilla JavaScript", "HTMLAudioElement"],
+      "frontend": ["HTML5", "CSS", "vanilla JavaScript", "HTMLAudioElement", "Web Audio API", "Media Session API"],
       "backend": [],
       "database": [],
       "infra": ["static hosting", "GitHub Pages"],
@@ -68,7 +68,8 @@
     },
     "alternate_tc01_renders": ["01 — EIGHTY-EIGHT REBEL (1).mp3", "01 — EIGHTY-EIGHT REBEL (2).mp3"],
     "archive_audio": ["kids-will-love-it.mp3", "FLUX_SWAMP_(1955).mp3", "momentoxLowFreqxNEW_SOUND.mp3"],
-    "sample_audio": "kids.gonnaLoveit.mp3"
+    "sample_audio": "kids.gonnaLoveit.mp3",
+    "experience_views": ["listen", "archive", "store"]
   },
   "catalog_store": {
     "destination_id": "time-circuit",
@@ -79,6 +80,9 @@
     "deny_non_matching_products": true,
     "browser_identity": "canonical avp_* / avv_* only",
     "provider_ids_in_browser": false,
+    "ux_reference": "aerovista-us/northline store interaction model",
+    "ux_reference_is_dependency": false,
+    "bag_state": "local browser presentation state using canonical productId / variantId only",
     "checkout_authority": "NXCore Commerce",
     "checkout_state": "gated until canonical Commerce handoff is explicitly deployed and verified"
   },
@@ -88,18 +92,22 @@
     "forbidden_master_locations": ["./archive", "./intake", "./tmp", "./build", "./dist", "./coverage", "./node_modules"]
   },
   "entrypoints": [
-    {"id": "release_page", "label": "Time Circuit release", "path": "index.html", "required": true, "notes": "Numbered sequence, archive player, and hoodie shelf."},
-    {"id": "store_renderer", "label": "Future's Past store renderer", "path": "future-past-store.js", "required": true, "notes": "Fails closed to Future's Past hoodies and canonical identity."},
+    {"id": "release_page", "label": "Time Circuit release", "path": "index.html", "required": true, "notes": "Listen / Archive / Store shell."},
+    {"id": "player_runtime", "label": "Time Circuit player runtime", "path": "time-circuit.js", "required": true, "notes": "MP3 playback, queue, archive, view switching, Media Session, and visualization."},
+    {"id": "experience_styles", "label": "Time Circuit experience styles", "path": "time-circuit.css", "required": true, "notes": "Time Circuit presentation using the Northline EchoStory interaction grammar."},
+    {"id": "store_renderer", "label": "Future's Past store renderer", "path": "future-past-store.js", "required": true, "notes": "Fails closed to Future's Past hoodies and canonical identity; owns variant and local Bag presentation."},
     {"id": "store_manifest", "label": "Time Circuit destination manifest", "path": "store.json", "required": true, "notes": "Catalog Control output boundary; canonical IDs only."},
-    {"id": "store_contract", "label": "Future's Past store contract", "path": "docs/FUTURES_PAST_STORE.md", "required": true, "notes": "Store scope and Commerce boundary."},
+    {"id": "store_contract", "label": "Future's Past store contract", "path": "docs/FUTURES_PAST_STORE.md", "required": true, "notes": "Store scope, Bag behavior, and Commerce boundary."},
     {"id": "sot_self", "label": "Project source of truth", "path": "SOT.json", "required": true, "notes": "Canonical project/runtime record."}
   ],
   "canon_files": [
-    {"id": "release_page", "path": "index.html", "type": "html", "role": "release experience", "required": true, "owner": "project-owner", "status": "active"},
-    {"id": "store_renderer", "path": "future-past-store.js", "type": "js", "role": "Future's Past store policy and rendering", "required": true, "owner": "project-owner", "status": "active"},
+    {"id": "release_page", "path": "index.html", "type": "html", "role": "Listen / Archive / Store release experience", "required": true, "owner": "project-owner", "status": "active"},
+    {"id": "player_runtime", "path": "time-circuit.js", "type": "js", "role": "audio player and experience navigation", "required": true, "owner": "project-owner", "status": "active"},
+    {"id": "experience_styles", "path": "time-circuit.css", "type": "css", "role": "Time Circuit experience and store layout", "required": true, "owner": "project-owner", "status": "active"},
+    {"id": "store_renderer", "path": "future-past-store.js", "type": "js", "role": "Future's Past store policy, product rendering, and local Bag", "required": true, "owner": "project-owner", "status": "active"},
     {"id": "store_manifest", "path": "store.json", "type": "json", "role": "time-circuit catalog destination manifest", "required": true, "owner": "project-owner", "status": "active"},
-    {"id": "release_docs", "path": "docs/index-upgrade-and-playlist.md", "type": "md", "role": "audio archive wiring contract", "required": true, "owner": "project-owner", "status": "active"},
-    {"id": "store_contract", "path": "docs/FUTURES_PAST_STORE.md", "type": "md", "role": "store boundary contract", "required": true, "owner": "project-owner", "status": "active"},
+    {"id": "release_docs", "path": "docs/index-upgrade-and-playlist.md", "type": "md", "role": "audio archive and experience wiring contract", "required": true, "owner": "project-owner", "status": "active"},
+    {"id": "store_contract", "path": "docs/FUTURES_PAST_STORE.md", "type": "md", "role": "store boundary and interaction contract", "required": true, "owner": "project-owner", "status": "active"},
     {"id": "sot_self", "path": "SOT.json", "type": "json", "role": "source of truth manifest", "required": true, "owner": "project-owner", "status": "active"},
     {"id": "sot_readme", "path": "SOT_README.md", "type": "md", "role": "SOT usage guide", "required": false, "owner": "project-owner", "status": "active"},
     {"id": "sot_template_guide", "path": "SOT_AEROVISTA_TEMPLATE_GUIDE.md", "type": "md", "role": "SOT field guide", "required": false, "owner": "project-owner", "status": "active"},
@@ -111,12 +119,12 @@
     {"id": "docs", "path": "docs/", "role": "release and store contracts"}
   ],
   "systems": {
-    "linked_projects": ["aerovista-us/aerovista-catalog-console"],
+    "linked_projects": ["aerovista-us/aerovista-catalog-console", "aerovista-us/northline"],
     "depends_on": [],
     "feeds": [],
     "consumes": ["Catalog Console time-circuit destination manifest", "NXCore Commerce canonical checkout handoff"],
-    "shares_with": ["EchoVerse"],
-    "related_domains": ["time-circuit.aerovista.us"],
+    "shares_with": ["EchoVerse", "Northline EchoStory UX patterns"],
+    "related_domains": ["time-circuit.aerovista.us", "northline.aerovista.us"],
     "tailscale_hosts": [],
     "cloudflare_tunnels": []
   },
@@ -131,8 +139,8 @@
     "owner_team": "EchoVerse / Experiences",
     "owner_person": "glyph",
     "commercial_status": "market-facing",
-    "scorecard": {"security": 3, "reliability": 2, "data_safety": 2, "documentation": 3, "repeatability": 2, "owner_clarity": 3},
-    "decision_notes": "Time Circuit is an EchoStory-class media-rich experience under EchoVerse. Security review 2026-08-04 scanned the current tree and full git history for hardcoded secrets and unsafe code patterns and found no issue; live-deployment status was also checked through GitHub at that time. Portfolio lane was corrected from promote to keep after that review. 2026-09-05: Future's Past is the only merchandise collection allowed on Time Circuit; the browser consumes a destination-scoped canonical manifest rather than the broad Apparel catalog, while TC-02 and TC-03 remain visibly pending until their real masters are added. The production custom domain is time-circuit.aerovista.us and GitHub Pages Enforce HTTPS is enabled."
+    "scorecard": {"security": 3, "reliability": 2, "data_safety": 2, "documentation": 3, "repeatability": 3, "owner_clarity": 3},
+    "decision_notes": "Time Circuit is an EchoStory-class media-rich experience under EchoVerse. Security review 2026-08-04 scanned the current tree and full git history for hardcoded secrets and unsafe code patterns and found no issue; live-deployment status was also checked through GitHub at that time. Portfolio lane was corrected from promote to keep after that review. 2026-09-05: Future's Past is the only merchandise collection allowed on Time Circuit; the browser consumes a destination-scoped canonical manifest rather than the broad Apparel catalog, while TC-02 and TC-03 remain visibly pending until their real masters are added. The production custom domain is time-circuit.aerovista.us and GitHub Pages Enforce HTTPS is enabled. The release experience now adopts Northline's Listen/Store interaction grammar, product-card layout, variant selection, persistent Bag count, and slide-over cart while retaining Time Circuit styling and its stricter Future's Past-only canonical catalog boundary. Northline is a UX reference, not a runtime dependency."
   },
   "ops": {
     "service_name": "time-circuit-static",
@@ -143,7 +151,7 @@
     "monitoring": {"enabled": false, "providers": []}
   },
   "governance": {
-    "review_cycle": "when audio masters, artwork, catalog scope, checkout, or deployment changes",
+    "review_cycle": "when audio masters, artwork, catalog scope, checkout, experience shell, or deployment changes",
     "update_rule": "Update this file whenever a canonical file moves, is replaced, changes purpose, or deploy behavior changes.",
     "promotion_rule": "Files are promoted into canon only after review.",
     "archive_rule": "Old versions move to archive and are never treated as master files.",
@@ -151,8 +159,8 @@
   },
   "duplicates": [],
   "checks": {
-    "required_paths_exist": ["index.html", "future-past-store.js", "store.json", "docs/index-upgrade-and-playlist.md", "docs/FUTURES_PAST_STORE.md", "SOT.json"],
-    "marker": {"enabled": true, "marker_key": "SOT:", "accepted_ext": [".md", ".html", ".json", ".txt", ".yml", ".yaml", ".ts", ".tsx", ".js", ".jsx"]},
+    "required_paths_exist": ["index.html", "time-circuit.css", "time-circuit.js", "future-past-store.js", "store.json", "docs/index-upgrade-and-playlist.md", "docs/FUTURES_PAST_STORE.md", "SOT.json"],
+    "marker": {"enabled": true, "marker_key": "SOT:", "accepted_ext": [".md", ".html", ".json", ".txt", ".yml", ".yaml", ".ts", ".tsx", ".js", ".jsx", ".css"]},
     "hash_canon_files": true,
     "warn_on_duplicate_ids": true,
     "warn_on_missing_required": true,
@@ -165,6 +173,7 @@
     "copied_on: 2026-03-20",
     "public_url: https://time-circuit.aerovista.us",
     "Future's Past hoodies only.",
+    "Northline store UX is a presentation reference only; do not couple Time Circuit runtime to Northline.",
     "Do not add Square/provider IDs to browser-facing store.json.",
     "NXCore Commerce remains transaction authority."
   ]
