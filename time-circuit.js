@@ -98,9 +98,11 @@
 
   function selectTrack(index,autoplay){
     if(index<0||index>=tracks.length)return;
+    const resume=Boolean(autoplay||state.playing||!els.audio.paused);
+    if(!els.audio.paused)els.audio.pause();
     const track=tracks[index];state.index=index;applyTrack(track);
     if(!track.playable){toast(`${track.title}: numbered master is not loaded yet.`);return;}
-    if(autoplay) playCurrent();
+    if(resume) playCurrent();
   }
 
   function setStatus(label,mode){els.playbackStatus.textContent=label;els.transportCard.dataset.playbackState=mode||'ready';}
