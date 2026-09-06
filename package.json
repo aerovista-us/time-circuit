@@ -1,0 +1,8 @@
+{
+  "name": "time-circuit-static",
+  "private": true,
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "check": "node --check time-circuit.js && node --check future-past-store.js && npm test"
+  }
+}

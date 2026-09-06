@@ -1,12 +1,18 @@
 # Time Circuit Audio Archive
 
-This document tracks the current `index.html` release experience.
+This document tracks the current Time Circuit release experience.
 
-## Release structure
+## Experience shell
 
-Time Circuit now separates the numbered **Future's Past** sequence from older archive cuts.
+The public site uses a three-view EchoStory shell inspired by Northline while preserving Time Circuit's own visual language and content model:
 
-### Numbered Future's Past sequence
+- **Listen** — active MP3 player plus the TC-01 through TC-04 numbered queue;
+- **Archive** — recovered cuts and TC-01 alternate source renders, kept outside the numbered sequence;
+- **Store** — the Future's Past hoodie-only capsule using the Northline-style product-card, variant, Bag, and cart-drawer interaction pattern.
+
+`index.html` owns the page structure, `time-circuit.css` owns presentation, `time-circuit.js` owns audio/navigation behavior, and `future-past-store.js` owns the store boundary and cart presentation.
+
+## Numbered Future's Past sequence
 
 | Slot | Title | Audio state | Artwork | Tempo |
 |---|---|---|---|---|
@@ -15,11 +21,11 @@ Time Circuit now separates the numbered **Future's Past** sequence from older ar
 | TC-03 | Flux Professor | master pending | `images/flux.png` | 88 BPM target |
 | TC-04 | Paradox Queen | `04 — PARADOX QUEEN.mp3` wired | `images/chick.png` | 88 BPM |
 
-The additional `01 — EIGHTY-EIGHT REBEL (1).mp3` and `(2).mp3` files are alternate renders of TC-01, not separate numbered songs. They remain source/archive assets until one is deliberately promoted.
+The additional `01 — EIGHTY-EIGHT REBEL (1).mp3` and `(2).mp3` files are alternate renders of TC-01, not separate numbered songs. They appear in Archive as source renders and are never used to fill TC-02 or TC-03.
 
-### Archive cuts
+## Archive cuts
 
-The player also preserves the older Time Circuit experiments as a separate archive lane:
+The player preserves the older Time Circuit experiments as a separate archive lane:
 
 - `kids-will-love-it.mp3` — Kids Will Love It
 - `FLUX_SWAMP_(1955).mp3` — Flux Swamp (1955)
@@ -27,9 +33,11 @@ The player also preserves the older Time Circuit experiments as a separate archi
 
 `kids.gonnaLoveit.mp3` remains the short sample asset and is not a numbered release track.
 
+The existing analyzer documentation remains linked from the Archive view at `docs/audio-analysis-toolkit.md`.
+
 ## Artwork
 
-The six Future's Past design/timeline assets are all wired into the experience or store preview:
+The six Future's Past design/timeline assets are wired into the experience or store preview:
 
 - `images/marty.png` — Eighty-Eight Rebel / TC-01
 - `images/biff.png` — Full Cab Bruiser / TC-02
@@ -40,28 +48,31 @@ The six Future's Past design/timeline assets are all wired into the experience o
 
 ## Store
 
-The Future's Past hoodie shelf is intentionally separate from the broader AeroVista Apparel catalog.
+The Future's Past hoodie surface is intentionally separate from the broader AeroVista Apparel catalog.
 
-- `future-past-store.js` renders the shelf and enforces the boundary.
-- `store.json` is the browser-facing `time-circuit` destination manifest.
-- only Future's Past hoodies with canonical `avp_*` / `avv_*` identity may render as catalog products;
+- `future-past-store.js` renders the product grid, variant selectors, local Bag, and cart drawer while enforcing the boundary;
+- `store.json` is the browser-facing `time-circuit` destination manifest;
+- only Future's Past hoodies with canonical `avp_*` / `avv_*` identity may become live product cards;
 - provider/Square IDs are rejected from the browser manifest;
-- when no canonical hoodie records exist, the six design previews remain visible and commerce stays locked;
-- NXCore Commerce remains checkout authority.
+- when no canonical hoodie records exist, the six design previews remain visible and Add to Bag stays unavailable;
+- when canonical products exist, users can choose a canonical variant and build a local cart;
+- checkout remains disabled until the verified canonical NXCore Commerce handoff is deployed.
 
 See `docs/FUTURES_PAST_STORE.md` for the complete store contract.
 
 ## Player behavior
 
-The static page supports:
+The static player supports:
 
 - play/pause;
-- previous/next across playable masters;
+- previous/next across actual playable masters;
+- shuffle and repeat modes;
 - seek/duration display;
-- active-track state;
+- active-track state and Media Session metadata;
+- lightweight Web Audio visualization when supported;
 - pending numbered slots that are visible but not faked as playable masters;
-- automatic advance to the next available playable track.
+- separate playback of archive cuts and alternate renders.
 
 ## Next content action
 
-When TC-02 and TC-03 masters are finalized, add the exact numbered MP3 files and switch their existing slots from pending to playable. Do not renumber the archive to make missing masters appear complete.
+When TC-02 and TC-03 masters are finalized, add the exact numbered MP3 files and switch their existing slots from pending to playable. Do not renumber the archive or substitute alternate TC-01 renders to make the numbered sequence appear complete.
