@@ -20,7 +20,7 @@
   const futurePastTokens = ["future's past", 'futures past', 'future past', 'futures-past', 'future-past'];
   const productIdPattern = /^avp_[a-z0-9_-]+$/i;
   const variantIdPattern = /^avv_[a-z0-9_-]+$/i;
-  const forbiddenProviderKey = /^(?:square.*id|provider.*id|variation_id|squarevariationid|square_variation_id)$/i;
+  const forbiddenProviderKey = /^(?:square|provider|variation_id)/i;
 
   function hasProviderIdentity(value) {
     if (!value || typeof value !== 'object') return false;
@@ -47,6 +47,7 @@
   function hasCanonicalIdentity(product) {
     if (!productIdPattern.test(String(product.id || ''))) return false;
     const variants = Array.isArray(product.variants) ? product.variants : [];
+    if (!variants.length) return false;
     return variants.every(variant => variantIdPattern.test(String(variant.id || '')));
   }
 
