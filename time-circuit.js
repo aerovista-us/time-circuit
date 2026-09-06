@@ -65,7 +65,8 @@
   }
 
   function numberedPlayable(){return numberedTracks.filter(t=>t.playable);}
-  function moveNumbered(step){const list=numberedPlayable();let idx=list.indexOf(current);if(idx<0)idx=step>0?-1:0;loadTrack(list[(idx+step+list.length)%list.length],!audio.paused);}
+  function nextNumbered(step){const list=numberedPlayable();let idx=list.indexOf(current);if(idx<0)idx=step>0?-1:0;return list[(idx+step+list.length)%list.length];}
+  function moveNumbered(step,autoplay=!audio.paused){loadTrack(nextNumbered(step),autoplay);}
 
   function renderPlaylist(){
     playlistEl.innerHTML=numberedTracks.map(track=>`<button type="button" class="track-button ${track===current?'active ':''}${track.playable?'':'pending'}" data-number="${track.number}" ${track.playable?'':'disabled'}><strong>${escapeHtml(track.number)} — ${escapeHtml(track.title)}</strong><span class="sub">${escapeHtml(track.subtitle)} · ${escapeHtml(track.bpm)}${track.playable?'':' · MASTER PENDING'}</span></button>`).join('');
@@ -83,7 +84,7 @@
   btnPlay.addEventListener('click',()=>audio.paused?playCurrent():audio.pause());btnPrev.addEventListener('click',()=>moveNumbered(-1));btnNext.addEventListener('click',()=>moveNumbered(1));btnRestart.addEventListener('click',()=>{audio.currentTime=0;if(!audio.paused)playCurrent();});
   seek.addEventListener('input',()=>{if(audio.duration)audio.currentTime=(Number(seek.value)/1000)*audio.duration;});vol.addEventListener('input',()=>audio.volume=Number(vol.value));audio.volume=Number(vol.value);
   audio.addEventListener('loadedmetadata',()=>{tDur.textContent=fmt(audio.duration);hook.textContent='READY';});audio.addEventListener('timeupdate',()=>{tCur.textContent=fmt(audio.currentTime);if(audio.duration)seek.value=String((audio.currentTime/audio.duration)*1000);});
-  audio.addEventListener('play',()=>{btnPlay.textContent='Pause';mode.textContent='PLAYING';hook.textContent='SIGNAL LOCKED';flux.textContent='ENGAGED';});audio.addEventListener('pause',()=>{btnPlay.textContent='Play';if(!audio.ended){mode.textContent=current.playable?'PAUSED':'MASTER PENDING';flux.textContent=current.playable?'ARMED':'STANDBY';}});audio.addEventListener('ended',()=>moveNumbered(1));audio.addEventListener('error',()=>{mode.textContent='LOAD ERROR';hook.textContent='Audio source unavailable';flux.textContent='FAULT';});
+  audio.addEventListener('play',()=>{btnPlay.textContent='Pause';mode.textContent='PLAYING';hook.textContent='SIGNAL LOCKED';flux.textContent='ENGAGED';});audio.addEventListener('pause',()=>{btnPlay.textContent='Play';if(!audio.ended){mode.textContent=current.playable?'PAUSED':'MASTER PENDING';flux.textContent=current.playable?'ARMED':'STANDBY';}});audio.addEventListener('ended',()=>moveNumbered(1,true));audio.addEventListener('error',()=>{mode.textContent='LOAD ERROR';hook.textContent='Audio source unavailable';flux.textContent='FAULT';});
 
   $('shareButton')?.addEventListener('click',async()=>{const share={title:'The Time Circuit — EchoVerse Audio',text:"Listen to Future's Past and explore the Time Circuit.",url:location.href};if(navigator.share){try{await navigator.share(share);return;}catch(err){if(err?.name==='AbortError')return;}}try{await navigator.clipboard.writeText(location.href);toast('Time Circuit link copied.');}catch{toast('Share this page: '+location.href);}});
   function toast(message){const el=$('toast');if(!el)return;el.textContent=message;el.hidden=false;clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.hidden=true,2600);}
