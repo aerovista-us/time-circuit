@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "destinationId": "time-circuit",
+  "title": "Future's Past Hoodie Capsule",
+  "currency": "USD",
+  "catalogVersion": null,
+  "generatedAt": null,
+  "policy": {
+    "collectionMustMatch": "Future's Past",
+    "productTypeMustContain": "hoodie",
+    "denyNonMatchingProducts": true,
+    "denyUnmappedCheckout": true
+  },
+  "checkout": {
+    "mode": "canonical-commerce",
+    "endpoint": null
+  },
+  "products": []
+}
