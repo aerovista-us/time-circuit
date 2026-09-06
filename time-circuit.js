@@ -1,160 +1,102 @@
 (() => {
   'use strict';
 
-  const tracks = [
-    { number:'TC-01', title:'Eighty-Eight Rebel', subtitle:"Future's Past // numbered archive", src:'./01 — EIGHTY-EIGHT REBEL.mp3', art:'./images/marty.png', bpm:'88 BPM', lane:'numbered', playable:true, description:'The first numbered Time Circuit transmission: 88 BPM with one foot in 1985 and the other somewhere past 3026.' },
-    { number:'TC-02', title:'Full Cab Bruiser', subtitle:"Future's Past // master slot", art:'./images/biff.png', bpm:'88 BPM', lane:'numbered', playable:false, description:'The bruiser slot is wired and waiting for its numbered audio master.' },
-    { number:'TC-03', title:'Flux Professor', subtitle:"Future's Past // master slot", art:'./images/flux.png', bpm:'88 BPM', lane:'numbered', playable:false, description:'The Professor slot is wired and waiting for its numbered audio master.' },
-    { number:'TC-04', title:'Paradox Queen', subtitle:"Future's Past // numbered archive", src:'./04 — PARADOX QUEEN.mp3', art:'./images/chick.png', bpm:'88 BPM', lane:'numbered', playable:true, description:"Same girl. Different timeline. The fourth numbered transmission closes the current Future's Past circuit at 88 BPM." },
-    { number:'ARC-01', title:'Kids Will Love It', subtitle:'Original Time Circuit drop', src:'./kids-will-love-it.mp3', art:'./kids.will.love.it.png', bpm:'90.25 halftime', lane:'archive', playable:true, description:'The original cinematic quote-slam and halftime SwampHop drop that opened the early Time Circuit experiment.' },
-    { number:'ARC-02', title:'Flux Swamp (1955)', subtitle:'Analog swamp intro', src:'./FLUX_SWAMP_(1955).mp3', art:'./images/doc.png', bpm:'~90 groove', lane:'archive', playable:true, description:'Tape hiss, swamp night, clean guitar, and an earlier time-travel experiment.' },
-    { number:'ARC-03', title:'Momento × LowFreq × New Sound', subtitle:'SwampTime Flux mashup', src:'./momentoxLowFreqxNEW_SOUND.mp3', art:'./images/www.png', bpm:'Archive cut', lane:'archive', playable:true, description:'A low-frequency side-channel transmission from the Time Circuit source archive.' },
-    { number:'ALT-01A', title:'Eighty-Eight Rebel — Alternate 1', subtitle:'TC-01 source render', src:'./01 — EIGHTY-EIGHT REBEL (1).mp3', art:'./images/marty.png', bpm:'88 BPM', lane:'alternate', playable:true, description:'Alternate source render for TC-01. It remains outside the numbered sequence.' },
-    { number:'ALT-01B', title:'Eighty-Eight Rebel — Alternate 2', subtitle:'TC-01 source render', src:'./01 — EIGHTY-EIGHT REBEL (2).mp3', art:'./images/marty.png', bpm:'88 BPM', lane:'alternate', playable:true, description:'Second alternate source render for TC-01. It remains outside the numbered sequence.' }
+  const numberedTracks = [
+    {number:'TC-01',title:'Eighty-Eight Rebel',subtitle:"Future's Past // numbered archive",src:'./01 — EIGHTY-EIGHT REBEL.mp3',art:'./images/marty.png',bpm:'88 BPM',lane:'TC-01',playable:true,description:'The first numbered Time Circuit transmission: 88 BPM with one foot in 1985 and the other somewhere past 3026.'},
+    {number:'TC-02',title:'Full Cab Bruiser',subtitle:"Future's Past // master slot",art:'./images/biff.png',bpm:'88 BPM',lane:'TC-02',playable:false,description:'The bruiser slot is wired and waiting for its numbered audio master.'},
+    {number:'TC-03',title:'Flux Professor',subtitle:"Future's Past // master slot",art:'./images/flux.png',bpm:'88 BPM',lane:'TC-03',playable:false,description:'The Professor slot is wired and waiting for its numbered audio master.'},
+    {number:'TC-04',title:'Paradox Queen',subtitle:"Future's Past // numbered archive",src:'./04 — PARADOX QUEEN.mp3',art:'./images/chick.png',bpm:'88 BPM',lane:'TC-04',playable:true,description:"Same girl. Different timeline. The fourth numbered transmission closes the current Future's Past circuit at 88 BPM."}
+  ];
+
+  const archiveTracks = [
+    {number:'ARC-01',title:'Kids Will Love It',subtitle:'Original Time-Circuit drop',src:'./kids-will-love-it.mp3',art:'./kids.will.love.it.png',bpm:'90.25 halftime',lane:'Archive',playable:true,description:'The original cinematic quote-slam and halftime SwampHop drop that opened the Time Circuit.'},
+    {number:'ARC-02',title:'Flux Swamp (1955)',subtitle:'Analog swamp intro',src:'./FLUX_SWAMP_(1955).mp3',art:'./images/doc.png',bpm:'~90 groove',lane:'Archive',playable:true,description:'Tape hiss, swamp night, clean guitar, and the older time-travel experiment.'},
+    {number:'ARC-03',title:'Momento × LowFreq × New Sound',subtitle:'SwampTime Flux mashup',src:'./momentoxLowFreqxNEW_SOUND.mp3',art:'./images/www.png',bpm:'variable',lane:'Archive',playable:true,description:'A multi-era mashup moving from nostalgia bounce through swamp-western fracture into the future.'},
+    {number:'ALT-01A',title:'Eighty-Eight Rebel — Alt 1',subtitle:'TC-01 alternate render',src:'./01 — EIGHTY-EIGHT REBEL (1).mp3',art:'./images/marty.png',bpm:'88 BPM',lane:'Alternate',playable:true,description:'Alternate render of TC-01. Kept outside the numbered canon until deliberately promoted.'},
+    {number:'ALT-01B',title:'Eighty-Eight Rebel — Alt 2',subtitle:'TC-01 alternate render',src:'./01 — EIGHTY-EIGHT REBEL (2).mp3',art:'./images/marty.png',bpm:'88 BPM',lane:'Alternate',playable:true,description:'Second alternate render of TC-01. Kept outside the numbered canon until deliberately promoted.'}
   ];
 
   const $ = id => document.getElementById(id);
-  const els = {
-    audio:$('audio'), heroArt:$('heroArt'), ambientArt:$('ambientArt'), artStage:$('artStage'), visualizer:$('visualizer'),
-    trackNumber:$('trackNumber'), trackBpm:$('trackBpm'), trackTitle:$('trackTitle'), trackSubtitle:$('trackSubtitle'), trackDescription:$('trackDescription'),
-    playbackStatus:$('playbackStatus'), transportCard:$('transportCard'), currentTime:$('currentTime'), duration:$('duration'), seek:$('seek'),
-    playButton:$('playButton'), playIcon:$('playIcon'), prevButton:$('prevButton'), nextButton:$('nextButton'), shuffleButton:$('shuffleButton'), repeatButton:$('repeatButton'),
-    trackList:$('trackList'), archiveGrid:$('archiveGrid'), shareButton:$('shareButton'), toast:$('toast')
-  };
+  const audio=$('audio'),cover=$('coverImg'),title=$('trackTitle'),description=$('trackDescription'),badgeBpm=$('badgeBpm'),badgeLane=$('badgeLane');
+  const btnPrev=$('btnPrev'),btnPlay=$('btnPlay'),btnNext=$('btnNext'),btnRestart=$('btnRestart'),seek=$('seek'),vol=$('vol'),tCur=$('tCur'),tDur=$('tDur');
+  const mode=$('mode'),hook=$('hook'),dest=$('dest'),flux=$('flux'),playlistEl=$('playlist'),nowPlaying=$('nowPlayingLabel'),trackCount=$('trackCount'),archiveGrid=$('archiveGrid');
+  const wave=$('wave'),tri=$('tri'),core=$('core'),bolt=$('bolt'),barsG=$('bars');
+  let current=numberedTracks[0],ctx,analyser,sourceNode,data,freq;
+  const bars=[];const BAR_COUNT=48,W=920,H=120,gap=6,bw=(W-(BAR_COUNT-1)*gap)/BAR_COUNT;
 
-  const PLAYER_KEY = 'time_circuit_player_v2';
-  const state = { index:0, shuffle:false, repeat:'all', playing:false, audioCtx:null, source:null, analyser:null, frame:0 };
+  const fmt=s=>{if(!Number.isFinite(s))return'0:00';const sec=Math.max(0,Math.floor(s));return Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');};
+  const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+  const escapeHtml=s=>String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 
-  function escapeHtml(value){return String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-  function formatTime(value){if(!Number.isFinite(value)||value<0)return '0:00';const m=Math.floor(value/60),s=Math.floor(value%60);return `${m}:${String(s).padStart(2,'0')}`;}
-  function currentTrack(){return tracks[state.index] || tracks[0];}
-  function playableIndexes(){return tracks.map((track,index)=>track.playable?index:-1).filter(index=>index>=0);}
-
-  function toast(message){
-    if(!els.toast) return;
-    els.toast.textContent=message;els.toast.hidden=false;
-    clearTimeout(toast.timer);toast.timer=setTimeout(()=>{els.toast.hidden=true;},2800);
+  for(let i=0;i<BAR_COUNT;i++){
+    const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    rect.setAttribute('x',i*(bw+gap));rect.setAttribute('y','-2');rect.setAttribute('width',bw);rect.setAttribute('height','2');rect.setAttribute('rx','2');rect.setAttribute('fill','rgba(146,222,255,.68)');rect.setAttribute('opacity','.9');barsG.appendChild(rect);bars.push(rect);
   }
 
-  function setView(view){
-    document.querySelectorAll('[data-view-panel]').forEach(panel=>panel.classList.toggle('active',panel.dataset.viewPanel===view));
-    document.querySelectorAll('.section-nav [data-view]').forEach(button=>button.classList.toggle('active',button.dataset.view===view));
-    window.scrollTo({top:0,behavior:'smooth'});
-  }
-
-  function renderNumbered(){
-    const numbered=tracks.filter(track=>track.lane==='numbered');
-    els.trackList.innerHTML=numbered.map(track=>{
-      const index=tracks.indexOf(track);
-      return `<div class="track-row ${index===state.index?'active':''} ${track.playable?'':'pending'}" data-track-index="${index}" role="button" tabindex="0" aria-label="${track.playable?'Play':'Open'} ${escapeHtml(track.title)}">
-        <span class="track-num">${escapeHtml(track.number)}</span>
-        <img class="track-thumb" src="${escapeHtml(track.art)}" alt="" loading="lazy">
-        <span class="track-meta"><strong>${escapeHtml(track.title)}</strong><span>${escapeHtml(track.subtitle)}</span></span>
-        <span class="track-state ${track.playable?'ready':''}">${track.playable?(index===state.index&&state.playing?'PLAYING':'MASTER READY'):'MASTER PENDING'}</span>
-      </div>`;
-    }).join('');
-    els.trackList.querySelectorAll('[data-track-index]').forEach(row=>{
-      const activate=()=>selectTrack(Number(row.dataset.trackIndex),false);
-      row.addEventListener('click',activate);
-      row.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();activate();}});
-    });
-  }
-
-  function renderArchive(){
-    const archive=tracks.filter(track=>track.lane!=='numbered');
-    els.archiveGrid.innerHTML=archive.map(track=>{
-      const index=tracks.indexOf(track);
-      const kind=track.lane==='alternate'?'SOURCE RENDER':'ARCHIVE CUT';
-      return `<article class="archive-card" data-track-index="${index}" tabindex="0" role="button" aria-label="Listen to ${escapeHtml(track.title)}">
-        <img src="${escapeHtml(track.art)}" alt="${escapeHtml(track.title)} artwork" loading="lazy">
-        <div><p class="eyebrow">${escapeHtml(track.number)} / ${kind}</p><h2>${escapeHtml(track.title)}</h2><p>${escapeHtml(track.description)}</p></div>
-        <span class="archive-state">PLAY MASTER ↗</span>
-      </article>`;
-    }).join('');
-    els.archiveGrid.querySelectorAll('[data-track-index]').forEach(card=>{
-      const activate=()=>{selectTrack(Number(card.dataset.trackIndex),true);setView('listen');};
-      card.addEventListener('click',activate);
-      card.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();activate();}});
-    });
-  }
-
-  function applyTrack(track){
-    els.heroArt.src=track.art;els.heroArt.alt=`${track.title} artwork`;
-    els.ambientArt.style.backgroundImage=`url("${track.art}")`;
-    els.trackNumber.textContent=track.number;els.trackBpm.textContent=track.bpm;els.trackTitle.textContent=track.title;els.trackSubtitle.textContent=track.subtitle;els.trackDescription.textContent=track.description;
-    document.title=`${track.title} — The Time Circuit | EchoVerse Audio`;
-    if(track.playable){
-      const resolved=new URL(track.src,document.baseURI).href;
-      if(els.audio.currentSrc!==resolved){els.audio.src=track.src;els.audio.load();}
-      setStatus('READY','ready');
-    }else{
-      els.audio.pause();els.audio.removeAttribute('src');els.audio.load();state.playing=false;setPlayState(false);setStatus('MASTER PENDING','error');
-    }
-    if('mediaSession' in navigator && track.playable){
-      try{navigator.mediaSession.metadata=new MediaMetadata({title:track.title,artist:'AeroVista',album:"The Time Circuit — Future's Past",artwork:[{src:new URL(track.art,document.baseURI).href}]});}catch{}
-    }
-    renderNumbered();savePlayer();
-  }
-
-  function selectTrack(index,autoplay){
-    if(index<0||index>=tracks.length)return;
-    const resume=Boolean(autoplay||state.playing||!els.audio.paused);
-    if(!els.audio.paused)els.audio.pause();
-    const track=tracks[index];state.index=index;applyTrack(track);
-    if(!track.playable){toast(`${track.title}: numbered master is not loaded yet.`);return;}
-    if(resume) playCurrent();
-  }
-
-  function setStatus(label,mode){els.playbackStatus.textContent=label;els.transportCard.dataset.playbackState=mode||'ready';}
-  function setPlayState(on){state.playing=on;els.playIcon.textContent=on?'Ⅱ':'▶';els.playButton.setAttribute('aria-label',on?'Pause':'Play');els.artStage.classList.toggle('playing',on);setStatus(on?'PLAYING':'PAUSED',on?'playing':'paused');renderNumbered();}
-
-  async function ensureAudioGraph(){
-    if(state.audioCtx){if(state.audioCtx.state==='suspended')await state.audioCtx.resume();return;}
-    const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
-    try{
-      state.audioCtx=new AC();state.source=state.audioCtx.createMediaElementSource(els.audio);state.analyser=state.audioCtx.createAnalyser();state.analyser.fftSize=256;state.analyser.smoothingTimeConstant=.82;state.source.connect(state.analyser).connect(state.audioCtx.destination);await state.audioCtx.resume();drawVisualizer();
-    }catch(error){console.info('Visualizer unavailable; native audio remains active.',error);}
+  function ensureAudio(){
+    if(ctx)return true;
+    const AC=window.AudioContext||window.webkitAudioContext;if(!AC){hook.textContent='Visualizer unavailable';return false;}
+    try{ctx=new AC();analyser=ctx.createAnalyser();analyser.fftSize=2048;analyser.smoothingTimeConstant=.85;data=new Uint8Array(analyser.fftSize);freq=new Uint8Array(analyser.frequencyBinCount);sourceNode=ctx.createMediaElementSource(audio);sourceNode.connect(analyser);analyser.connect(ctx.destination);return true;}
+    catch(err){console.warn('WebAudio analyzer disabled:',err);hook.textContent='Visualizer unavailable';return false;}
   }
 
   async function playCurrent(){
-    const track=currentTrack();if(!track.playable){toast(`${track.title}: master pending.`);return;}
-    await ensureAudioGraph();
-    try{await els.audio.play();}catch(error){console.info(error);toast('Playback needs a tap or the MP3 source is unavailable.');}
+    if(!current.playable||!current.src){mode.textContent='MASTER PENDING';hook.textContent='No numbered master loaded';return;}
+    ensureAudio();if(ctx?.state==='suspended'){try{await ctx.resume();}catch{}}
+    try{await audio.play();}catch(err){console.warn(err);hook.textContent='Tap Play to start audio';}
   }
 
-  function nextTrack(direction=1){
-    const available=playableIndexes();if(!available.length)return;
-    if(state.shuffle){const choices=available.filter(index=>index!==state.index);selectTrack(choices[Math.floor(Math.random()*choices.length)] ?? available[0],true);return;}
-    let pos=available.indexOf(state.index);if(pos<0)pos=0;pos=(pos+direction+available.length)%available.length;selectTrack(available[pos],true);
+  function updateMediaSession(){
+    if(!('mediaSession' in navigator)||typeof MediaMetadata==='undefined')return;
+    try{navigator.mediaSession.metadata=new MediaMetadata({title:current.title,artist:'AeroVista',album:"The Time Circuit — Future's Past",artwork:[{src:new URL(current.art,document.baseURI).href}]});}catch{}
   }
 
-  function drawVisualizer(){
-    const canvas=els.visualizer,ctx=canvas.getContext('2d');if(!ctx||!state.analyser)return;
-    const data=new Uint8Array(state.analyser.frequencyBinCount);
-    const render=()=>{
-      state.frame=requestAnimationFrame(render);const ratio=window.devicePixelRatio||1;const w=Math.max(1,canvas.clientWidth),h=Math.max(1,canvas.clientHeight);if(canvas.width!==Math.round(w*ratio)||canvas.height!==Math.round(h*ratio)){canvas.width=Math.round(w*ratio);canvas.height=Math.round(h*ratio);ctx.setTransform(ratio,0,0,ratio,0,0);}
-      ctx.clearRect(0,0,w,h);if(!state.playing)return;state.analyser.getByteFrequencyData(data);const bars=36,gap=3,bw=Math.max(2,(w-gap*(bars-1))/bars);for(let i=0;i<bars;i++){const v=data[Math.floor(i*data.length/bars)]/255;const bh=Math.max(2,v*h*.24);const x=i*(bw+gap);const grad=ctx.createLinearGradient(0,h-bh,0,h);grad.addColorStop(0,'rgba(90,200,255,.9)');grad.addColorStop(1,'rgba(255,153,88,.55)');ctx.fillStyle=grad;ctx.fillRect(x,h-bh,bw,bh);}
-    };render();
+  function updateTrackUI(){
+    title.textContent=current.title.toUpperCase();description.textContent=current.description;badgeBpm.textContent=current.bpm;badgeLane.textContent=current.number;cover.src=current.art;cover.alt=current.title+' artwork';
+    const n=numberedTracks.indexOf(current);nowPlaying.textContent=n>=0?`Now playing: ${current.number}`:`Archive playback: ${current.number}`;trackCount.textContent=n>=0?`${n+1} / ${numberedTracks.length}`:'ARCHIVE';
+    document.title=`${current.title} — The Time Circuit | EchoVerse Audio`;updateMediaSession();renderPlaylist();
   }
 
-  function savePlayer(){try{localStorage.setItem(PLAYER_KEY,JSON.stringify({index:state.index,shuffle:state.shuffle,repeat:state.repeat}));}catch{}}
-  function loadPlayer(){try{const saved=JSON.parse(localStorage.getItem(PLAYER_KEY)||'{}');state.index=Number.isInteger(saved.index)&&tracks[saved.index]?saved.index:0;state.shuffle=Boolean(saved.shuffle);state.repeat=['all','one','off'].includes(saved.repeat)?saved.repeat:'all';}catch{}}
+  function loadTrack(track,autoplay=false){
+    if(!track)return;audio.pause();current=track;seek.value='0';tCur.textContent='0:00';tDur.textContent='0:00';
+    if(track.playable&&track.src){audio.src=track.src;audio.load();mode.textContent='IDLE';hook.textContent='ARMING...';flux.textContent='ARMED';}
+    else{audio.removeAttribute('src');audio.load();mode.textContent='MASTER PENDING';hook.textContent='Waiting for real master';flux.textContent='STANDBY';}
+    updateTrackUI();if(autoplay&&track.playable)playCurrent();
+  }
 
-  document.querySelectorAll('.section-nav [data-view]').forEach(button=>button.addEventListener('click',()=>setView(button.dataset.view)));
-  document.querySelectorAll('[data-view-target]').forEach(button=>button.addEventListener('click',()=>setView(button.dataset.viewTarget)));
-  els.playButton.addEventListener('click',()=>els.audio.paused?playCurrent():els.audio.pause());
-  els.prevButton.addEventListener('click',()=>nextTrack(-1));els.nextButton.addEventListener('click',()=>nextTrack(1));
-  els.shuffleButton.addEventListener('click',()=>{state.shuffle=!state.shuffle;els.shuffleButton.setAttribute('aria-pressed',String(state.shuffle));savePlayer();toast(state.shuffle?'Shuffle armed.':'Shuffle off.');});
-  els.repeatButton.addEventListener('click',()=>{state.repeat=state.repeat==='all'?'one':state.repeat==='one'?'off':'all';els.repeatButton.dataset.mode=state.repeat;els.repeatButton.textContent=state.repeat==='one'?'↻1':'↻';savePlayer();toast(`Repeat ${state.repeat}.`);});
-  els.audio.addEventListener('play',()=>setPlayState(true));els.audio.addEventListener('pause',()=>{if(!els.audio.ended)setPlayState(false);});
-  els.audio.addEventListener('loadedmetadata',()=>{els.duration.textContent=formatTime(els.audio.duration);setStatus('READY','ready');});
-  els.audio.addEventListener('timeupdate',()=>{els.currentTime.textContent=formatTime(els.audio.currentTime);if(Number.isFinite(els.audio.duration)&&els.audio.duration>0)els.seek.value=String(Math.round(els.audio.currentTime/els.audio.duration*1000));});
-  els.seek.addEventListener('input',()=>{if(Number.isFinite(els.audio.duration)&&els.audio.duration>0)els.audio.currentTime=Number(els.seek.value)/1000*els.audio.duration;});
-  els.audio.addEventListener('ended',()=>{if(state.repeat==='one'){els.audio.currentTime=0;playCurrent();}else if(state.repeat==='all'||state.shuffle)nextTrack(1);else setPlayState(false);});
-  els.audio.addEventListener('error',()=>{setPlayState(false);setStatus('SOURCE ERROR','error');});
-  els.shareButton.addEventListener('click',async()=>{const data={title:'The Time Circuit — EchoVerse Audio',text:"88 BPM transmissions from 1985 to 3026.",url:location.href};if(navigator.share){try{await navigator.share(data);return;}catch(error){if(error?.name==='AbortError')return;}}try{await navigator.clipboard.writeText(data.url);toast('Time Circuit link copied.');}catch{toast('Copy the address from your browser.');}});
+  function numberedPlayable(){return numberedTracks.filter(t=>t.playable);}
+  function moveNumbered(step){const list=numberedPlayable();let idx=list.indexOf(current);if(idx<0)idx=step>0?-1:0;loadTrack(list[(idx+step+list.length)%list.length],!audio.paused);}
 
-  if('mediaSession' in navigator){navigator.mediaSession.setActionHandler?.('play',playCurrent);navigator.mediaSession.setActionHandler?.('pause',()=>els.audio.pause());navigator.mediaSession.setActionHandler?.('previoustrack',()=>nextTrack(-1));navigator.mediaSession.setActionHandler?.('nexttrack',()=>nextTrack(1));}
+  function renderPlaylist(){
+    playlistEl.innerHTML=numberedTracks.map(track=>`<button type="button" class="track-button ${track===current?'active ':''}${track.playable?'':'pending'}" data-number="${track.number}" ${track.playable?'':'disabled'}><strong>${escapeHtml(track.number)} — ${escapeHtml(track.title)}</strong><span class="sub">${escapeHtml(track.subtitle)} · ${escapeHtml(track.bpm)}${track.playable?'':' · MASTER PENDING'}</span></button>`).join('');
+    playlistEl.querySelectorAll('[data-number]').forEach(btn=>btn.addEventListener('click',()=>{const track=numberedTracks.find(t=>t.number===btn.dataset.number);if(track?.playable)loadTrack(track,true);}));
+  }
 
-  loadPlayer();els.shuffleButton.setAttribute('aria-pressed',String(state.shuffle));els.repeatButton.dataset.mode=state.repeat;renderArchive();applyTrack(currentTrack());
+  function renderArchive(){
+    archiveGrid.innerHTML=archiveTracks.map((track,i)=>`<article class="archive-card" data-archive="${i}" tabindex="0" role="button"><img src="${escapeHtml(track.art)}" alt=""><div><div class="eyebrow">${escapeHtml(track.number)} / ${escapeHtml(track.bpm)}</div><h2>${escapeHtml(track.title)}</h2><p>${escapeHtml(track.description)}</p></div><span class="archive-state">Play ↗</span></article>`).join('');
+    archiveGrid.querySelectorAll('[data-archive]').forEach(card=>{const activate=()=>{loadTrack(archiveTracks[Number(card.dataset.archive)],true);setView('listen');};card.addEventListener('click',activate);card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();activate();}});});
+  }
+
+  function setView(name){document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===name));document.querySelectorAll('[data-view-panel]').forEach(p=>p.classList.toggle('active',p.dataset.viewPanel===name));window.scrollTo({top:0,behavior:'smooth'});}
+  document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));document.querySelectorAll('[data-view-target]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.viewTarget)));
+
+  btnPlay.addEventListener('click',()=>audio.paused?playCurrent():audio.pause());btnPrev.addEventListener('click',()=>moveNumbered(-1));btnNext.addEventListener('click',()=>moveNumbered(1));btnRestart.addEventListener('click',()=>{audio.currentTime=0;if(!audio.paused)playCurrent();});
+  seek.addEventListener('input',()=>{if(audio.duration)audio.currentTime=(Number(seek.value)/1000)*audio.duration;});vol.addEventListener('input',()=>audio.volume=Number(vol.value));audio.volume=Number(vol.value);
+  audio.addEventListener('loadedmetadata',()=>{tDur.textContent=fmt(audio.duration);hook.textContent='READY';});audio.addEventListener('timeupdate',()=>{tCur.textContent=fmt(audio.currentTime);if(audio.duration)seek.value=String((audio.currentTime/audio.duration)*1000);});
+  audio.addEventListener('play',()=>{btnPlay.textContent='Pause';mode.textContent='PLAYING';hook.textContent='SIGNAL LOCKED';flux.textContent='ENGAGED';});audio.addEventListener('pause',()=>{btnPlay.textContent='Play';if(!audio.ended){mode.textContent=current.playable?'PAUSED':'MASTER PENDING';flux.textContent=current.playable?'ARMED':'STANDBY';}});audio.addEventListener('ended',()=>moveNumbered(1));audio.addEventListener('error',()=>{mode.textContent='LOAD ERROR';hook.textContent='Audio source unavailable';flux.textContent='FAULT';});
+
+  $('shareButton')?.addEventListener('click',async()=>{const share={title:'The Time Circuit — EchoVerse Audio',text:"Listen to Future's Past and explore the Time Circuit.",url:location.href};if(navigator.share){try{await navigator.share(share);return;}catch(err){if(err?.name==='AbortError')return;}}try{await navigator.clipboard.writeText(location.href);toast('Time Circuit link copied.');}catch{toast('Share this page: '+location.href);}});
+  function toast(message){const el=$('toast');if(!el)return;el.textContent=message;el.hidden=false;clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.hidden=true,2600);}
+
+  if('mediaSession' in navigator){try{navigator.mediaSession.setActionHandler('play',playCurrent);navigator.mediaSession.setActionHandler('pause',()=>audio.pause());navigator.mediaSession.setActionHandler('previoustrack',()=>moveNumbered(-1));navigator.mediaSession.setActionHandler('nexttrack',()=>moveNumbered(1));}catch{}}
+
+  function animate(){
+    requestAnimationFrame(animate);if(!analyser)return;analyser.getByteTimeDomainData(data);analyser.getByteFrequencyData(freq);let low=0,mid=0,high=0;const n=freq.length;
+    for(let i=0;i<n;i++){const v=freq[i]/255;if(i<n*.12)low+=v;else if(i<n*.45)mid+=v;else high+=v;}low/=n*.12;mid/=n*.33;high/=n*.55;const intensity=clamp(low*1.2+mid*.9+high*.6,0,1);
+    let d='M0 300';const points=64;for(let i=0;i<points;i++){const idx=Math.floor((i/(points-1))*(data.length-1));const t=(data[idx]-128)/128;const x=(i/(points-1))*1000;const y=300+t*(40+intensity*55);d+=` L ${x.toFixed(1)} ${y.toFixed(1)}`;}wave.setAttribute('d',d);
+    for(let i=0;i<BAR_COUNT;i++){const bin=Math.floor((i/BAR_COUNT)*(n-1));const v=freq[bin]/255;const h=2+v*H*(.55+intensity*.75);bars[i].setAttribute('y',String(-h));bars[i].setAttribute('height',String(h));bars[i].setAttribute('fill',i>BAR_COUNT*.72?'rgba(255,165,98,.72)':'rgba(146,222,255,.68)');}
+    tri.style.transform=`scale(${(1+intensity*.08).toFixed(3)})`;tri.style.transformOrigin='center';core.setAttribute('r',String(10+intensity*13));core.setAttribute('opacity',String(.55+intensity*.42));bolt.setAttribute('opacity',String(.45+high*.5));dest.textContent=String(Math.round(88+low*11));
+  }
+
+  renderPlaylist();renderArchive();loadTrack(numberedTracks[0],false);animate();
 })();
