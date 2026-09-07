@@ -22,7 +22,9 @@
   const mode=$('mode'),hook=$('hook'),dest=$('dest'),flux=$('flux'),playlistEl=$('playlist'),nowPlaying=$('nowPlayingLabel'),trackCount=$('trackCount'),archiveGrid=$('archiveGrid');
   const wave=$('wave'),tri=$('tri'),core=$('core'),bolt=$('bolt'),barsG=$('bars');
   const sampleAudio=new Audio('./kids.gonnaLoveit.mp3');sampleAudio.preload='metadata';
+  const SAMPLE_GAIN=1.75;
   let current=numberedTracks[0],ctx,analyser,sourceNode,data,freq;
+  let sampleCtx,sampleSource,sampleGain,sampleLimiter;
   const bars=[];const BAR_COUNT=48,W=920,H=120,gap=6,bw=(W-(BAR_COUNT-1)*gap)/BAR_COUNT;
 
   const fmt=s=>{if(!Number.isFinite(s))return'0:00';const sec=Math.max(0,Math.floor(s));return Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');};
@@ -39,6 +41,17 @@
     const AC=window.AudioContext||window.webkitAudioContext;if(!AC){hook.textContent='Visualizer unavailable';return false;}
     try{ctx=new AC();analyser=ctx.createAnalyser();analyser.fftSize=2048;analyser.smoothingTimeConstant=.85;data=new Uint8Array(analyser.fftSize);freq=new Uint8Array(analyser.frequencyBinCount);sourceNode=ctx.createMediaElementSource(audio);sourceNode.connect(analyser);analyser.connect(ctx.destination);return true;}
     catch(err){console.warn('WebAudio analyzer disabled:',err);hook.textContent='Visualizer unavailable';return false;}
+  }
+
+  function ensureSampleAudio(){
+    if(sampleCtx)return true;
+    const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return false;
+    try{
+      sampleCtx=new AC();sampleSource=sampleCtx.createMediaElementSource(sampleAudio);sampleGain=sampleCtx.createGain();sampleLimiter=sampleCtx.createDynamicsCompressor();
+      sampleGain.gain.value=SAMPLE_GAIN;
+      sampleLimiter.threshold.value=-3;sampleLimiter.knee.value=0;sampleLimiter.ratio.value=20;sampleLimiter.attack.value=.003;sampleLimiter.release.value=.18;
+      sampleSource.connect(sampleGain);sampleGain.connect(sampleLimiter);sampleLimiter.connect(sampleCtx.destination);return true;
+    }catch(err){console.warn('Sample gain stage unavailable:',err);sampleCtx=null;return false;}
   }
 
   async function playCurrent(){
@@ -83,7 +96,7 @@
   document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));document.querySelectorAll('[data-view-target]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.viewTarget)));
 
   btnPlay.addEventListener('click',()=>audio.paused?playCurrent():audio.pause());btnPrev.addEventListener('click',()=>moveNumbered(-1));btnNext.addEventListener('click',()=>moveNumbered(1));btnRestart.addEventListener('click',()=>{audio.currentTime=0;if(!audio.paused)playCurrent();});
-  btnSample?.addEventListener('click',async()=>{try{if(sampleAudio.paused){sampleAudio.currentTime=0;await sampleAudio.play();btnSample.textContent='Stop Sample';}else{sampleAudio.pause();sampleAudio.currentTime=0;btnSample.textContent='Play Sample';}}catch(err){console.error('Sample playback failed:',err);btnSample.textContent='Sample Error';}});sampleAudio.addEventListener('ended',()=>{if(btnSample)btnSample.textContent='Play Sample';});
+  btnSample?.addEventListener('click',async()=>{try{if(sampleAudio.paused){const boosted=ensureSampleAudio();if(boosted&&sampleCtx?.state==='suspended')await sampleCtx.resume();sampleAudio.currentTime=0;await sampleAudio.play();btnSample.textContent='Stop Sample';}else{sampleAudio.pause();sampleAudio.currentTime=0;btnSample.textContent='Play Sample';}}catch(err){console.error('Sample playback failed:',err);btnSample.textContent='Sample Error';}});sampleAudio.addEventListener('ended',()=>{if(btnSample)btnSample.textContent='Play Sample';});
   seek.addEventListener('input',()=>{if(audio.duration)audio.currentTime=(Number(seek.value)/1000)*audio.duration;});vol.addEventListener('input',()=>audio.volume=Number(vol.value));audio.volume=Number(vol.value);
   audio.addEventListener('loadedmetadata',()=>{tDur.textContent=fmt(audio.duration);hook.textContent='READY';});audio.addEventListener('timeupdate',()=>{tCur.textContent=fmt(audio.currentTime);if(audio.duration)seek.value=String((audio.currentTime/audio.duration)*1000);});
   audio.addEventListener('play',()=>{btnPlay.textContent='Pause';mode.textContent='PLAYING';hook.textContent='SIGNAL LOCKED';flux.textContent='ENGAGED';});audio.addEventListener('pause',()=>{btnPlay.textContent='Play';if(!audio.ended){mode.textContent=current.playable?'PAUSED':'MASTER PENDING';flux.textContent=current.playable?'ARMED':'STANDBY';}});audio.addEventListener('ended',()=>moveNumbered(1,true));audio.addEventListener('error',()=>{mode.textContent='LOAD ERROR';hook.textContent='Audio source unavailable';flux.textContent='FAULT';});
