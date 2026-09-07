@@ -43,11 +43,12 @@ assert.match(html, /id="cartDrawer"/);
 assert.match(html, /id="checkoutButton"[^>]*disabled/);
 assert.match(html, /Northline's store layout pattern, applied only here/);
 
-assert.match(store, /images\/products\/marty\.webp/);
-assert.match(store, /images\/products\/biff\.webp/);
-assert.match(store, /images\/products\/flux\.webp/);
-assert.match(store, /images\/products\/paradox\.webp/);
-assert.match(store, /images\/products\/doc\.webp/);
+assert.match(store, /images\/products\/marty\.png/);
+assert.match(store, /images\/products\/biff\.png/);
+assert.match(store, /images\/products\/flux\.png/);
+assert.match(store, /images\/products\/paradox\.png/);
+assert.match(store, /images\/products\/doc\.png/);
+assert.doesNotMatch(store, /images\/products\/[^'"`]+\.webp/);
 assert.match(store, /\.\/images\/marty\.png/);
 assert.match(store, /\.\/images\/biff\.png/);
 assert.match(store, /\.\/images\/flux\.png/);
