@@ -22,7 +22,7 @@
   const mode=$('mode'),hook=$('hook'),dest=$('dest'),flux=$('flux'),playlistEl=$('playlist'),nowPlaying=$('nowPlayingLabel'),trackCount=$('trackCount'),archiveGrid=$('archiveGrid');
   const wave=$('wave'),tri=$('tri'),core=$('core'),bolt=$('bolt'),barsG=$('bars');
   const sampleAudio=new Audio('./kids.gonnaLoveit.mp3');sampleAudio.preload='metadata';
-  const SAMPLE_GAIN=1.75;
+  const SAMPLE_GAIN=1.75*1.777142857;
   let current=numberedTracks[0],ctx,analyser,sourceNode,data,freq;
   let sampleCtx,sampleSource,sampleGain,sampleLimiter;
   const bars=[];const BAR_COUNT=48,W=920,H=120,gap=6,bw=(W-(BAR_COUNT-1)*gap)/BAR_COUNT;
@@ -49,7 +49,7 @@
     try{
       sampleCtx=new AC();sampleSource=sampleCtx.createMediaElementSource(sampleAudio);sampleGain=sampleCtx.createGain();sampleLimiter=sampleCtx.createDynamicsCompressor();
       sampleGain.gain.value=SAMPLE_GAIN;
-      sampleLimiter.threshold.value=-3;sampleLimiter.knee.value=0;sampleLimiter.ratio.value=20;sampleLimiter.attack.value=.003;sampleLimiter.release.value=.18;
+      sampleLimiter.threshold.value=-4;sampleLimiter.knee.value=2;sampleLimiter.ratio.value=20;sampleLimiter.attack.value=.002;sampleLimiter.release.value=.2;
       sampleSource.connect(sampleGain);sampleGain.connect(sampleLimiter);sampleLimiter.connect(sampleCtx.destination);return true;
     }catch(err){console.warn('Sample gain stage unavailable:',err);sampleCtx=null;return false;}
   }
