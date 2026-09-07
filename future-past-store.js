@@ -4,20 +4,20 @@
   const MANIFEST_URL = './store.json';
   const CART_KEY = 'time_circuit_future_past_cart_v1';
   const previewDesigns = [
-    { id:'rebel', name:'Eighty-Eight Rebel', images:['./images/products/marty.webp','./images/marty.png'], note:"Future's Past hoodie design // TC-01" },
-    { id:'bruiser', name:'Full Cab Bruiser', images:['./images/products/biff.webp','./images/biff.png'], note:"Future's Past hoodie design // TC-02" },
-    { id:'professor', name:'Flux Professor', images:['./images/products/flux.webp','./images/flux.png'], note:"Future's Past hoodie design // TC-03" },
-    { id:'queen', name:'Paradox Queen', images:['./images/products/paradox.webp','./images/chick.png'], note:"Future's Past hoodie design // TC-04" },
-    { id:'doc', name:'Circuit Professor', images:['./images/products/doc.webp','./images/doc.png'], note:"Future's Past hoodie design // archive variant" },
+    { id:'rebel', name:'Eighty-Eight Rebel', images:['./images/products/marty.png','./images/marty.png'], note:"Future's Past hoodie design // TC-01" },
+    { id:'bruiser', name:'Full Cab Bruiser', images:['./images/products/biff.png','./images/biff.png'], note:"Future's Past hoodie design // TC-02" },
+    { id:'professor', name:'Flux Professor', images:['./images/products/flux.png','./images/flux.png'], note:"Future's Past hoodie design // TC-03" },
+    { id:'queen', name:'Paradox Queen', images:['./images/products/paradox.png','./images/chick.png'], note:"Future's Past hoodie design // TC-04" },
+    { id:'doc', name:'Circuit Professor', images:['./images/products/doc.png','./images/doc.png'], note:"Future's Past hoodie design // archive variant" },
     { id:'roads', name:"Where We're Going", images:['./images/www.png'], note:"Future's Past hoodie design // archive variant" }
   ];
 
   const productMockups = [
-    { tokens:['eighty-eight rebel','eighty eight rebel','tc-01'], image:'./images/products/marty.webp' },
-    { tokens:['full cab bruiser','tc-02'], image:'./images/products/biff.webp' },
-    { tokens:['flux professor','tc-03'], image:'./images/products/flux.webp' },
-    { tokens:['paradox queen','tc-04'], image:'./images/products/paradox.webp' },
-    { tokens:['circuit professor'], image:'./images/products/doc.webp' }
+    { tokens:['eighty-eight rebel','eighty eight rebel','tc-01'], image:'./images/products/marty.png' },
+    { tokens:['full cab bruiser','tc-02'], image:'./images/products/biff.png' },
+    { tokens:['flux professor','tc-03'], image:'./images/products/flux.png' },
+    { tokens:['paradox queen','tc-04'], image:'./images/products/paradox.png' },
+    { tokens:['circuit professor'], image:'./images/products/doc.png' }
   ];
 
   const normalize = value => String(value ?? '').replace(/[’‘]/g,"'").trim().toLowerCase();
