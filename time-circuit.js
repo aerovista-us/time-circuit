@@ -3,8 +3,8 @@
 
   const numberedTracks = [
     {number:'TC-01',title:'Eighty-Eight Rebel',subtitle:"Future's Past // numbered archive",src:'./01 — EIGHTY-EIGHT REBEL.mp3',art:'./images/marty.png',bpm:'88 BPM',lane:'TC-01',playable:true,description:'The first numbered Time Circuit transmission: 88 BPM with one foot in 1985 and the other somewhere past 3026.'},
-    {number:'TC-02',title:'Full Cab Bruiser',subtitle:"Future's Past // master slot",art:'./images/biff.png',bpm:'88 BPM',lane:'TC-02',playable:false,description:'The bruiser slot is wired and waiting for its numbered audio master.'},
-    {number:'TC-03',title:'Flux Professor',subtitle:"Future's Past // master slot",art:'./images/flux.png',bpm:'88 BPM',lane:'TC-03',playable:false,description:'The Professor slot is wired and waiting for its numbered audio master.'},
+    {number:'TC-02',title:'Full Cab Bruiser',subtitle:"Future's Past // numbered archive",src:'./02 — FULL CAB BRUISER.mp3',art:'./images/biff.png',bpm:'88 BPM',lane:'TC-02',playable:true,description:"The second Future's Past transmission: heavy-cabinet attitude, rewired through the Time Circuit at 88 BPM."},
+    {number:'TC-03',title:'Flux Professor',subtitle:"Future's Past // numbered archive",src:'./03 — FLUX PROFESSOR.mp3',art:'./images/flux.png',bpm:'88 BPM',lane:'TC-03',playable:true,description:'The Professor takes control of the circuit: 88 BPM where 1985 artifacts collide with a 3026 signal path.'},
     {number:'TC-04',title:'Paradox Queen',subtitle:"Future's Past // numbered archive",src:'./04 — PARADOX QUEEN.mp3',art:'./images/chick.png',bpm:'88 BPM',lane:'TC-04',playable:true,description:"Same girl. Different timeline. The fourth numbered transmission closes the current Future's Past circuit at 88 BPM."}
   ];
 
@@ -17,10 +17,11 @@
   ];
 
   const $ = id => document.getElementById(id);
-  const audio=$('audio'),cover=$('coverImg'),title=$('trackTitle'),description=$('trackDescription'),badgeBpm=$('badgeBpm'),badgeLane=$('badgeLane');
-  const btnPrev=$('btnPrev'),btnPlay=$('btnPlay'),btnNext=$('btnNext'),btnRestart=$('btnRestart'),seek=$('seek'),vol=$('vol'),tCur=$('tCur'),tDur=$('tDur');
+  const audio=$('audio'),title=$('trackTitle'),description=$('trackDescription'),badgeBpm=$('badgeBpm'),badgeLane=$('badgeLane');
+  const btnPrev=$('btnPrev'),btnPlay=$('btnPlay'),btnNext=$('btnNext'),btnRestart=$('btnRestart'),btnSample=$('btnSample'),seek=$('seek'),vol=$('vol'),tCur=$('tCur'),tDur=$('tDur');
   const mode=$('mode'),hook=$('hook'),dest=$('dest'),flux=$('flux'),playlistEl=$('playlist'),nowPlaying=$('nowPlayingLabel'),trackCount=$('trackCount'),archiveGrid=$('archiveGrid');
   const wave=$('wave'),tri=$('tri'),core=$('core'),bolt=$('bolt'),barsG=$('bars');
+  const sampleAudio=new Audio('./kids.gonnaLoveit.mp3');sampleAudio.preload='metadata';
   let current=numberedTracks[0],ctx,analyser,sourceNode,data,freq;
   const bars=[];const BAR_COUNT=48,W=920,H=120,gap=6,bw=(W-(BAR_COUNT-1)*gap)/BAR_COUNT;
 
@@ -52,7 +53,7 @@
   }
 
   function updateTrackUI(){
-    title.textContent=current.title.toUpperCase();description.textContent=current.description;badgeBpm.textContent=current.bpm;badgeLane.textContent=current.number;cover.src=current.art;cover.alt=current.title+' artwork';
+    title.textContent=current.title.toUpperCase();description.textContent=current.description;badgeBpm.textContent=current.bpm;badgeLane.textContent=current.number;
     const n=numberedTracks.indexOf(current);nowPlaying.textContent=n>=0?`Now playing: ${current.number}`:`Archive playback: ${current.number}`;trackCount.textContent=n>=0?`${n+1} / ${numberedTracks.length}`:'ARCHIVE';
     document.title=`${current.title} — The Time Circuit | EchoVerse Audio`;updateMediaSession();renderPlaylist();
   }
@@ -82,6 +83,7 @@
   document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));document.querySelectorAll('[data-view-target]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.viewTarget)));
 
   btnPlay.addEventListener('click',()=>audio.paused?playCurrent():audio.pause());btnPrev.addEventListener('click',()=>moveNumbered(-1));btnNext.addEventListener('click',()=>moveNumbered(1));btnRestart.addEventListener('click',()=>{audio.currentTime=0;if(!audio.paused)playCurrent();});
+  btnSample?.addEventListener('click',async()=>{try{if(sampleAudio.paused){sampleAudio.currentTime=0;await sampleAudio.play();btnSample.textContent='Stop Sample';}else{sampleAudio.pause();sampleAudio.currentTime=0;btnSample.textContent='Play Sample';}}catch(err){console.error('Sample playback failed:',err);btnSample.textContent='Sample Error';}});sampleAudio.addEventListener('ended',()=>{if(btnSample)btnSample.textContent='Play Sample';});
   seek.addEventListener('input',()=>{if(audio.duration)audio.currentTime=(Number(seek.value)/1000)*audio.duration;});vol.addEventListener('input',()=>audio.volume=Number(vol.value));audio.volume=Number(vol.value);
   audio.addEventListener('loadedmetadata',()=>{tDur.textContent=fmt(audio.duration);hook.textContent='READY';});audio.addEventListener('timeupdate',()=>{tCur.textContent=fmt(audio.currentTime);if(audio.duration)seek.value=String((audio.currentTime/audio.duration)*1000);});
   audio.addEventListener('play',()=>{btnPlay.textContent='Pause';mode.textContent='PLAYING';hook.textContent='SIGNAL LOCKED';flux.textContent='ENGAGED';});audio.addEventListener('pause',()=>{btnPlay.textContent='Play';if(!audio.ended){mode.textContent=current.playable?'PAUSED':'MASTER PENDING';flux.textContent=current.playable?'ARMED':'STANDBY';}});audio.addEventListener('ended',()=>moveNumbered(1,true));audio.addEventListener('error',()=>{mode.textContent='LOAD ERROR';hook.textContent='Audio source unavailable';flux.textContent='FAULT';});

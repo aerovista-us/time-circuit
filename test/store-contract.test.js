@@ -19,9 +19,17 @@ assert.match(html, /id="dest"/);
 assert.match(html, /id="flux"/);
 assert.match(html, /id="btnRestart"/);
 assert.match(html, /id="vol"/);
+assert.match(html, /id="btnSample"/);
+assert.match(html, /src="\.\/kids\.will\.love\.it\.png"/);
+assert.match(html, /All four Future's Past numbered masters are loaded at 88 BPM/);
 assert.match(player, /createMediaElementSource/);
 assert.match(player, /getByteTimeDomainData/);
 assert.match(player, /getByteFrequencyData/);
+assert.match(player, /02 — FULL CAB BRUISER\.mp3/);
+assert.match(player, /03 — FLUX PROFESSOR\.mp3/);
+assert.match(player, /new Audio\('\.\/kids\.gonnaLoveit\.mp3'\)/);
+assert.match(player, /Stop Sample/);
+assert.doesNotMatch(player, /cover\.src=current\.art/);
 assert.match(css, /Original Time Circuit Listen surface/);
 assert.match(css, /Northline-inspired layout is intentionally confined to Store/);
 
