@@ -43,6 +43,20 @@ assert.match(html, /id="cartDrawer"/);
 assert.match(html, /id="checkoutButton"[^>]*disabled/);
 assert.match(html, /Northline's store layout pattern, applied only here/);
 
+assert.match(store, /images\/products\/marty\.webp/);
+assert.match(store, /images\/products\/biff\.webp/);
+assert.match(store, /images\/products\/flux\.webp/);
+assert.match(store, /images\/products\/paradox\.webp/);
+assert.match(store, /images\/products\/doc\.webp/);
+assert.match(store, /\.\/images\/marty\.png/);
+assert.match(store, /\.\/images\/biff\.png/);
+assert.match(store, /\.\/images\/flux\.png/);
+assert.match(store, /\.\/images\/chick\.png/);
+assert.match(store, /\.\/images\/doc\.png/);
+assert.match(store, /data-gallery-image/);
+assert.match(store, /data-gallery-main/);
+assert.match(store, /product-thumbs/);
+
 assert.equal(manifest.destinationId, 'time-circuit');
 assert.equal(manifest.policy.collectionMustMatch, "Future's Past");
 assert.equal(manifest.policy.productTypeMustContain, 'hoodie');
