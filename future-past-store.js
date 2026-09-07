@@ -102,6 +102,13 @@
     return `<div class="product-gallery"><div class="product-art"><img data-gallery-main src="${escapeHtml(list[0])}" alt="${safeTitle}" loading="lazy"></div>${thumbs}</div>`;
   }
 
+  function injectGalleryStyles(){
+    if(document.getElementById('tcProductGalleryStyles'))return;
+    const style=document.createElement('style');style.id='tcProductGalleryStyles';
+    style.textContent='.product-gallery{display:grid;background:#020408}.product-thumbs{display:flex;gap:8px;padding:0 18px 14px;background:#020408}.product-thumb{width:58px;height:58px;padding:3px;border:1px solid rgba(255,255,255,.14);border-radius:10px;background:rgba(255,255,255,.03);cursor:pointer;transition:.18s}.product-thumb:hover,.product-thumb.active{border-color:rgba(255,153,88,.68);background:rgba(255,153,88,.08)}.product-thumb img{width:100%;height:100%;object-fit:contain}@media(max-width:580px){.product-thumbs{padding:0 14px 12px}.product-thumb{width:50px;height:50px}}';
+    document.head.appendChild(style);
+  }
+
   function bindGalleries(root){
     root.querySelectorAll('.product-card').forEach(card=>{
       const main=card.querySelector('[data-gallery-main]');
@@ -200,6 +207,7 @@
   }
 
   async function sync(){
+    injectGalleryStyles();
     const status=$('futurePastStoreStatus');renderPreview();loadCart();renderCart();bindCart();
     if(status)status.textContent="Future's Past preview loaded · checking Time Circuit manifest";
     try{
