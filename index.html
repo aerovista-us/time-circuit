@@ -3,15 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#050910">
+  <meta name="theme-color" content="#160622">
   <meta name="description" content="The Time Circuit — Future's Past audio archive and hoodie capsule from EchoVerse Audio and AeroVista.">
+  <link rel="canonical" href="https://time-circuit.aerovista.us/">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://time-circuit.aerovista.us/">
-  <meta property="og:title" content="The Time Circuit — EchoVerse Audio">
-  <meta property="og:description" content="88 BPM transmissions from 1985 to 3026, with the Future's Past hoodie capsule.">
+  <meta property="og:title" content="The Time Circuit — Future's Past">
+  <meta property="og:description" content="88 BPM transmissions from 1985 to 3026. Enter the Time Circuit and listen to Future's Past.">
+  <meta property="og:image" content="https://time-circuit.aerovista.us/images/flux.png">
+  <meta property="og:image:alt" content="The Time Circuit — Future's Past artwork">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Time Circuit — Future's Past">
+  <meta name="twitter:description" content="88 BPM transmissions from 1985 to 3026. Enter the Time Circuit and listen to Future's Past.">
+  <meta name="twitter:image" content="https://time-circuit.aerovista.us/images/flux.png">
   <title>The Time Circuit — EchoVerse Audio | An AeroVista Production</title>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg">
   <link rel="stylesheet" href="./time-circuit.css">
+  <link rel="stylesheet" href="./time-circuit-80s.css">
 </head>
 <body>
   <header class="topbar">
@@ -38,10 +46,10 @@
           <div class="title-row">
             <div>
               <p class="branding">AeroVista | EchoVerse Audio Presents:</p>
-              <h1 id="trackTitle">EIGHTY-EIGHT REBEL</h1>
-              <p class="subtitle" id="trackDescription">The first numbered Time Circuit transmission: 88 BPM with one foot in 1985 and the other somewhere past 3026.</p>
+              <h1 id="trackTitle">RETROFLUX</h1>
+              <p class="subtitle" id="trackDescription">RetroFlux opens the Time Circuit: the TC-00 transmission that feeds directly into the numbered Future's Past archive.</p>
             </div>
-            <div class="badge"><span id="badgeBpm">88 BPM</span> • <span id="badgeLane">TC-01</span></div>
+            <div class="badge"><span id="badgeBpm">88 BPM</span> • <span id="badgeLane">TC-00</span></div>
           </div>
           <div class="pillrow">
             <div class="pill">Time-circuit themed visualizer</div>
@@ -60,11 +68,15 @@
 
         <section class="listen-hero">
           <div class="cover">
-            <img id="coverImg" src="./kids.will.love.it.png" alt="Kids Will Love It artwork">
+            <img id="coverImg" src="./images/flux.png" alt="RetroFlux artwork">
           </div>
           <div class="tc-card visualizer-card">
             <h2>VISUALIZER</h2>
             <div class="viz" id="viz">
+              <div class="viz-art-layer" aria-hidden="true">
+                <img id="visualizerArt" class="viz-art-image" src="./images/flux.png" alt="">
+                <div class="viz-art-overlay"></div>
+              </div>
               <div class="time-circuits">
                 TIME CIRCUITS<br>
                 DEST: <b id="dest">88</b> MPH<br>
@@ -72,22 +84,22 @@
               </div>
               <svg viewBox="0 0 1000 420" preserveAspectRatio="none" aria-label="Audio visualizer">
                 <defs>
-                  <linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="rgba(55,180,255,.55)"></stop><stop offset="1" stop-color="rgba(255,141,58,.46)"></stop></linearGradient>
-                  <filter id="softGlow"><feGaussianBlur stdDeviation="2.5" result="b"></feGaussianBlur><feMerge><feMergeNode in="b"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter>
+                  <linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="rgba(77,238,255,.82)"></stop><stop offset=".5" stop-color="rgba(255,73,220,.78)"></stop><stop offset="1" stop-color="rgba(255,145,66,.72)"></stop></linearGradient>
+                  <filter id="softGlow"><feGaussianBlur stdDeviation="2.5" result="b"></feGaussianBlur><feMerge><feMergeNode in="b"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></filter>
                 </defs>
-                <rect x="0" y="0" width="1000" height="420" fill="rgba(0,0,0,.28)"></rect>
-                <g opacity=".30">
-                  <path d="M0 340 H1000" stroke="rgba(126,209,255,.25)"></path><path d="M0 260 H1000" stroke="rgba(126,209,255,.18)"></path><path d="M0 180 H1000" stroke="rgba(126,209,255,.15)"></path><path d="M0 100 H1000" stroke="rgba(255,177,112,.16)"></path>
-                  <path d="M120 0 V420" stroke="rgba(126,209,255,.12)"></path><path d="M260 0 V420" stroke="rgba(126,209,255,.10)"></path><path d="M420 0 V420" stroke="rgba(126,209,255,.10)"></path><path d="M600 0 V420" stroke="rgba(126,209,255,.10)"></path><path d="M760 0 V420" stroke="rgba(126,209,255,.10)"></path><path d="M900 0 V420" stroke="rgba(255,177,112,.12)"></path>
+                <rect x="0" y="0" width="1000" height="420" fill="rgba(7,0,20,.34)"></rect>
+                <g opacity=".42">
+                  <path d="M0 340 H1000" stroke="rgba(83,235,255,.34)"></path><path d="M0 260 H1000" stroke="rgba(83,235,255,.24)"></path><path d="M0 180 H1000" stroke="rgba(255,70,218,.22)"></path><path d="M0 100 H1000" stroke="rgba(255,151,75,.20)"></path>
+                  <path d="M120 0 V420" stroke="rgba(83,235,255,.18)"></path><path d="M260 0 V420" stroke="rgba(83,235,255,.15)"></path><path d="M420 0 V420" stroke="rgba(255,70,218,.16)"></path><path d="M600 0 V420" stroke="rgba(83,235,255,.15)"></path><path d="M760 0 V420" stroke="rgba(255,70,218,.16)"></path><path d="M900 0 V420" stroke="rgba(255,151,75,.18)"></path>
                 </g>
                 <g transform="translate(500 180)" filter="url(#softGlow)">
-                  <path id="tri" d="M0 -120 L105 85 L-105 85 Z" fill="none" stroke="url(#g1)" stroke-width="4" opacity=".9"></path>
-                  <circle id="core" cx="0" cy="-20" r="12" fill="rgba(255,185,120,.78)" opacity=".8"></circle>
-                  <path id="bolt" d="M0 -110 L20 -60 L-5 -60 L25 10 L-10 10 L10 85" fill="none" stroke="rgba(98,192,255,.84)" stroke-width="3" opacity=".7"></path>
+                  <path id="tri" d="M0 -120 L105 85 L-105 85 Z" fill="none" stroke="url(#g1)" stroke-width="4" opacity=".95"></path>
+                  <circle id="core" cx="0" cy="-20" r="12" fill="rgba(255,72,218,.88)" opacity=".86"></circle>
+                  <path id="bolt" d="M0 -110 L20 -60 L-5 -60 L25 10 L-10 10 L10 85" fill="none" stroke="rgba(87,238,255,.96)" stroke-width="3" opacity=".82"></path>
                 </g>
-                <path id="wave" d="M0 300 C120 300 200 300 320 300 S520 300 640 300 S840 300 1000 300" fill="none" stroke="rgba(137,218,255,.88)" stroke-width="3" filter="url(#softGlow)" opacity=".9"></path>
+                <path id="wave" d="M0 300 C120 300 200 300 320 300 S520 300 640 300 S840 300 1000 300" fill="none" stroke="rgba(99,241,255,.98)" stroke-width="3" filter="url(#softGlow)" opacity=".96"></path>
                 <g id="bars" transform="translate(40 380)"></g>
-                <path id="speed" d="M-40 330 Q500 250 1040 330" fill="none" stroke="rgba(255,157,84,.18)" stroke-width="10" opacity=".35"></path>
+                <path id="speed" d="M-40 330 Q500 250 1040 330" fill="none" stroke="rgba(255,74,218,.30)" stroke-width="10" opacity=".42"></path>
               </svg>
             </div>
           </div>
@@ -110,7 +122,7 @@
 
           <section class="tc-card">
             <h2>NUMBERED CIRCUIT</h2>
-            <div class="playlist-head"><span id="nowPlayingLabel">Now playing: TC-01</span><span id="trackCount">1 / 10</span></div>
+            <div class="playlist-head"><span id="nowPlayingLabel">Now playing: TC-00</span><span id="trackCount">1 / 10</span></div>
             <div id="playlist" class="playlist"></div>
             <div class="playlist-note">RetroFlux plus TC-01 through TC-09 are available in Listen. Recovered Archive cuts are mirrored here as TC-05 through TC-09; the Archive page remains unchanged.</div>
           </section>
@@ -152,6 +164,7 @@
   </aside>
   <div class="toast" id="toast" hidden></div>
   <script src="./time-circuit.js"></script>
+  <script src="./time-circuit-visual-upgrade.js"></script>
   <script src="./future-past-store.js"></script>
 </body>
 </html>
