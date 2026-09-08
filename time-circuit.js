@@ -33,6 +33,19 @@
   let sampleCtx,sampleSource,sampleGain,sampleLimiter;
   const bars=[];const BAR_COUNT=48,W=920,H=120,gap=6,bw=(W-(BAR_COUNT-1)*gap)/BAR_COUNT;
 
+  // Read-only analyzer bridge for the enhanced visualizer layer. The player
+  // remains the only owner of MediaElementSource, preventing duplicate-source
+  // browser errors while allowing richer rendering from the same signal.
+  window.TimeCircuitFeed={
+    get audio(){return audio;},
+    get analyser(){return analyser;},
+    get context(){return ctx;},
+    get frequencyData(){return freq;},
+    get timeData(){return data;},
+    get current(){return current;},
+    get sampleRate(){return ctx?.sampleRate||48000;}
+  };
+
   const fmt=s=>{if(!Number.isFinite(s))return'0:00';const sec=Math.max(0,Math.floor(s));return Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');};
   const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
   const escapeHtml=s=>String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
@@ -45,7 +58,10 @@
   function ensureAudio(){
     if(ctx)return true;
     const AC=window.AudioContext||window.webkitAudioContext;if(!AC){hook.textContent='Visualizer unavailable';return false;}
-    try{ctx=new AC();analyser=ctx.createAnalyser();analyser.fftSize=2048;analyser.smoothingTimeConstant=.85;data=new Uint8Array(analyser.fftSize);freq=new Uint8Array(analyser.frequencyBinCount);sourceNode=ctx.createMediaElementSource(audio);sourceNode.connect(analyser);analyser.connect(ctx.destination);return true;}
+    try{
+      ctx=new AC();analyser=ctx.createAnalyser();analyser.fftSize=4096;analyser.smoothingTimeConstant=.78;analyser.minDecibels=-92;analyser.maxDecibels=-12;
+      data=new Uint8Array(analyser.fftSize);freq=new Uint8Array(analyser.frequencyBinCount);sourceNode=ctx.createMediaElementSource(audio);sourceNode.connect(analyser);analyser.connect(ctx.destination);return true;
+    }
     catch(err){console.warn('WebAudio analyzer disabled:',err);hook.textContent='Visualizer unavailable';return false;}
   }
 
