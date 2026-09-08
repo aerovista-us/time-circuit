@@ -2,6 +2,7 @@
   'use strict';
 
   const numberedTracks = [
+    {number:'TC-00',displayLabel:'TC-00-RetroFlux',title:'RetroFlux',subtitle:"Future's Past // opening transmission",src:'./RetroFlux.mp3',art:'./images/flux.png',bpm:'88 BPM',lane:'TC-00',playable:true,description:'RetroFlux opens the Time Circuit: the TC-00 transmission that feeds directly into the numbered Future\'s Past archive.'},
     {number:'TC-01',title:'Eighty-Eight Rebel',subtitle:"Future's Past // numbered archive",src:'./01 — EIGHTY-EIGHT REBEL.mp3',art:'./images/marty.png',bpm:'88 BPM',lane:'TC-01',playable:true,description:'The first numbered Time Circuit transmission: 88 BPM with one foot in 1985 and the other somewhere past 3026.'},
     {number:'TC-02',title:'Full Cab Bruiser',subtitle:"Future's Past // numbered archive",src:'./02 — FULL CAB BRUISER.mp3',art:'./images/biff.png',bpm:'88 BPM',lane:'TC-02',playable:true,description:"The second Future's Past transmission: heavy-cabinet attitude, rewired through the Time Circuit at 88 BPM."},
     {number:'TC-03',title:'Flux Professor',subtitle:"Future's Past // numbered archive",src:'./03 — FLUX PROFESSOR.mp3',art:'./images/flux.png',bpm:'88 BPM',lane:'TC-03',playable:true,description:'The Professor takes control of the circuit: 88 BPM where 1985 artifacts collide with a 3026 signal path.'},
@@ -83,7 +84,7 @@
   function moveNumbered(step,autoplay=!audio.paused){loadTrack(nextNumbered(step),autoplay);}
 
   function renderPlaylist(){
-    playlistEl.innerHTML=numberedTracks.map(track=>`<button type="button" class="track-button ${track===current?'active ':''}${track.playable?'':'pending'}" data-number="${track.number}" ${track.playable?'':'disabled'}><strong>${escapeHtml(track.number)} — ${escapeHtml(track.title)}</strong><span class="sub">${escapeHtml(track.subtitle)} · ${escapeHtml(track.bpm)}${track.playable?'':' · MASTER PENDING'}</span></button>`).join('');
+    playlistEl.innerHTML=numberedTracks.map(track=>`<button type="button" class="track-button ${track===current?'active ':''}${track.playable?'':'pending'}" data-number="${track.number}" ${track.playable?'':'disabled'}><strong>${escapeHtml(track.displayLabel||`${track.number} — ${track.title}`)}</strong><span class="sub">${escapeHtml(track.subtitle)} · ${escapeHtml(track.bpm)}${track.playable?'':' · MASTER PENDING'}</span></button>`).join('');
     playlistEl.querySelectorAll('[data-number]').forEach(btn=>btn.addEventListener('click',()=>{const track=numberedTracks.find(t=>t.number===btn.dataset.number);if(track?.playable)loadTrack(track,true);}));
   }
 
@@ -93,7 +94,7 @@
   }
 
   function setView(name){document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===name));document.querySelectorAll('[data-view-panel]').forEach(p=>p.classList.toggle('active',p.dataset.viewPanel===name));window.scrollTo({top:0,behavior:'smooth'});}
-  document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));document.querySelectorAll('[data-view-target]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.viewTarget)));
+  document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));document.querySelectorAll('[data-view-target]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.viewTarget));
 
   btnPlay.addEventListener('click',()=>audio.paused?playCurrent():audio.pause());btnPrev.addEventListener('click',()=>moveNumbered(-1));btnNext.addEventListener('click',()=>moveNumbered(1));btnRestart.addEventListener('click',()=>{audio.currentTime=0;if(!audio.paused)playCurrent();});
   btnSample?.addEventListener('click',async()=>{try{if(sampleAudio.paused){const boosted=ensureSampleAudio();if(boosted&&sampleCtx?.state==='suspended')await sampleCtx.resume();sampleAudio.currentTime=0;await sampleAudio.play();btnSample.textContent='Stop Sample';}else{sampleAudio.pause();sampleAudio.currentTime=0;btnSample.textContent='Play Sample';}}catch(err){console.error('Sample playback failed:',err);btnSample.textContent='Sample Error';}});sampleAudio.addEventListener('ended',()=>{if(btnSample)btnSample.textContent='Play Sample';});
