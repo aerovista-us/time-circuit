@@ -94,7 +94,7 @@
   }
 
   function setView(name){document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===name));document.querySelectorAll('[data-view-panel]').forEach(p=>p.classList.toggle('active',p.dataset.viewPanel===name));window.scrollTo({top:0,behavior:'smooth'});}
-  document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));document.querySelectorAll('[data-view-target]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.viewTarget));
+  document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));document.querySelectorAll('[data-view-target]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.viewTarget)));
 
   btnPlay.addEventListener('click',()=>audio.paused?playCurrent():audio.pause());btnPrev.addEventListener('click',()=>moveNumbered(-1));btnNext.addEventListener('click',()=>moveNumbered(1));btnRestart.addEventListener('click',()=>{audio.currentTime=0;if(!audio.paused)playCurrent();});
   btnSample?.addEventListener('click',async()=>{try{if(sampleAudio.paused){const boosted=ensureSampleAudio();if(boosted&&sampleCtx?.state==='suspended')await sampleCtx.resume();sampleAudio.currentTime=0;await sampleAudio.play();btnSample.textContent='Stop Sample';}else{sampleAudio.pause();sampleAudio.currentTime=0;btnSample.textContent='Play Sample';}}catch(err){console.error('Sample playback failed:',err);btnSample.textContent='Sample Error';}});sampleAudio.addEventListener('ended',()=>{if(btnSample)btnSample.textContent='Play Sample';});
