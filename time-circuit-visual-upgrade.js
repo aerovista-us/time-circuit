@@ -25,25 +25,31 @@
   const visualizerArt = document.getElementById('visualizerArt');
   const audio = document.getElementById('audio');
 
-  function syncArtwork(){
+  // The hero cover is a permanent Time Circuit identity element.
+  // Track-specific artwork belongs only inside the visualizer.
+  if(cover){
+    cover.src = './kids.will.love.it.png';
+    cover.alt = 'Kids Will Love It artwork';
+  }
+
+  function syncVisualizerArtwork(){
     const key = lane?.textContent?.trim();
     const src = artBySignal[key];
-    if(!src) return;
-    const label = `${title?.textContent?.trim() || key} artwork`;
-    if(cover){ cover.src = src; cover.alt = label; }
-    if(visualizerArt){ visualizerArt.src = src; visualizerArt.alt = ''; }
+    if(!src || !visualizerArt) return;
+    visualizerArt.src = src;
+    visualizerArt.alt = '';
   }
 
   if(lane){
-    new MutationObserver(syncArtwork).observe(lane,{childList:true,subtree:true,characterData:true});
+    new MutationObserver(syncVisualizerArtwork).observe(lane,{childList:true,subtree:true,characterData:true});
   }
   if(title){
-    new MutationObserver(syncArtwork).observe(title,{childList:true,subtree:true,characterData:true});
+    new MutationObserver(syncVisualizerArtwork).observe(title,{childList:true,subtree:true,characterData:true});
   }
 
   audio?.addEventListener('play',()=>visualizerArt?.classList.add('playing'));
   audio?.addEventListener('pause',()=>visualizerArt?.classList.remove('playing'));
   audio?.addEventListener('ended',()=>visualizerArt?.classList.remove('playing'));
 
-  syncArtwork();
+  syncVisualizerArtwork();
 })();
