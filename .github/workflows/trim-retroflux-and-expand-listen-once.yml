@@ -1,0 +1,119 @@
+name: Trim RetroFlux and expand Listen once
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/trim-retroflux-and-expand-listen-once.yml
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Capture Archive data hash
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          text = Path('time-circuit.js').read_text(encoding='utf-8')
+          start = text.index('  const archiveTracks = [')
+          end = text.index('\n\n  const $ =', start)
+          block = text[start:end]
+          Path('/tmp/archive.sha').write_text(hashlib.sha256(block.encode()).hexdigest())
+          print('Archive block SHA256:', hashlib.sha256(block.encode()).hexdigest())
+          PY
+
+      - name: Add Archive songs to Listen as TC-05 forward
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          p = Path('time-circuit.js')
+          text = p.read_text(encoding='utf-8')
+          needle = '''    {number:'TC-04',title:'Paradox Queen',subtitle:"Future's Past // numbered archive",src:'./04 — PARADOX QUEEN.mp3',art:'./images/chick.png',bpm:'88 BPM',lane:'TC-04',playable:true,description:"Same girl. Different timeline. The fourth numbered transmission closes the current Future's Past circuit at 88 BPM."}
+  ];'''
+          replacement = '''    {number:'TC-04',title:'Paradox Queen',subtitle:"Future's Past // numbered archive",src:'./04 — PARADOX QUEEN.mp3',art:'./images/chick.png',bpm:'88 BPM',lane:'TC-04',playable:true,description:"Same girl. Different timeline. The fourth numbered transmission closes the current Future's Past circuit at 88 BPM."},
+    {number:'TC-05',title:'Kids Will Love It',subtitle:'Recovered archive // numbered listen circuit',src:'./kids-will-love-it.mp3',art:'./kids.will.love.it.png',bpm:'90.25 halftime',lane:'TC-05',playable:true,description:'The original cinematic quote-slam and halftime SwampHop drop that opened the Time Circuit.'},
+    {number:'TC-06',title:'Flux Swamp (1955)',subtitle:'Recovered archive // numbered listen circuit',src:'./FLUX_SWAMP_(1955).mp3',art:'./images/doc.png',bpm:'~90 groove',lane:'TC-06',playable:true,description:'Tape hiss, swamp night, clean guitar, and the older time-travel experiment.'},
+    {number:'TC-07',title:'Momento × LowFreq × New Sound',subtitle:'Recovered archive // numbered listen circuit',src:'./momentoxLowFreqxNEW_SOUND.mp3',art:'./images/www.png',bpm:'variable',lane:'TC-07',playable:true,description:'A multi-era mashup moving from nostalgia bounce through swamp-western fracture into the future.'},
+    {number:'TC-08',title:'Eighty-Eight Rebel — Alt 1',subtitle:'Recovered alternate // numbered listen circuit',src:'./01 — EIGHTY-EIGHT REBEL (1).mp3',art:'./images/marty.png',bpm:'88 BPM',lane:'TC-08',playable:true,description:'Alternate render of TC-01, mirrored into the Listen sequence.'},
+    {number:'TC-09',title:'Eighty-Eight Rebel — Alt 2',subtitle:'Recovered alternate // numbered listen circuit',src:'./01 — EIGHTY-EIGHT REBEL (2).mp3',art:'./images/marty.png',bpm:'88 BPM',lane:'TC-09',playable:true,description:'Second alternate render of TC-01, mirrored into the Listen sequence.'}
+  ];'''
+          if needle not in text:
+              raise SystemExit('Expected TC-04 terminator not found; refusing to edit')
+          if "number:'TC-05'" in text:
+              raise SystemExit('TC-05 already exists; refusing duplicate edit')
+          p.write_text(text.replace(needle, replacement, 1), encoding='utf-8')
+
+          p = Path('index.html')
+          html = p.read_text(encoding='utf-8')
+          old_count = '<span id="trackCount">1 / 4</span>'
+          old_note = '<div class="playlist-note">All four Future\'s Past numbered masters are loaded at 88 BPM. Archive cuts remain separate from the numbered circuit.</div>'
+          new_count = '<span id="trackCount">1 / 10</span>'
+          new_note = '<div class="playlist-note">RetroFlux plus TC-01 through TC-09 are available in Listen. Recovered Archive cuts are mirrored here as TC-05 through TC-09; the Archive page remains unchanged.</div>'
+          if old_count not in html or old_note not in html:
+              raise SystemExit('Expected Listen-page copy not found; refusing to edit')
+          html = html.replace(old_count, new_count, 1).replace(old_note, new_note, 1)
+          p.write_text(html, encoding='utf-8')
+          PY
+
+      - name: Verify Archive data block is unchanged
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          text = Path('time-circuit.js').read_text(encoding='utf-8')
+          start = text.index('  const archiveTracks = [')
+          end = text.index('\n\n  const $ =', start)
+          block = text[start:end]
+          before = Path('/tmp/archive.sha').read_text().strip()
+          after = hashlib.sha256(block.encode()).hexdigest()
+          print('Archive block SHA256 after:', after)
+          if before != after:
+              raise SystemExit('Archive block changed; refusing to continue')
+          PY
+
+      - name: Trim exactly four seconds from RetroFlux start
+        shell: bash
+        run: |
+          before="$(ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 RetroFlux.mp3)"
+          ffmpeg -hide_banner -loglevel error -y -ss 4 -i RetroFlux.mp3 -map_metadata 0 -c:a libmp3lame -q:a 0 RetroFlux.trimmed.mp3
+          after="$(ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 RetroFlux.trimmed.mp3)"
+          python3 - "$before" "$after" <<'PY'
+          import sys
+          before=float(sys.argv[1]); after=float(sys.argv[2]); delta=before-after
+          print(f'RetroFlux duration: {before:.3f}s -> {after:.3f}s (trimmed {delta:.3f}s)')
+          if abs(delta-4.0) > 0.12:
+              raise SystemExit(f'Unexpected trim delta: {delta:.3f}s')
+          PY
+          mv RetroFlux.trimmed.mp3 RetroFlux.mp3
+
+      - name: Validate player changes
+        shell: bash
+        run: |
+          node --check time-circuit.js
+          grep -F "number:'TC-05',title:'Kids Will Love It'" time-circuit.js
+          grep -F "number:'TC-09',title:'Eighty-Eight Rebel — Alt 2'" time-circuit.js
+          grep -F 'Recovered Archive cuts are mirrored here as TC-05 through TC-09' index.html
+          git diff --check
+
+      - name: Commit requested update
+        shell: bash
+        run: |
+          git config user.name 'AeroVista Automation'
+          git config user.email 'automation@users.noreply.github.com'
+          git add RetroFlux.mp3 time-circuit.js index.html
+          git commit -m 'Trim RetroFlux intro and extend Listen circuit'
+          git push origin HEAD:main
