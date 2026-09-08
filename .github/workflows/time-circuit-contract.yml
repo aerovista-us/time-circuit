@@ -19,28 +19,3 @@ jobs:
           node-version: "20"
       - name: Verify static experience contract
         run: npm run check
-
-  one_shot_update:
-    if: github.event_name == 'push' && github.event.head_commit.message == 'Execute Time Circuit one-shot update'
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-      - name: Ensure ffmpeg
-        run: command -v ffmpeg >/dev/null || (sudo apt-get update && sudo apt-get install -y ffmpeg)
-      - name: Apply requested update
-        run: python3 .github/scripts/oneshot_update_time_circuit.py
-      - name: Commit requested update
-        run: |
-          git config user.name 'AeroVista Automation'
-          git config user.email 'automation@users.noreply.github.com'
-          git add RetroFlux.mp3 time-circuit.js index.html
-          git commit -m 'Trim RetroFlux intro and extend Listen circuit'
-          git push origin HEAD:main
