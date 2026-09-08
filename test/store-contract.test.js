@@ -5,7 +5,9 @@ const assert = require('node:assert/strict');
 
 const html = fs.readFileSync('index.html','utf8');
 const css = fs.readFileSync('time-circuit.css','utf8');
+const retroCss = fs.readFileSync('time-circuit-80s.css','utf8');
 const player = fs.readFileSync('time-circuit.js','utf8');
+const visualUpgrade = fs.readFileSync('time-circuit-visual-upgrade.js','utf8');
 const store = fs.readFileSync('future-past-store.js','utf8');
 const manifest = JSON.parse(fs.readFileSync('store.json','utf8'));
 
@@ -20,7 +22,12 @@ assert.match(html, /id="flux"/);
 assert.match(html, /id="btnRestart"/);
 assert.match(html, /id="vol"/);
 assert.match(html, /id="btnSample"/);
-assert.match(html, /src="\.\/kids\.will\.love\.it\.png"/);
+assert.match(html, /id="visualizerArt"/);
+assert.match(html, /src="\.\/images\/flux\.png"/);
+assert.match(html, /time-circuit-80s\.css/);
+assert.match(html, /time-circuit-visual-upgrade\.js/);
+assert.match(html, /property="og:image" content="https:\/\/time-circuit\.aerovista\.us\/images\/flux\.png"/);
+assert.match(html, /name="twitter:card" content="summary_large_image"/);
 assert.match(html, /RetroFlux plus TC-01 through TC-09 are available in Listen/);
 assert.match(html, /Recovered Archive cuts are mirrored here as TC-05 through TC-09/);
 assert.match(player, /createMediaElementSource/);
@@ -38,6 +45,13 @@ assert.match(player, /sampleLimiter\.knee\.value=2/);
 assert.match(player, /createGain\(\)/);
 assert.match(player, /createDynamicsCompressor\(\)/);
 assert.doesNotMatch(player, /cover\.src=current\.art/);
+assert.match(visualUpgrade, /artBySignal/);
+assert.match(visualUpgrade, /'TC-00':'\.\/images\/flux\.png'/);
+assert.match(visualUpgrade, /MutationObserver/);
+assert.match(visualUpgrade, /visualizerArt/);
+assert.match(retroCss, /--magenta:#ff44d6/);
+assert.match(retroCss, /\.viz-art-layer/);
+assert.match(retroCss, /\.viz-art-image\.playing/);
 assert.match(css, /Original Time Circuit Listen surface/);
 assert.match(css, /Northline-inspired layout is intentionally confined to Store/);
 
